@@ -2,6 +2,7 @@ from flask import request, Response, redirect, url_for
 from kik.messages import messages_from_json, TextMessage, StartChattingMessage, SuggestedResponseKeyboard, TextResponse
 from lib.sr_strings import suggested_responses
 from lib.sr_matcher import sr_matcher
+
 from . import main, kik
 
 INTRO_BODY = 'Hi you reached the intro stage, tap a sr for more options'
