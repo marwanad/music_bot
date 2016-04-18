@@ -17,7 +17,7 @@ def receive():
     messages = messages_from_json(request.json['messages'])
 
     for message in messages:
-        if isinstance(message, StartChattingMessage):
+        if isinstance(message, StartMessage):
             url = '.intro'
         elif isinstance(message, TextMessage):
             url = sr_matcher.match_sr(message.body.lower())
