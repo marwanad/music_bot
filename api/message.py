@@ -10,6 +10,9 @@ WEB_HOOK = os.environ["FLASK_WEBHOOK"]
 api = Blueprint('api', __name__)
 kik = KikApi(USER_NAME, API_KEY)
 
+MAIN_SR = [TextResponse(body=sr) for sr in ['Start a quiz', 'Custom track', 'Share', 'Settings']]
+INTRO_BODY = 'Hi you reached the intro stage, tap a sr for more options :+1:'
+
 
 @api.route('/receive', methods=['POST'])
 def receive():
@@ -29,8 +32,7 @@ def receive():
 def intro():
     to = request.args.get('to')
     chat_id = request.args.get('chat_id')
-    srs = [TextResponse(body=sr) for sr in ['ABC', 'DEF', 'HIJ', 'LMN', 'OPQ', 'RST']]
-    body = 'Hi you reached the intro stage, tap a sr for more options :+1:'
+    body = INTRO_BODY
 
     if to and chat_id:
         kik.send_messages([
@@ -38,7 +40,7 @@ def intro():
                 to=to,
                 chat_id=chat_id,
                 body=body,
-                keyboards=[SuggestedResponseKeyboard(responses=srs)]
+                keyboards=[SuggestedResponseKeyboard(responses=MAIN_SR)]
             )
         ])
     return Response(status=200)
