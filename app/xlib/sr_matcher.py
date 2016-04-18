@@ -1,5 +1,4 @@
-from lib.sr_strings import suggested_responses
-
+from xlib.sr_strings import suggested_responses
 
 class SR_Matcher(object):
     def match_sr(self, body):
