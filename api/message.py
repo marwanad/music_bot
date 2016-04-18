@@ -20,9 +20,9 @@ def receive():
     messages = messages_from_json(request.json['messages'])
 
     for message in messages:
-        # if isinstance(message, StartChattingMessage):
-        return redirect(url_for('.intro', to=message.from_user, chat_id=message.chat_id), code=302)
-        # return Response(status=200)
+        if isinstance(message, StartChattingMessage):
+            return redirect(url_for('.intro', to=message.from_user, chat_id=message.chat_id), code=302)
+        return Response(status=200)
 
 
 @api.route('/intro', methods=['GET'])
