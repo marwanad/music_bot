@@ -1,5 +1,5 @@
 from flask import Blueprint, request, Response, redirect, url_for
-from kik.messages import messages_from_json, TextMessage, VideoMessage, PictureMessage, StartChattingMessage, SuggestedResponseKeyboard, TextResponse
+from kik.messages import messages_from_json, TextMessage, VideoMessage, StartChattingMessage, SuggestedResponseKeyboard, TextResponse
 from kik import KikApi, Configuration
 
 from . import main, kik
@@ -16,14 +16,15 @@ def receive():
     messages = messages_from_json(request.json['messages'])
 
     for message in messages:
-        if isinstance(message, StartChattingMessage):
-            kik.send_messages([
-                PictureMessage(
-                to=message.from_user,
-                chat_id=message.chat_id,
-                pic_url="http://40.media.tumblr.com/108878995b5b74bb89618dab799ded58/tumblr_nzwkikqhcH1titub2o1_1280.jpg"
+        if isinstance(message, TextMessage):
+            if((message.body) == "give track pls"):
+                kik.send_messages([
+                    VideoMessage(
+                    to=message.from_user,
+                    chat_id=message.chat_id,
+                    video_url="https://p.scdn.co/mp3-preview/351a86db5a906274e7b09dbfec8170e159f8e665"
                 )
-                ])
+                    ])
         return Response(status=200)
 
 
