@@ -3,23 +3,24 @@ import os
 from app import create_app
 from flask.ext.script import Manager
 import requests
+import json
 from setup import bot_config
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 manager = Manager(app)
 @manager.command
 def hookMeBro():
-requests.post(
-    'https://api.kik.com/v1/config',
-    auth=(bot_config["username"], bot_config["key"]),
-    headers={
+	requests.post(
+		'https://api.kik.com/v1/config',
+		auth=(bot_config["username"], bot_config["key"]),
+		headers={
         'Content-Type': 'application/json'
-    },
-    data=json.dumps({
-        "webhook": "https://example.com/incoming",
-        "features": {
-            "manuallySendReadReceipts": False,
-            "receiveReadReceipts": False,
+        },
+        data=json.dumps({
+        	"webhook": "https://songiq.herokuapp.com/receive",
+        	"features": {
+        	"manuallySendReadReceipts": False,
+        	"receiveReadReceipts": False,
             "receiveDeliveryReceipts": False,
             "receiveIsTyping": False
         }
