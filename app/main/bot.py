@@ -17,14 +17,13 @@ def receive():
 
     for message in messages:
         if isinstance(message, StartChattingMessage):
-            if((message.body) == "give track pls"):
-                kik.send_messages([
-                    VideoMessage(
-                    to=message.from_user,
-                    chat_id=message.chat_id,
-                    video_url="https://ia802302.us.archive.org/27/items/Pbtestfilemp4videotestmp4/video_test_512kb.mp4"
+            kik.send_messages([
+                VideoMessage(
+                to=message.from_user,
+                chat_id=message.chat_id,
+                video_url="https://ia802302.us.archive.org/27/items/Pbtestfilemp4videotestmp4/video_test_512kb.mp4"
                 )
-                    ])
+                ])
         return Response(status=200)
 
 
