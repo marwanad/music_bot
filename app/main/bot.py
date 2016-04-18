@@ -22,7 +22,7 @@ def receive():
                     VideoMessage(
                     to=message.from_user,
                     chat_id=message.chat_id,
-                    video_url="https://ia902302.us.archive.org/27/items/Pbtestfilemp4videotestmp4/video_test_512kb.mp4"
+                    video_url="https://p.scdn.co/mp3-preview/351a86db5a906274e7b09dbfec8170e159f8e665"
                 )
                     ])
         return Response(status=200)
