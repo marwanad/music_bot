@@ -3,7 +3,8 @@ from kik.messages import messages_from_json, TextMessage, StartChattingMessage, 
 from app.xlib.sr_strings import suggested_responses
 from app.xlib.sr_matcher import sr_matcher
 
-from . import main, kik
+from . import main
+from setup import kik
 
 INTRO_BODY = 'Hi you reached the intro stage, tap a sr for more options'
 FALLBACK_BODY = 'Sorry I didn\'t understand what you said'
@@ -17,7 +18,7 @@ def receive():
     messages = messages_from_json(request.json['messages'])
 
     for message in messages:
-        if isinstance(message, StartMessage):
+        if isinstance(message, StartChattingMessage):
             url = '.intro'
         elif isinstance(message, TextMessage):
             url = sr_matcher.match_sr(message.body.lower())
