@@ -3,7 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-pepe/
+./idea
+/musik
+
 # C extensions
 *.so
 
