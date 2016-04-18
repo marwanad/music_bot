@@ -1,6 +1,6 @@
 import os
 
-from kik import KikApi, Configuration
+from kik import KikApi
 
 BOT_USERNAME = os.environ.get('MUSIK_USERNAME')
 BOT_API_KEY = os.environ.get('MUSIK_API_KEY')
