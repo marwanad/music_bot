@@ -1,0 +1,11 @@
+Flask==0.10.1
+Flask-Script==2.0.5
+Jinja2==2.8
+MarkupSafe==0.23
+Werkzeug==0.11.5
+gunicorn==19.4.5
+itsdangerous==0.24
+kik==1.0.2
+requests==2.9.1
+six==1.10.0
+wsgiref==0.1.2

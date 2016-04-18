@@ -1,22 +1,15 @@
 from flask import Blueprint, request, Response, redirect, url_for
 from kik.messages import messages_from_json, TextMessage, StartChattingMessage, SuggestedResponseKeyboard, TextResponse
-import os
 from kik import KikApi, Configuration
 
-USER_NAME = os.environ["USER_NAME"]
-API_KEY = os.environ["API_KEY"]
-WEB_HOOK = os.environ["FLASK_WEBHOOK"]
-
-api = Blueprint('api', __name__)
-kik = KikApi(USER_NAME, API_KEY)
+from . import main, kik
 
 MAIN_SR = [TextResponse(body=sr) for sr in ['Start a quiz', 'Custom track', 'Share', 'Settings']]
 INTRO_BODY = 'Hi you reached the intro stage, tap a sr for more options :+1:'
 
 
-@api.route('/receive', methods=['POST'])
+@main.route('/receive', methods=['POST'])
 def receive():
-    kik.set_configuration(Configuration(webhook=WEB_HOOK + '/receive'))
     if not kik.verify_signature(request.headers.get('X-Kik-Signature'), request.get_data()):
         return Response(status=403)
 
@@ -28,7 +21,7 @@ def receive():
         return Response(status=200)
 
 
-@api.route('/intro', methods=['GET'])
+@main.route('/intro', methods=['GET'])
 def intro():
     to = request.args.get('to')
     chat_id = request.args.get('chat_id')
