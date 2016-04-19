@@ -10,6 +10,7 @@ import logging
 MAIN_SR = [TextResponse(body=sr) for sr in ['Start a quiz', 'Custom track', 'Share', 'Settings']]
 INTRO_BODY = 'Hi you reached the intro stage, tap a sr for more options :+1:'
 
+preview_base_url = "https://p.scdn.co/mp3-preview/"
 
 @main.route('/receive', methods=['POST'])
 def receive():
@@ -30,9 +31,9 @@ def receive():
                     ])
         return Response(status=200)
 
-@main.route('/musicplayer', methods=['GET'])
-def music_player():
-    return render_template('main/sound_frame.html', preview_url="https://p.scdn.co/mp3-preview/53a95c27490ea1a42e0264a57fc73dacb961f2a7")
+@main.route('/musicplayer/<id>', methods=['GET'])
+def music_player(id):
+    return render_template('main/sound_frame.html', preview_url=preview_base_url+id)
 
 @main.route('/intro', methods=['GET'])
 def intro():
