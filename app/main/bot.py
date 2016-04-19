@@ -20,11 +20,12 @@ def receive():
     for message in messages:
         if isinstance(message, TextMessage):
             if((message.body) == "give track pls"):
+                html = render_template('main/sound_frame.html', preview_url="https://p.scdn.co/mp3-preview/e001676375ea2b4807cee2f98b51f2f3fe0d109b")
                 kik.send_messages([
                     WubbleMessage(
                     to=message.from_user,
                     chat_id=message.chat_id,
-                    url="http://reddit.com"
+                    url=html
                 )
                     ])
         return Response(status=200)
