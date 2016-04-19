@@ -5,6 +5,7 @@ from kik import KikApi, Configuration
 from . import main
 from setup import kik
 from wubble import WubbleMessage
+import logging
 
 MAIN_SR = [TextResponse(body=sr) for sr in ['Start a quiz', 'Custom track', 'Share', 'Settings']]
 INTRO_BODY = 'Hi you reached the intro stage, tap a sr for more options :+1:'
@@ -16,7 +17,8 @@ def receive():
         return Response(status=403)
 
     messages = messages_from_json(request.json['messages'])
-
+    logging.info(url_for("main.musicplayer"))
+    
     for message in messages:
         if isinstance(message, TextMessage):
             if((message.body) == "give track pls"):
