@@ -10,7 +10,6 @@ import music
 
 preview_base_url = "https://p.scdn.co/mp3-preview/"
 
-
 @main.route('/receive', methods=['POST'])
 def receive():
     if not kik.verify_signature(request.headers.get('X-Kik-Signature'), request.get_data()):
@@ -29,6 +28,8 @@ def receive():
                     WubbleMessage(
                         to=message.from_user,
                         chat_id=message.chat_id,
+                        width=200,
+                        height=200,
                         url=url_for("main.music_player", id="53a95c27490ea1a42e0264a57fc73dacb961f2a7", _external=True)
                     )
                 ])
