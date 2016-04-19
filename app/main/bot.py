@@ -25,7 +25,7 @@ def receive():
                     WubbleMessage(
                     to=message.from_user,
                     chat_id=message.chat_id,
-                    url=url_for("main.music_player")
+                    url="https://songiq.herokuapp.com/musicplayer"
                 )
                     ])
         return Response(status=200)
