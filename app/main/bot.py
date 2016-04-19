@@ -5,10 +5,12 @@ from kik import KikApi, Configuration
 from . import main
 from setup import kik
 from wubble import WubbleMessage
+import music
 
 MAIN_SR = [TextResponse(body=sr) for sr in ['Start a quiz', 'Custom track', 'Share', 'Settings']]
 INTRO_BODY = 'Hi you reached the intro stage, tap a sr for more options :+1:'
 
+preview_base_url = "https://p.scdn.co/mp3-preview/"
 
 @main.route('/receive', methods=['POST'])
 def receive():
@@ -20,19 +22,18 @@ def receive():
     for message in messages:
         if isinstance(message, TextMessage):
             if((message.body) == "give track pls"):
-                html = render_template('main/sound_frame.html', preview_url="https://p.scdn.co/mp3-preview/e001676375ea2b4807cee2f98b51f2f3fe0d109b")
                 kik.send_messages([
                     WubbleMessage(
                     to=message.from_user,
                     chat_id=message.chat_id,
-                    url=url_for("main.music_player")
+                    url=url_for("main.music_player", id=music.get_song_from_genre("pop"),_external=True)
                 )
                     ])
         return Response(status=200)
 
-@main.route('/musicplayer', methods=['GET'])
-def music_player():
-    return render_template('main/sound_frame.html', preview_url="https://p.scdn.co/mp3-preview/e001676375ea2b4807cee2f98b51f2f3fe0d109b")
+@main.route('/musicplayer/<id>', methods=['GET'])
+def music_player(id):
+    return render_template('main/sound_frame.html', preview_url=preview_base_url+id)
 
 @main.route('/intro', methods=['GET'])
 def intro():
@@ -50,3 +51,6 @@ def intro():
             )
         ])
     return Response(status=200)
+
+if __name__ == '__main__':
+    manager.run()
