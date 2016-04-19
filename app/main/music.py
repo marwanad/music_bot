@@ -33,7 +33,7 @@ def get_song_from_artist(artist, difficulty=50):
     else:
         print 'Cannot find artist'
         raise Exception
-print get_genres()
+
 
 def _get_only_id(url):
     return url.split("/")[4]
