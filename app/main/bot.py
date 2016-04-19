@@ -24,11 +24,14 @@ def receive():
                     WubbleMessage(
                     to=message.from_user,
                     chat_id=message.chat_id,
-                    url="http://reddit.com"
+                    url=url_for("music_players")
                 )
                     ])
         return Response(status=200)
 
+@main.route('/musicplayer', methods=['GET'])
+def music_player():
+    return render_template('main/sound_frame.html', preview_url="https://p.scdn.co/mp3-preview/e001676375ea2b4807cee2f98b51f2f3fe0d109b")
 
 @main.route('/intro', methods=['GET'])
 def intro():
