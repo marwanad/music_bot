@@ -10,6 +10,9 @@ import music
 
 preview_base_url = "https://p.scdn.co/mp3-preview/"
 
+def isGenre(message):
+    # use hardcoded genres until we get spotify working
+    return message in srs.grouped_srs['genre']
 
 @main.route('/receive', methods=['POST'])
 def receive():
@@ -24,6 +27,18 @@ def receive():
         if isinstance(message, StartChattingMessage):
             Handler.handle_intro(to, chat_id)
         elif isinstance(message, TextMessage):
+            if(isGenre(message.body)):
+                # enter "listening for answers" state
+                # get random song
+                kik.send_messages([
+                    WubbleMessage(
+                        to=message.from_user,
+                        chat_id=message.chat_id,
+                        url=url_for("main.music_player", id="53a95c27490ea1a42e0264a57fc73dacb961f2a7", _external=True)
+                    )
+                ])
+                return Response(status=200)
+
             if ((message.body) == "give track pls"):
                 kik.send_messages([
                     WubbleMessage(
