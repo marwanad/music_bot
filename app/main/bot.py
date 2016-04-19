@@ -57,24 +57,24 @@ def handle_intro(to, chat_id):
 
 def handle_start_quiz(to, chat_id):
     body = 'start quiz'
-    Responder.send_text_response(to, chat_id, body, keyboards=MAIN_SR)
+    Responder.send_text_response(to, chat_id, body, keyboards=[MAIN_SR])
 
 
 def handle_custom_track(to, chat_id):
     body = 'custom track'
-    Responder.send_text_response(to, chat_id, body, keyboards=MAIN_SR)
+    Responder.send_text_response(to, chat_id, body, keyboards=[MAIN_SR])
 
 
 def handle_share(to, chat_id):
     body = 'share'
-    Responder.send_text_response(to, chat_id, body, keyboards=MAIN_SR)
+    Responder.send_text_response(to, chat_id, body, keyboards=[MAIN_SR])
 
 
 def handle_settings(to, chat_id):
     body = 'settings'
-    Responder.send_text_response(to, chat_id, body, keyboards=MAIN_SR)
+    Responder.send_text_response(to, chat_id, body, keyboards=[MAIN_SR])
 
 
 def handle_fallback(to, chat_id):
     body = 'fallback'
-    Responder.send_text_response(to, chat_id, body, keyboards=MAIN_SR)
+    Responder.send_text_response(to, chat_id, body, keyboards=[MAIN_SR])
