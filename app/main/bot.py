@@ -4,6 +4,7 @@ from kik import KikApi, Configuration
 
 from . import main
 from setup import kik
+from wubble import WubbleMessage
 
 MAIN_SR = [TextResponse(body=sr) for sr in ['Start a quiz', 'Custom track', 'Share', 'Settings']]
 INTRO_BODY = 'Hi you reached the intro stage, tap a sr for more options :+1:'
@@ -19,12 +20,11 @@ def receive():
     for message in messages:
         if isinstance(message, TextMessage):
             if((message.body) == "give track pls"):
-                html = render_template('main/sound_frame.html', preview_url="https://p.scdn.co/mp3-preview/e001676375ea2b4807cee2f98b51f2f3fe0d109b")
                 kik.send_messages([
-                    TextMessage(
+                    WubbleMessage(
                     to=message.from_user,
                     chat_id=message.chat_id,
-                    body=html
+                    url="http://reddit.com"
                 )
                     ])
         return Response(status=200)
