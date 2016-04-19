@@ -27,6 +27,7 @@ def receive():
             if ((message.body) == "give track pls"):
                 kik.send_messages([
                     WubbleMessage(
+<<<<<<< HEAD
                         to=message.from_user,
                         chat_id=message.chat_id,
                         url=url_for("main.music_player", id=music.get_song_from_genre("pop"), _external=True)

@@ -4,6 +4,7 @@ from setup import sp
 def get_genres():
     return sp.recommendation_genre_seeds()['genres']
 
+
 def get_song_from_genre(genre, difficulty=50):
     song = sp._get('recommendations', seed_genres=genre, limit=1, min_popularity=difficulty)
     if song:
