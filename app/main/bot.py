@@ -7,9 +7,11 @@ from app.xlib.sr_strings import srs
 from . import main
 from setup import kik
 from wubble import WubbleMessage
+import music
 
 MAIN_SR = [TextResponse(body=sr) for sr in ['Start a quiz', 'Custom track', 'Share', 'Settings']]
 
+preview_base_url = "https://p.scdn.co/mp3-preview/"
 
 @main.route('/receive', methods=['POST'])
 def receive():
@@ -24,21 +26,21 @@ def receive():
         if isinstance(message, StartChattingMessage):
             Handler.handle_intro(to, chat_id)
         elif isinstance(message, TextMessage):
-            if message.body.lower() == "give track pls":
-                render_template('main/sound_frame.html',
-                                       preview_url="https://p.scdn.co/mp3-preview/e001676375ea2b4807cee2f98b51f2f3fe0d109b")
+            if((message.body) == "give track pls"):
                 kik.send_messages([
                     WubbleMessage(
-                            to=to,
-                            chat_id=chat_id,
-                            url=url_for("main.music_player")
-                    )
-                ])
+                    to=message.from_user,
+                    chat_id=message.chat_id,
+                    url=url_for("main.music_player", id=music.get_song_from_genre("pop"),_external=True)
+                )
+                    ])
+                return Response(status=200)
+
             fn = srs.srs.get(message.body.lower())
             if not fn:
                 Handler.handle_fallback(to, chat_id)
-            else:
-                getattr(Handler, fn)(to, chat_id)
+                return Response(status=200)
+            getattr(Handler, fn)(to, chat_id)
         else:
             Handler.handle_fallback(to, chat_id)
         return Response(status=200)
@@ -79,3 +81,8 @@ class Handler(object):
     def handle_fallback(to, chat_id):
         body = 'fallback'
         Responder.send_text_response(to, chat_id, body, keyboards=[MAIN_SR])
+
+
+@main.route('/musicplayer/<id>', methods=['GET'])
+def music_player(id):
+    return render_template('main/sound_frame.html', preview_url=preview_base_url+id)
