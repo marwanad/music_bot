@@ -1,4 +1,4 @@
-from kik.messages import SuggestedResponseKeyboard, TextResponse
+from kik.messages import TextResponse
 
 class SuggestedResponses(object):
     def __init__(self):
@@ -19,4 +19,6 @@ srs.register_sr('custom track', 'handle_custom_track')
 srs.register_sr('share', 'handle_share')
 srs.register_sr('settings', 'handle_settings')
 
-srs.register_group_sr('main_srs', ['Start a quiz', 'Custom track', 'Share', 'Settings'])
+srs.register_group_sr('menu', ['Start a quiz', 'Custom track', 'Share', 'Settings'])
+srs.register_group_sr('genre', ['Start a quiz', 'Custom track', 'Share', 'Settings'])
+

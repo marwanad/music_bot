@@ -1,12 +1,12 @@
 from flask import request, Response, url_for, render_template
-from kik.messages import messages_from_json, TextMessage, StartChattingMessage, TextResponse
+from kik.messages import messages_from_json, TextMessage, StartChattingMessage
 from app.xlib.responder import Responder
 from app.xlib.sr_strings import srs
 
 from . import main
 from setup import kik
 from wubble import WubbleMessage
-# import music
+import music
 
 preview_base_url = "https://p.scdn.co/mp3-preview/"
 
@@ -29,8 +29,7 @@ def receive():
                     WubbleMessage(
                         to=message.from_user,
                         chat_id=message.chat_id,
-                        url='http://google.ca'
-                        # url=url_for("main.music_player", id=music.get_song_from_genre("pop"), _external=True)
+                        url=url_for("main.music_player", id=music.get_song_from_genre("pop"), _external=True)
                     )
                 ])
                 return Response(status=200)
@@ -59,24 +58,24 @@ class Handler(object):
     @staticmethod
     def handle_start_quiz(to, chat_id):
         body = 'start quiz'
-        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['main_srs'])
+        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
     def handle_custom_track(to, chat_id):
         body = 'custom track'
-        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['main_srs'])
+        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
     def handle_share(to, chat_id):
         body = 'share'
-        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['main_srs'])
+        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
     def handle_settings(to, chat_id):
         body = 'settings'
-        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['main_srs'])
+        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
     def handle_fallback(to, chat_id):
         body = 'fallback'
-        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['main_srs'])
+        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'])
