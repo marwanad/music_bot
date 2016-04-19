@@ -1,7 +1,9 @@
 import os
 
 from kik import KikApi
+from spotipy import oauth2
 import spotipy.util as util
+import logging
 
 BOT_USERNAME = os.environ.get('MUSIK_USERNAME')
 BOT_API_KEY = os.environ.get('MUSIK_API_KEY')
@@ -15,10 +17,16 @@ bot_config = {
 	"key" : BOT_API_KEY
 }
 
+CACHE = '.spotipyoauthcache'
 spotify_scope = 'user-library-read'
 
-token = util.prompt_for_user_token(SPOTIFY_USERNAME, spotify_scope, client_id=SPOTIFY_CLIENT_ID, client_secret= SPOTIFY_CLIENT_SECRET, redirect_uri=SPOTIPY_REDIRECT_URI)
+sp_oauth = oauth2.SpotifyOAuth(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIPY_REDIRECT_URI,scope=spotify_scope,cache_path=CACHE)
 
-sp = spotipy.Spotify(auth=token)
+url = sp_oauth.get_authorize_url()
+
+logging.debug("auth url is ", url)
+sp = spotipy.Spotify(access_token)
 
 kik = KikApi(bot_config["username"], bot_config["key"])
+
+

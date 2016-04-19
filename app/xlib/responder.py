@@ -1,6 +1,6 @@
 from kik.messages import TextMessage, SuggestedResponseKeyboard
 
-from setup import kik
+from ..setup import kik
 
 
 class Responder(object):

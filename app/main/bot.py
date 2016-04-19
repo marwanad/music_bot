@@ -4,16 +4,17 @@ from kik import KikApi, Configuration
 from app.xlib.responder import Responder
 from app.xlib.sr_strings import srs
 
-from . import main
+# from . import main
 from setup import kik
 from wubble import WubbleMessage
 import music
+app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 
 MAIN_SR = [TextResponse(sr) for sr in ['Start a quiz', 'Custom track', 'Share', 'Settings']]
 
 preview_base_url = "https://p.scdn.co/mp3-preview/"
 
-@main.route('/receive', methods=['POST'])
+@app.route('/receive', methods=['POST'])
 def receive():
     if not kik.verify_signature(request.headers.get('X-Kik-Signature'), request.get_data()):
         return Response(status=403)
@@ -31,7 +32,7 @@ def receive():
                     WubbleMessage(
                     to=message.from_user,
                     chat_id=message.chat_id,
-                    url=url_for("main.music_player", id="e001676375ea2b4807cee2f98b51f2f3fe0d109b",_external=True)
+                    url=url_for("main.music_player", id=music.get_song_from_genre('pop'),_external=True)
                 )
                     ])
         #         return Response(status=200)
@@ -77,6 +78,8 @@ def receive():
 #         body = 'fallback'
 #         Responder.send_text_response(to, chat_id, body, keyboards=[MAIN_SR])
 
+if __name__ == '__main__':
+    app.run()
 
 @main.route('/musicplayer/<id>', methods=['GET'])
 def music_player(id):
