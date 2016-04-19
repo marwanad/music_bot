@@ -17,24 +17,22 @@ def receive():
         return Response(status=403)
 
     messages = messages_from_json(request.json['messages'])
-    logging.info(url_for("main.music_player"))
 
     for message in messages:
         if isinstance(message, TextMessage):
             if((message.body) == "give track pls"):
-                html = render_template('main/sound_frame.html', preview_url="https://p.scdn.co/mp3-preview/e001676375ea2b4807cee2f98b51f2f3fe0d109b")
                 kik.send_messages([
                     WubbleMessage(
                     to=message.from_user,
                     chat_id=message.chat_id,
-                    url="https://songiq.herokuapp.com/musicplayer"
+                    url="https://p.scdn.co/mp3-preview/53a95c27490ea1a42e0264a57fc73dacb961f2a7"
                 )
                     ])
         return Response(status=200)
 
 @main.route('/musicplayer', methods=['GET'])
 def music_player():
-    return render_template('main/sound_frame.html', preview_url="https://p.scdn.co/mp3-preview/e001676375ea2b4807cee2f98b51f2f3fe0d109b")
+    return render_template('main/sound_frame.html', preview_url="https://p.scdn.co/mp3-preview/53a95c27490ea1a42e0264a57fc73dacb961f2a7")
 
 @main.route('/intro', methods=['GET'])
 def intro():
