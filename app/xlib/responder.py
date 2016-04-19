@@ -1,5 +1,7 @@
+from flask import url_for
 from kik.messages import TextMessage, SuggestedResponseKeyboard
 
+from app.main.wubble import WubbleMessage
 from setup import kik
 
 
@@ -16,4 +18,14 @@ class Responder(object):
         )
         kik.send_messages([
             message
+        ])
+
+    @staticmethod
+    def send_wubble_response(to, chat_id, song_id):
+        kik.send_messages([
+            WubbleMessage(
+                to=to,
+                chat_id=chat_id,
+                url=url_for("main.music_player", id=song_id, _external=True)
+            )
         ])

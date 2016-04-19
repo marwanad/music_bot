@@ -10,9 +10,17 @@ import music
 
 preview_base_url = "https://p.scdn.co/mp3-preview/"
 
-def isGenre(message):
+def match_group_sr(group_sr, message):
     # use hardcoded genres until we get spotify working
-    return message.lower() in map(lambda x: x.body.lower(), srs.grouped_srs['genre'])
+    return message in map(lambda x: x.body.lower(), srs.grouped_srs[group_sr])
+
+def get_song_from_genre(genre):
+    #handle genre search
+    return '53a95c27490ea1a42e0264a57fc73dacb961f2a7'
+
+def get_song_from_artist(genre):
+    #handle genre search
+    return '53a95c27490ea1a42e0264a57fc73dacb961f2a7'
 
 @main.route('/receive', methods=['POST'])
 def receive():
@@ -24,12 +32,11 @@ def receive():
     for message in messages:
         to = message.from_user
         chat_id = message.chat_id
+        body = message.body.lower()
         if isinstance(message, StartChattingMessage):
             Handler.handle_intro(to, chat_id)
         elif isinstance(message, TextMessage):
-            if(isGenre(message.body)):
-                # enter "listening for answers" state
-                # get random song
+            if ((body) == "give track pls"):
                 kik.send_messages([
                     WubbleMessage(
                         to=message.from_user,
@@ -39,21 +46,22 @@ def receive():
                 ])
                 return Response(status=200)
 
-            if ((message.body) == "give track pls"):
-                kik.send_messages([
-                    WubbleMessage(
-                        to=message.from_user,
-                        chat_id=message.chat_id,
-                        url=url_for("main.music_player", id="53a95c27490ea1a42e0264a57fc73dacb961f2a7", _external=True)
-                    )
-                ])
-                return Response(status=200)
-
-            fn = srs.srs.get(message.body.lower())
+            fn = srs.srs.get(body)
             if not fn:
-                Handler.handle_fallback(to, chat_id)
+                if match_group_sr('genre', body):
+                    # enter "listening for answers" state
+                    # get random song id of that genre
+                    song_id = get_song_from_genre(body)
+                    Handler.handle_song(to, chat_id, song_id)
+                elif match_group_sr('artist', body):
+                    # enter "listening for answers" state
+                    # get random song id of that artist
+                    song_id = get_song_from_artist(body)
+                    Handler.handle_song(to, chat_id, song_id)
+                else:
+                    Handler.handle_fallback(to, chat_id)
                 return Response(status=200)
-            getattr(Handler, fn)(to, chat_id)
+            getattr(Handler, fn)(to, chat_id, body)
         else:
             Handler.handle_fallback(to, chat_id)
         return Response(status=200)
@@ -72,25 +80,54 @@ class Handler(object):
 
     @staticmethod
     def handle_start_quiz(to, chat_id):
-        body = 'start quiz'
+        body = 'Select genre, artist, or random'
+        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['song_options'])
+
+    @staticmethod
+    def handle_genre(to, chat_id):
+        body = 'Select a genre'
         Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['genre'])
+        srs.register_sr('genre', 'handle_genre')
+
+    @staticmethod
+    def handle_artist(to, chat_id):
+        body = 'Select an artist'
+        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['artist'])
+
+    @staticmethod
+    def handle_song(to, chat_id, song_id=None):
+        if not song_id:
+            # grab a random song id (prob from popular playlist)
+            song_id = '53a95c27490ea1a42e0264a57fc73dacb961f2a7'
+        body = 'Tap song above'
+        Responder.send_wubble_response(to, chat_id, song_id)
+        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['skip'])
+
+    @staticmethod
+    def handle_skip(to, chat_id):
+        body = 'Ok, skipping'
+        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
     def handle_custom_track(to, chat_id):
         body = 'custom track'
-        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['genre'])
+        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
     def handle_share(to, chat_id):
         body = 'share'
-        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['genre'])
+        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
     def handle_settings(to, chat_id):
         body = 'settings'
-        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['genre'])
+        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
-    def handle_fallback(to, chat_id):
-        body = 'fallback'
-        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['genre'])
+    def handle_fallback(to, chat_id, body=None):
+        if body:
+            body = body.lower()
+        else:
+            body = 'Not a text message'
+
+        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'])
