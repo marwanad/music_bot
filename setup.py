@@ -12,10 +12,10 @@ bot_config = {
 	"key" : BOT_API_KEY
 }
 
-spotify_scope = 'user-library-read'
+# spotify_scope = 'user-library-read'
 
-token = util.prompt_for_user_token(SPOTIFY_USERNAME, spotify_scope)
+# token = util.prompt_for_user_token(SPOTIFY_USERNAME, spotify_scope)
 
-sp = spotipy.Spotify(auth=token)
+# sp = spotipy.Spotify(auth=token)
 
 kik = KikApi(bot_config["username"], bot_config["key"])
