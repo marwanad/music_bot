@@ -21,12 +21,9 @@ srs.register_sr('settings', 'handle_settings')
 srs.register_sr('genre', 'handle_genre')
 srs.register_sr('artist', 'handle_artist')
 srs.register_sr('random', 'handle_song')
-srs.register_sr('skip', 'handle_skip')
-
+srs.register_sr('back', 'handle_back')
 
 srs.register_group_sr('menu', ['Start a quiz', 'Custom track', 'Share', 'Settings'])
-srs.register_group_sr('song_options', ['Genre', 'Artist', 'Random'])
-srs.register_group_sr('genre', ['Pop', 'Hip-Hop', 'Electro', 'Jazz', 'Rock', 'Disney', 'Country', 'R-n-B'])
-srs.register_group_sr('artist', ['Drake', 'Kanye', 'Kendrick', 'Perry', 'Nas', 'Tupac'])
-srs.register_group_sr('skip', ['Skip'])
-
+srs.register_group_sr('song_options', ['Genre', 'Artist', 'Random', 'Back'])
+srs.register_group_sr('genre', ['Pop', 'Hip-Hop', 'Electro', 'Jazz', 'Rock', 'Disney', 'Country', 'R-n-B', 'Back'])
+srs.register_group_sr('artist', ['Drake', 'Kanye', 'Kendrick', 'Perry', 'Nas', 'Tupac', 'Back'])
