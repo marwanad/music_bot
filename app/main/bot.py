@@ -17,8 +17,8 @@ def receive():
         return Response(status=403)
 
     messages = messages_from_json(request.json['messages'])
-    logging.info(url_for("main.musicplayer"))
-    
+    logging.info(url_for("main.music_player"))
+
     for message in messages:
         if isinstance(message, TextMessage):
             if((message.body) == "give track pls"):
