@@ -12,7 +12,7 @@ preview_base_url = "https://p.scdn.co/mp3-preview/"
 
 def isGenre(message):
     # use hardcoded genres until we get spotify working
-    return message in srs.grouped_srs['genre']
+    return message.lower() in map(lambda x: x.body.lower(), srs.grouped_srs['genre'])
 
 @main.route('/receive', methods=['POST'])
 def receive():
