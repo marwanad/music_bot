@@ -17,7 +17,7 @@ def hookMeBro():
         'Content-Type': 'application/json'
         },
         data=json.dumps({
-        	"webhook": "https://950746d8.ngrok.io/receive",
+        	"webhook": "https://70264098.ngrok.io/receive",
         	"features": {
         	"manuallySendReadReceipts": False,
         	"receiveReadReceipts": False,

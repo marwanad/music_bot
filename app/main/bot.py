@@ -38,8 +38,7 @@ def receive():
             if not fn:
                 Handler.handle_fallback(to, chat_id)
             else:
-                getattr(Handler, fn)()
-                fn(to, chat_id)
+                getattr(Handler, fn)(to, chat_id)
         else:
             Handler.handle_fallback(to, chat_id)
         return Response(status=200)
