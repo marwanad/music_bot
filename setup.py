@@ -14,7 +14,7 @@ bot_config = {
 
 spotify_scope = 'user-library-read'
 
-token = util.prompt_for_user_token(SPOTIFY_USERNAME, scope)
+token = util.prompt_for_user_token(SPOTIFY_USERNAME, spotify_scope)
 
 sp = spotipy.Spotify(auth=token)
 
