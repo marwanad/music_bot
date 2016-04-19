@@ -1,13 +1,6 @@
 import os
 import spotipy
-import spotipy.util as util
-
-spotify_scope = 'user-library-read'
-SPOTIFY_USERNAME = os.environ.get('SPOTIFY_USERNAME')
-
-token = util.prompt_for_user_token(SPOTIFY_USERNAME, spotify_scope)
-
-sp = spotipy.Spotify(auth=token)
+from setup import sp
 
 def get_genres():
     return sp.recommendation_genre_seeds()['genres']
