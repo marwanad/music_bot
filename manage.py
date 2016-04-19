@@ -17,7 +17,7 @@ def hookMeBro():
         'Content-Type': 'application/json'
         },
         data=json.dumps({
-        	"webhook": "https://songiq.herokuapp.com/receive",
+        	"webhook": "https://897735bc.ngrok.io/receive",
         	"features": {
         	"manuallySendReadReceipts": False,
         	"receiveReadReceipts": False,
