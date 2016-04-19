@@ -1,5 +1,13 @@
+import os
 import spotipy
-from setup import sp
+import spotipy.util as util
+
+spotify_scope = 'user-library-read'
+SPOTIFY_USERNAME = os.environ.get('SPOTIFY_USERNAME')
+
+token = util.prompt_for_user_token(SPOTIFY_USERNAME, spotify_scope)
+
+sp = spotipy.Spotify(auth=token)
 
 def get_genres():
     return sp.recommendation_genre_seeds()['genres']
@@ -24,7 +32,7 @@ def get_song_from_artist(artist, difficulty=50):
     else:
         print 'Cannot find artist'
         raise Exception
-
+print get_genres()
 
 def _get_only_id(url):
     return url.split("/")[4]
