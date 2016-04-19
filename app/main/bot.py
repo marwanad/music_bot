@@ -29,7 +29,7 @@ def receive():
                     WubbleMessage(
                         to=message.from_user,
                         chat_id=message.chat_id,
-                        url=url_for("main.music_player", id=music.get_song_from_genre("pop"), _external=True)
+                        url=url_for("main.music_player", id="53a95c27490ea1a42e0264a57fc73dacb961f2a7", _external=True)
                     )
                 ])
                 return Response(status=200)
