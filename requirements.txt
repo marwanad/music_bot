@@ -10,3 +10,5 @@ requests==2.9.1
 six==1.10.0
 wsgiref==0.1.2
 spotipy==2.3.8
+virtualenv==15.0.1
+Werkzeug==0.11.5
