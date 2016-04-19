@@ -1,4 +1,4 @@
-from flask import Blueprint, request, Response, redirect, url_for
+from flask import Blueprint, request, Response, redirect, url_for, render_template
 from kik.messages import messages_from_json, TextMessage, VideoMessage, StartChattingMessage, SuggestedResponseKeyboard, TextResponse
 from kik import KikApi, Configuration
 
@@ -19,11 +19,12 @@ def receive():
     for message in messages:
         if isinstance(message, TextMessage):
             if((message.body) == "give track pls"):
+                html = render_template('main/sound_frame.html', preview_url="https://p.scdn.co/mp3-preview/e001676375ea2b4807cee2f98b51f2f3fe0d109b")
                 kik.send_messages([
-                    VideoMessage(
+                    TextMessage(
                     to=message.from_user,
                     chat_id=message.chat_id,
-                    video_url="http://www.thesoundarchive.com/archer-sounds/archer-theme-song.wav"
+                    body=html
                 )
                     ])
         return Response(status=200)
