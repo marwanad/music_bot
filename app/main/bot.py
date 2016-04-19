@@ -59,9 +59,9 @@ def receive():
                     song_id = get_song_from_artist(body)
                     Handler.handle_song(to, chat_id, song_id)
                 else:
-                    Handler.handle_fallback(to, chat_id)
+                    Handler.handle_fallback(to, chat_id, body)
                 return Response(status=200)
-            getattr(Handler, fn)(to, chat_id, body)
+            getattr(Handler, fn)(to, chat_id)
         else:
             Handler.handle_fallback(to, chat_id)
         return Response(status=200)
