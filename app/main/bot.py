@@ -9,7 +9,7 @@ from setup import kik
 from wubble import WubbleMessage
 import music
 
-MAIN_SR = [TextResponse(body=sr) for sr in ['Start a quiz', 'Custom track', 'Share', 'Settings']]
+MAIN_SR = [TextResponse(sr) for sr in ['Start a quiz', 'Custom track', 'Share', 'Settings']]
 
 preview_base_url = "https://p.scdn.co/mp3-preview/"
 
