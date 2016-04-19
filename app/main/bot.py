@@ -1,7 +1,8 @@
-from flask import request, Response, redirect, url_for
+from flask import request, Response
 from kik.messages import messages_from_json, TextMessage, StartChattingMessage, SuggestedResponseKeyboard, TextResponse
-from app.xlib.sr_strings import suggested_responses
-from app.xlib.sr_matcher import sr_matcher
+
+from app.xlib.responder import Responder
+from app.xlib.sr_strings import srs
 
 from . import main
 from setup import kik
@@ -18,37 +19,25 @@ def receive():
     messages = messages_from_json(request.json['messages'])
 
     for message in messages:
+        to = message.to
+        chat_id = message.chat_id
         if isinstance(message, StartChattingMessage):
-            url = '.intro'
+            handle_intro(to, chat_id)
         elif isinstance(message, TextMessage):
-            url = sr_matcher.match_sr(message.body.lower())
+            fn = srs.srs.get(message.body.lower())
+            if not fn:
+                handle_fallback(to, chat_id)
+            fn(to, chat_id)
         else:
-            url = '.fallback'
-        return redirect(url_for(url, to=message.from_user, chat_id=message.chat_id), code=302)
+            handle_fallback(to, chat_id)
 
 
-@main.route('/intro', methods=['GET'])
-def intro():
-    to = request.args.get('to')
-    chat_id = request.args.get('chat_id')
+def handle_intro(to, chat_id):
     body = INTRO_BODY
-
-    if to and chat_id:
-        kik.send_messages([
-            TextMessage(
-                to=to,
-                chat_id=chat_id,
-                body=body,
-                keyboards=[SuggestedResponseKeyboard(responses=[TextResponse(body=sr) for sr in suggested_responses.grouped_srs['main_srs']])]
-            )
-        ])
-    return Response(status=200)
+    Responder.send_text_response(to, chat_id, body)
 
 
-@main.route('/start_quiz', methods=['GET'])
-def start_quiz():
-    to = request.args.get
-    chat_id = request.args.get('chat_id')
+def handle_start_quiz(to, chat_id):
     body = 'start quiz'
 
     if to and chat_id:
@@ -57,16 +46,13 @@ def start_quiz():
                 to=to,
                 chat_id=chat_id,
                 body=body,
-                keyboards=[SuggestedResponseKeyboard(responses=[TextResponse(body=sr) for sr in suggested_responses.grouped_srs['main_srs']])]
+                keyboards=[]
             )
         ])
     return Response(status=200)
 
 
-@main.route('/custom_track', methods=['GET'])
-def custom_track():
-    to = request.args.get
-    chat_id = request.args.get('chat_id')
+def handle_custom_track(to, chat_id):
     body = 'custom track'
 
     if to and chat_id:
@@ -81,10 +67,7 @@ def custom_track():
     return Response(status=200)
 
 
-@main.route('/share', methods=['GET'])
-def share():
-    to = request.args.get
-    chat_id = request.args.get('chat_id')
+def handle_share(to, chat_id):
     body = 'share'
 
     if to and chat_id:
@@ -99,10 +82,7 @@ def share():
     return Response(status=200)
 
 
-@main.route('/settings', methods=['GET'])
-def settings():
-    to = request.args.get
-    chat_id = request.args.get('chat_id')
+def handle_settings(to, chat_id):
     body = 'settings'
 
     if to and chat_id:
@@ -116,10 +96,8 @@ def settings():
         ])
     return Response(status=200)
 
-@main.route('/fallback', methods=['GET'])
-def fallback():
-    to = request.args.get
-    chat_id = request.args.get('chat_id')
+
+def handle_fallback(to, chat_id):
     body = FALLBACK_BODY
 
     if to and chat_id:
