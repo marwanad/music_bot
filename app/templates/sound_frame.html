@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html>
-<body>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>HTML5 MediaElement</title>
 
-<audio controls>
-  <source src="{{preview_url}}" type="audio/mpeg">
-  </audio>
+	<script src="../js/jquery.js"></script>
+	<script src="../js/mediaelement-and-player.min.js"></script>
+	<link rel="stylesheet" href="../css/mediaelementplayer.min.css" />
+</head>
+<body>
+<audio id="player2" src="{{preview_url}}" type="audio/mp3" controls="controls">
+</audio>
+
+<script>
+$('audio,video').mediaelementplayer();
+</script>
 
 </body>
 </html>
