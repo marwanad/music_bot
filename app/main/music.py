@@ -18,7 +18,11 @@ def get_genres():
 
 def get_songs_from_genre(genre, difficulty=50):
     song = sp._get('recommendations', seed_genres=genre, limit=1, min_popularity=difficulty)
-    return song['tracks'][0]['preview_url']
+    if song:
+        return song['tracks'][0]['preview_url']
+    else:
+        print 'Cannot get recommendation'
+        raise Exception
 
 
 def get_songs_from_artist(artist, difficulty=50):
@@ -29,5 +33,6 @@ def get_songs_from_artist(artist, difficulty=50):
         id = artist['id']
         song = sp._get('recommendations', seed_artists=id, limit=1, min_popularity=difficulty)
         return song['tracks'][0]['preview_url']
-
-print get_songs_from_artist('Drake')
+    else:
+        print 'Cannot find artist'
+        raise Exception
