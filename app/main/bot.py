@@ -5,6 +5,7 @@ from kik import KikApi, Configuration
 from . import main
 from setup import kik
 from wubble import WubbleMessage
+import music
 
 MAIN_SR = [TextResponse(body=sr) for sr in ['Start a quiz', 'Custom track', 'Share', 'Settings']]
 INTRO_BODY = 'Hi you reached the intro stage, tap a sr for more options :+1:'
@@ -25,7 +26,7 @@ def receive():
                     WubbleMessage(
                     to=message.from_user,
                     chat_id=message.chat_id,
-                    url=url_for("main.music_player", id="53a95c27490ea1a42e0264a57fc73dacb961f2a7",_external=True)
+                    url=url_for("main.music_player", id=music.get_song_from_genre("pop"),_external=True)
                 )
                     ])
         return Response(status=200)
