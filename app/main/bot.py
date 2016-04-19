@@ -25,18 +25,20 @@ def receive():
             handle_intro(to, chat_id)
         elif isinstance(message, TextMessage):
             if message.body.lower() == "give track pls":
-                html = render_template('main/sound_frame.html', preview_url="https://p.scdn.co/mp3-preview/e001676375ea2b4807cee2f98b51f2f3fe0d109b")
+                render_template('main/sound_frame.html',
+                                       preview_url="https://p.scdn.co/mp3-preview/e001676375ea2b4807cee2f98b51f2f3fe0d109b")
                 kik.send_messages([
                     WubbleMessage(
-                    to=to,
-                    chat_id=chat_id,
-                    url=url_for("main.music_player")
-                )
+                            to=to,
+                            chat_id=chat_id,
+                            url=url_for("main.music_player")
+                    )
                 ])
             fn = srs.srs.get(message.body.lower())
             if not fn:
                 handle_fallback(to, chat_id)
-            fn(to, chat_id)
+            else:
+                fn(to, chat_id)
         else:
             handle_fallback(to, chat_id)
         return Response(status=200)
@@ -44,7 +46,9 @@ def receive():
 
 @main.route('/musicplayer', methods=['GET'])
 def music_player():
-    return render_template('main/sound_frame.html', preview_url="https://p.scdn.co/mp3-preview/e001676375ea2b4807cee2f98b51f2f3fe0d109b")
+    return render_template('main/sound_frame.html',
+                           preview_url="https://p.scdn.co/mp3-preview/e001676375ea2b4807cee2f98b51f2f3fe0d109b")
+
 
 def handle_intro(to, chat_id):
     body = 'Hi you reached the intro stage, tap a sr for more options :+1:'
@@ -66,7 +70,7 @@ def handle_share(to, chat_id):
     Responder.send_text_response(to, chat_id, body, keyboards=MAIN_SR)
 
 
-def handle_settings(to, chat_id, keyboards=None):
+def handle_settings(to, chat_id):
     body = 'settings'
     Responder.send_text_response(to, chat_id, body, keyboards=MAIN_SR)
 
