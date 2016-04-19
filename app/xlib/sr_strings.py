@@ -20,5 +20,4 @@ srs.register_sr('share', 'handle_share')
 srs.register_sr('settings', 'handle_settings')
 
 srs.register_group_sr('menu', ['Start a quiz', 'Custom track', 'Share', 'Settings'])
-srs.register_group_sr('genre', ['Start a quiz', 'Custom track', 'Share', 'Settings'])
-
+srs.register_group_sr('genre', ['Pop', 'Hip-Hop', 'Electro', 'Jazz', 'Rock', 'Disney'])
