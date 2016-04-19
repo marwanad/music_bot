@@ -31,7 +31,7 @@ def receive():
                     WubbleMessage(
                     to=message.from_user,
                     chat_id=message.chat_id,
-                    url=url_for("main.music_player", id=music.get_song_from_genre("pop"),_external=True)
+                    url=url_for("main.music_player", id="e001676375ea2b4807cee2f98b51f2f3fe0d109b", _external=True)
                 )
                     ])
                 return Response(status=200)
@@ -46,10 +46,10 @@ def receive():
         return Response(status=200)
 
 
-@main.route('/musicplayer', methods=['GET'])
-def music_player():
+@main.route('/musicplayer/<id>', methods=['GET'])
+def music_player(id):
     return render_template('main/sound_frame.html',
-                           preview_url="https://p.scdn.co/mp3-preview/e001676375ea2b4807cee2f98b51f2f3fe0d109b")
+                           preview_url=preview_base_url+id)
 
 class Handler(object):
     @staticmethod
