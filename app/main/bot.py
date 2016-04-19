@@ -33,15 +33,15 @@ def receive():
                         url=url_for("main.music_player", id=music.get_song_from_genre('pop'), _external=True)
                     )
                 ])
-                return Response(status=200)
+        #         return Response(status=200)
 
-            fn = srs.srs.get(message.body.lower())
-            if not fn:
-                Handler.handle_fallback(to, chat_id)
-                return Response(status=200)
-            getattr(Handler, fn)(to, chat_id)
-        else:
-            Handler.handle_fallback(to, chat_id)
+        #     fn = srs.srs.get(message.body.lower())
+        #     if not fn:
+        #         Handler.handle_fallback(to, chat_id)
+        #         return Response(status=200)
+        #     getattr(Handler, fn)(to, chat_id)
+        # else:
+        #     Handler.handle_fallback(to, chat_id)
         return Response(status=200)
 
 
