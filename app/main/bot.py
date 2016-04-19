@@ -2,7 +2,8 @@ from flask import Blueprint, request, Response, redirect, url_for
 from kik.messages import messages_from_json, TextMessage, VideoMessage, StartChattingMessage, SuggestedResponseKeyboard, TextResponse
 from kik import KikApi, Configuration
 
-from . import main, kik
+from . import main
+from setup import kik
 
 MAIN_SR = [TextResponse(body=sr) for sr in ['Start a quiz', 'Custom track', 'Share', 'Settings']]
 INTRO_BODY = 'Hi you reached the intro stage, tap a sr for more options :+1:'
