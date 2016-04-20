@@ -7,7 +7,7 @@ def check_state(*wargs):
             if Game.get_game(args[1]).state in wargs:
                 fn(*args)
             else:
-                handler.handle_fallback(*args)
+                handler.Handler.handle_fallback(*args)
             return wrapper
 
     return wrap
