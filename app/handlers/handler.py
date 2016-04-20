@@ -40,6 +40,10 @@ class Handler(object):
         get_game(chat_id).set_state(StateType.ANSWER_TIME)
         get_game(chat_id).set_current_song(track_preview)
         Responder.send_wubble_response(to, chat_id, track_preview)
+
+        # for testing purposes
+        song_details = 'title: ' + track_preview.title + '\n' + 'artist: ' + track_preview.artist + '\n';
+        Responder.send_text_response(to, chat_id, song_details)
         Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'], hidden=True)
 
     @staticmethod
