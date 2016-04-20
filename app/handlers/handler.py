@@ -56,8 +56,8 @@ class Handler(object):
     def handle_score(to, chat_id, body=StateString.SCORE):
         game = Game.get_game(chat_id)
         sorted_scores = sorted(game.scores.items(), key=operator.itemgetter(1))
-        for key in sorted_scores:
-            body = body + key + ': ' + str(sorted_scores[key]) + '\n'
+        for tuple in sorted_scores:
+            body = body + tuple[0] + ': ' + str(tuple[1]) + '\n'
         Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
