@@ -76,7 +76,7 @@ class Handler(object):
     @staticmethod
     def handle_answer(to, chat_id, body):
         game = Game.get_game(chat_id)
-        hidden = False
+        hidden = True
         # todo hints?
         if body.lower() == 'back':
             Handler.handle_back(to, chat_id)
@@ -86,7 +86,7 @@ class Handler(object):
             game.increment_score(to)
             response = 'Correct!'
             keyboards = srs.grouped_srs['menu']
-            hidden = True
+            hidden = False
         else:
             response = 'Incorrect'
             keyboards = srs.grouped_srs['answer']

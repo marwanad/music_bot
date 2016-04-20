@@ -2,6 +2,7 @@ from flask import url_for
 from kik.messages import TextMessage, SuggestedResponseKeyboard
 
 from app.main.wubble import WubbleMessage
+from app.xlib.game import Game
 from setup import kik
 
 
@@ -16,8 +17,10 @@ class Responder(object):
                 responses=keyboards
             )
         )
+
         kik.send_messages([
-            message
+            message,
+            TextMessage(to=to, chat_id=chat_id, body=Game.get_game(chat_id).state)
         ])
 
     @staticmethod

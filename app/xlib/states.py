@@ -11,7 +11,7 @@ class StateString(object):
     START_QUIZ = 'Select genre, artist, or random'
     GENRE = 'Select a genre'
     ARTIST = 'Select an artist'
-    SONG = 'Tap song above'
+    SONG = 'Tap song above. Answer below'
     BACK = 'Ok, heading back'
     SHARE = 'Share'
     SETTINGS = 'Settings'

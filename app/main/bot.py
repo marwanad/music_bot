@@ -48,7 +48,6 @@ def receive():
                 # genres in this list probably need to be processed before checking against body
                 if body in genres:
                     Handler.handle_song(to, chat_id, music.get_song_from_genre(body))
-                    print ("handling from genre + ", body)
                 elif srs.match_group_sr('artist', body):
                     Handler.handle_song(to, chat_id, music.get_song_from_artist(body))
                 else:
