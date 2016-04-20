@@ -4,9 +4,9 @@ GAMES = dict()
 
 
 class Game(object):
-    def __init__(self, chat_id, state=StateType.INITIAL, scores=None):
+    def __init__(self, chat_id, scores=None):
         self.chat_id = chat_id
-        self.state = state
+        self.state = StateType.INITIAL
         if scores is None:
             scores = dict()
         self.scores = scores
@@ -21,8 +21,9 @@ class Game(object):
     def set_answer(self, answer):
         self.answer = answer
 
-    @classmethod
-    def get_game(cls, chat_id):
-        if not GAMES.get(chat_id):
-            GAMES[chat_id] = cls(chat_id)
-        return GAMES[chat_id]
+
+def get_game(chat_id):
+    if not GAMES.get(chat_id):
+        print 'COULD NOT GET GAME, CREATING NEW GAME INSTANCE'
+        GAMES[chat_id] = Game(chat_id)
+    return GAMES[chat_id]

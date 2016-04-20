@@ -1,5 +1,5 @@
 from app.xlib.responder import Responder
-from app.xlib.game import StateType, Game
+from app.xlib.game import StateType, get_game
 from app.xlib.sr_strings import srs
 from app.xlib.states import StateString
 from ..main import music
@@ -14,20 +14,20 @@ class Handler(object):
     @staticmethod
     @check_state(StateType.INITIAL)
     def handle_start_quiz(to, chat_id, body=StateString.START_QUIZ):
-        Game.get_game(chat_id).set_state(StateType.START_SELECT)
+        get_game(chat_id).set_state(StateType.START_SELECT)
         Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['song_options'])
 
     @staticmethod
     @check_state(StateType.START_SELECT)
     def handle_genre(to, chat_id, body=StateString.GENRE):
-        Game.get_game(chat_id).set_state(StateType.GENRE_SELECT)
+        get_game(chat_id).set_state(StateType.GENRE_SELECT)
         Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['genre'])
         srs.register_sr('genre', 'handle_genre')
 
     @staticmethod
     @check_state(StateType.START_SELECT)
     def handle_artist(to, chat_id, body=StateString.ARTIST):
-        Game.get_game(chat_id).set_state(StateType.ARTIST_SELECT)
+        get_game(chat_id).set_state(StateType.ARTIST_SELECT)
         Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['artist'])
 
     @staticmethod
@@ -37,23 +37,23 @@ class Handler(object):
             # grab a random song id (prob from popular playlist)
             track_preview_id = music.get_song_from_genre('pop')
 
-        Game.get_game(chat_id).set_state(StateType.ANSWER_TIME)
-        Game.get_game(chat_id).set_answer("Ultralight Beam")
+        get_game(chat_id).set_state(StateType.ANSWER_TIME)
+        get_game(chat_id).set_answer("Ultralight Beam")
         Responder.send_wubble_response(to, chat_id, track_preview_id)
         Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'], hidden=True)
 
     @staticmethod
     def handle_back(to, chat_id, body=StateString.BACK):
-        Game.get_game(chat_id).set_state(StateType.INITIAL)
+        get_game(chat_id).set_state(StateType.INITIAL)
         Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
     def handle_share(to, chat_id, body=StateString.SHARE):
-        Game.get_game(chat_id).set_state(StateType.INITIAL)
+        get_game(chat_id).set_state(StateType.INITIAL)
 
     @staticmethod
     def handle_score(to, chat_id, body=StateString.SCORE):
-        game = Game.get_game(chat_id)
+        game = get_game(chat_id)
         sorted_scores = sorted(game.scores.items(), key=lambda x: x[1])
         for tuple in sorted_scores:
             body = body + tuple[0] + ': ' + str(tuple[1]) + '\n'
@@ -61,7 +61,7 @@ class Handler(object):
 
     @staticmethod
     def handle_settings(to, chat_id, body=StateString.SETTINGS):
-        Game.get_game(chat_id).set_state(StateType.INITIAL)
+        get_game(chat_id).set_state(StateType.INITIAL)
         Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
@@ -75,7 +75,7 @@ class Handler(object):
 
     @staticmethod
     def handle_answer(to, chat_id, body):
-        game = Game.get_game(chat_id)
+        game = get_game(chat_id)
         hidden = True
         # todo hints?
         if body.lower() == 'back':
