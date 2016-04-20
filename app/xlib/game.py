@@ -10,15 +10,12 @@ class Game(object):
     def __init__(self, chat_id, state=StateType.INITIAL, scores=None):
         self.chat_id = chat_id
         self.state = state
-        if scores == None:
+        if scores is None:
             scores = dict()
         self.scores = scores
 
-    def setState(self, stateType):
-        self.state = stateType
+    def set_state(self, state_type):
+        self.state = state_type
 
-    def incrementScore(self, username):
-        if username in self.scores:
-            self.scores[username] = self.scores[username] + 1
-        else:
-            self.scores[username] = 1
+    def increment_score(self, username):
+        self.scores[username] = self.scores.get(username, 0) + 1

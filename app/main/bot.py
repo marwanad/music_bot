@@ -25,12 +25,10 @@ def match_group_sr(group_sr, message):
     return message in map(lambda x: x.body.lower(), srs.grouped_srs[group_sr])
 
 def get_song_from_genre(genre):
-    #handle genre search
-    return '53a95c27490ea1a42e0264a57fc73dacb961f2a7'
+    return music.get_song_from_genre(genre)
 
-def get_song_from_artist(genre):
-    #handle genre search
-    return '53a95c27490ea1a42e0264a57fc73dacb961f2a7'
+def get_song_from_artist(artist):
+    return music.get_song_from_artist(artist)
 
 @main.route('/receive', methods=['POST'])
 def receive():
@@ -48,13 +46,7 @@ def receive():
             Handler.handle_intro(to, chat_id)
         elif isinstance(message, TextMessage):
             if ((body) == "give track pls"):
-                kik.send_messages([
-                    WubbleMessage(
-                        to=message.from_user,
-                        chat_id=message.chat_id,
-                        url=url_for("main.music_player", id="53a95c27490ea1a42e0264a57fc73dacb961f2a7", _external=True)
-                    )
-                ])
+                Handler.handle_song(to, chat_id)
                 return Response(status=200)
 
             fn = srs.srs.get(body)
@@ -94,14 +86,14 @@ class Handler(object):
     @check_state(StateType.INITIAL)
     def handle_start_quiz(to, chat_id):
         body = 'Select genre, artist, or random'
-        get_game(chat_id).setState(StateType.START_SELECT)
+        get_game(chat_id).set_state(StateType.START_SELECT)
         Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['song_options'])
 
     @staticmethod
     @check_state(StateType.START_SELECT)
     def handle_genre(to, chat_id):
         body = 'Select a genre'
-        get_game(chat_id).setState(StateType.GENRE_SELECT)
+        get_game(chat_id).set_state(StateType.GENRE_SELECT)
         Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['genre'])
         srs.register_sr('genre', 'handle_genre')
 
@@ -109,25 +101,23 @@ class Handler(object):
     @check_state(StateType.START_SELECT)
     def handle_artist(to, chat_id):
         body = 'Select an artist'
-        get_game(chat_id).setState(StateType.ARTIST_SELECT)
+        get_game(chat_id).set_state(StateType.ARTIST_SELECT)
         Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['artist'])
 
     @staticmethod
-    @check_state(StateType.INITIAL, StateType.START_SELECT, StateType.GENRE_SELECT, StateType.ARTIST_SELECT)
     def handle_song(to, chat_id, song_id=None):
         if not song_id:
             # grab a random song id (prob from popular playlist)
-            song_id = '53a95c27490ea1a42e0264a57fc73dacb961f2a7'
+            song_id = music.get_song_from_genre('pop')
         body = 'Tap song above'
-        get_game(chat_id).setState(StateType.ANSWER_TIME)
+        get_game(chat_id).set_state(StateType.INITIAL)
         Responder.send_wubble_response(to, chat_id, song_id)
-        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['skip'])
+        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
-    @check_state(StateType.ANSWER_TIME, StateType.START_SELECT, StateType.GENRE_SELECT, StateType.ARTIST_SELECT)
     def handle_back(to, chat_id):
         body = 'Ok, heading back'
-        get_game(chat_id).setState(StateType.START_SELECT)
+        get_game(chat_id).set_state(StateType.INITIAL)
         Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
