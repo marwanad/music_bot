@@ -1,9 +1,8 @@
-from ..decorators import check_state
 from app.xlib.responder import Responder
 from app.xlib.game import StateType, Game
 from app.xlib.sr_strings import srs
 from ..main import music
-
+from ..decorators import check_state
 
 class Handler(object):
     @staticmethod
