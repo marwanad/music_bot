@@ -24,11 +24,12 @@ class Responder(object):
         ])
 
     @staticmethod
-    def send_wubble_response(to, chat_id, song_id):
+    def send_wubble_response(to, chat_id, song):
+        song_url = song.preview_url
         kik.send_messages([
             WubbleMessage(
                 to=to,
                 chat_id=chat_id,
-                url=url_for("main.music_player", id=song_id, _external=True)
+                url=url_for("main.music_player", id=song_url, _external=True)
             )
         ])

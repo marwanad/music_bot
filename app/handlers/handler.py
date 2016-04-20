@@ -31,15 +31,19 @@ class Handler(object):
         Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['artist'])
 
     @staticmethod
-    def handle_song(to, chat_id, song_id=None, body=StateString.SONG):
-        track_preview_id = song_id
-        if not track_preview_id:
+    def handle_song(to, chat_id, song=None, body=StateString.SONG):
+        track_preview = song
+        if not track_preview:
             # grab a random song id (prob from popular playlist)
-            track_preview_id = music.get_song_from_genre('pop')
+            track_preview = music.get_song_from_genre('pop')
 
         get_game(chat_id).set_state(StateType.ANSWER_TIME)
-        get_game(chat_id).set_answer("Ultralight Beam")
-        Responder.send_wubble_response(to, chat_id, track_preview_id)
+        get_game(chat_id).set_current_song(track_preview)
+        Responder.send_wubble_response(to, chat_id, track_preview)
+
+        # for testing purposes
+        song_details = 'title: ' + track_preview.title + '\n' + 'artist: ' + track_preview.artist + '\n';
+        Responder.send_text_response(to, chat_id, song_details)
         Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'], hidden=True)
 
     @staticmethod
@@ -81,8 +85,9 @@ class Handler(object):
         if body.lower() == 'back':
             Handler.handle_back(to, chat_id)
             return
-        elif body.lower() == game.answer.lower():
+        elif game.current_song and body.lower() == game.current_song.title.lower():
             game.set_state(StateType.INITIAL)
+            game.set_current_song(None)
             game.increment_score(to)
             response = 'Correct!'
             keyboards = srs.grouped_srs['menu']
