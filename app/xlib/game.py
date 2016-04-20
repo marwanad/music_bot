@@ -1,11 +1,7 @@
+from app.xlib.states import StateType
+
 GAMES = dict()
 
-class StateType(object):
-    INITIAL = 'initial'
-    START_SELECT = "start_select"
-    GENRE_SELECT = "genre_select"
-    ARTIST_SELECT = "artist_select"
-    ANSWER_TIME = "answer_time"
 
 class Game(object):
     def __init__(self, chat_id, state=StateType.INITIAL, scores=None):
@@ -14,6 +10,7 @@ class Game(object):
         if scores is None:
             scores = dict()
         self.scores = scores
+        self.answer = None
 
     def set_state(self, state_type):
         self.state = state_type
