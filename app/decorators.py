@@ -1,11 +1,11 @@
-from xlib.game import get_game
-
+from models import Game
 
 def check_state(*wargs):
     def wrap(fn):
         def wrapper(*args, **kwargs):
             print 'ARGUMENTS: ', args
-            if get_game(args[1]).state in wargs:
+            game = args[1]
+            if game.state in wargs:
                 fn(*args, **kwargs)
             else:
                 from handlers import handler

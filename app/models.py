@@ -10,5 +10,5 @@ class Game(db.Model):
 		self.state = state
 		self.song = song
 	def __repr__(self):	
-		return '<Game %r>' % state
+		return '<Game %r>' % self.state
 

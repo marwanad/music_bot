@@ -1,5 +1,5 @@
 from app.xlib.responder import Responder
-from app.xlib.game import StateType, get_game
+from app.xlib.game import StateType
 from app.xlib.sr_strings import srs
 from app.xlib.states import StateString
 from ..main import music
