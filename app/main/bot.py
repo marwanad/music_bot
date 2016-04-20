@@ -39,7 +39,9 @@ def receive():
 
             fn = srs.srs.get(body)
             if not fn:
-                if srs.match_group_sr('genre', body):
+                genres = music.get_genres()
+                # genres in this list probably need to be processed before checking against body
+                if body in genres:
                     game.set_state(StateType.ANSWER_TIME);
                     Handler.handle_song(to, chat_id, music.get_song_from_genre(body))
                     print ("handling from genre + ", body)
