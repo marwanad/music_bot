@@ -59,8 +59,9 @@ class Handler(object):
         Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
-    def handle_share(to, chat_id):
-        body = 'share'
+    def handle_score(to, chat_id):
+        game = Game.get_game(chat_id)
+        body = str(game.scores)
         Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
