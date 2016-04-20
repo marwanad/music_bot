@@ -3,10 +3,7 @@ from kik.messages.attributable_message import AttributableMessage
 
 
 class WubbleMessage(KeyboardMessage, AttributableMessage):
-    """
-    A full link message object, as documented at `<https://dev.kik.com/#/docs/messaging#link>`_.
-    """
-
+  
     def __init__(self, to=None, chat_id=None, url=None, no_forward=None,
                  kik_js_data=None, keyboards=None, attribution=None, mention=None, delay=None, width=None, height=None,
                  **kwargs):
