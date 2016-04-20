@@ -1,50 +1,46 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8" />
-<link rel="stylesheet" href="{{ url_for('static', filename='circle.player.css') }}">
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/jplayer/jquery.jplayer.min.js"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='jquery.transform2d.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='jquery.grab.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='mod.csstransforms.min.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='circle.player.js') }}"></script>
-
-<script type="text/javascript">
-//<![CDATA[
-
-$(document).ready(function(){
-	var myCirclePlayer = new CirclePlayer("#jquery_jplayer_1",
-	{
-		m4a: "{{preview_url}}",
-		oga: "http://www.jplayer.org/audio/ogg/Miaow-07-Bubble.ogg"
-	}, {
-		cssSelectorAncestor: "#cp_container_1",
-		wmode: "window",
-		keyEnabled: true
-	});
-});
-//]]>
-</script>
-</head>
-<body>
-	<div id="jquery_jplayer_1" class="cp-jplayer"></div>
-	<div id="cp_container_1" class="cp-container">
-		<div class="cp-buffer-holder">
-			<div class="cp-buffer-1"></div>
-			<div class="cp-buffer-2"></div>
-		</div>
-		<div class="cp-progress-holder">
-			<div class="cp-progress-1"></div>
-			<div class="cp-progress-2"></div>
-		</div>
-		<div class="cp-circle-control"></div>
-		<ul class="cp-controls">
-			<li><a class="cp-play" tabindex="1">play</a></li>
-			<li><a class="cp-pause" style="display:none;" tabindex="1">pause</a></li>
-		</ul>
-	</div>
-</body>
-
+	<head>
+		<title>Single Song Player with Amplitude.js</title>
+		<script type="text/javascript" src="{{ url_for('static', filename='amplitude.min.js') }}"></script>
+		<!-- jQuery only used to help with animations and NON Amplitude elements -->
+		<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}"/>
+	</head>
+    <script type="text/javascript">
+		Amplitude.init({
+			"songs": [
+				{
+					"name": "Mystery Name",
+					"artist": "Mystery Artist",
+					"album": "Mystery Album",
+					"url": "{{preview_url}}",
+					"live": false,
+				}
+			],
+			"default_album_art": "{{ url_for('static', filename='no-cover.png') }}"
+		});
+		/*
+			jQuery Visual Helpers
+		*/
+		$('.amplitude-play-pause').click(function() {
+		    console.log("CLICKED")
+		    $('.amplitude-play-pause').toggleClass('amplitude-paused');
+		    $('.amplitude-play-pause').toggleClass('amplitude-play');
+		})
+	</script>
+	<body>
+		<!-- Begin Small Player -->
+            <!-- Begin Small Player Middle -->
+			<div id="small-player-middle">
+                <!-- Begin Controls Container -->
+                <div id="small-player-middle-controls">
+                    <div class="amplitude-play-pause amplitude-paused"></div>
+                </div>
+                <div id="current-time">
+                    <span class="amplitude-current-minutes" amplitude-single-current-minutes="true">0</span>:<span class="amplitude-current-seconds" amplitude-single-current-seconds="true">00</span>
+                </div>
+			</div>
+		<!-- End Small Player -->
+	</body>
 </html>
