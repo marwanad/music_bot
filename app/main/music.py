@@ -1,4 +1,4 @@
-import os
+import json
 import spotipy
 import setup
 
@@ -13,6 +13,9 @@ class Song:
         self.genre = genre
         self.album_art = album_art
         self.preview_url = preview_url
+
+    def to_json(self):
+        return json.dumps(self, default=lambda x: x.__dict__)
 
 
 def refresh_spotify_client():
