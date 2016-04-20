@@ -12,4 +12,6 @@ wsgiref==0.1.2
 spotipy==2.3.8
 virtualenv==15.0.1
 Flask-SQLAlchemy==1.0
+SQLAlchemy==0.9.9
+psycopg2==2.5.2
 

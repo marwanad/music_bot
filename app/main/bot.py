@@ -4,6 +4,8 @@ from kik.messages import messages_from_json, TextMessage, StartChattingMessage
 from app.handlers.handler import Handler
 from app.xlib.game import StateType, get_game
 from app.xlib.sr_strings import srs
+from ..models import State
+from .. import db
 
 from . import main
 from setup import kik
@@ -29,7 +31,15 @@ def receive():
         chat_id = message.chat_id
         body = message.body.lower()
         # do something with this game
-        game = get_game(chat_id)
+        game = None
+        if not db.session.query(State).filter(State.id == chat_id).count():
+        	print("No game found in db, creating a new game instance and adding to db")
+        	game = get_game(chat_id)
+        	db.session.add(game)
+        else:
+        	print("Restoring existing instance from db")
+        	game = db.session.query(State).filter(State.id == chat_id).first_or_
+
         if isinstance(message, StartChattingMessage):
             Handler.handle_intro(to, chat_id)
         elif isinstance(message, TextMessage):
