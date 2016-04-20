@@ -10,7 +10,7 @@ class Game(object):
         if scores is None:
             scores = dict()
         self.scores = scores
-        self.answer = None
+        self.current_song = None
 
     def set_state(self, state_type):
         self.state = state_type
@@ -18,8 +18,8 @@ class Game(object):
     def increment_score(self, username):
         self.scores[username] = self.scores.get(username, 0) + 1
 
-    def set_answer(self, answer):
-        self.answer = answer
+    def set_current_song(self, current_song):
+        self.current_song = current_song
 
 
 def get_game(chat_id):
