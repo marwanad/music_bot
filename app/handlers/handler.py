@@ -44,7 +44,7 @@ class Handler(object):
         body = 'Tap song above'
         Game.get_game(chat_id).set_state(StateType.ANSWER_TIME)
         Responder.send_wubble_response(to, chat_id, track_preview_id)
-        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'], Hidden=True)
+        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'], hidden=True)
 
     @staticmethod
     def handle_back(to, chat_id):
