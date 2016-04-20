@@ -43,7 +43,8 @@ def refresh_spotify_client():
     return spotipy.Spotify(auth=setup.get_spotify_token())
 
 
-# sp = refresh_spotify_client()
+sp = refresh_spotify_client()
+
 
 def get_genres():
     return sp.recommendation_genre_seeds()['genres']
@@ -53,14 +54,14 @@ def get_song_from_genre(genre, difficulty=50):
     print ("getting song from genre ", genre)
     song_json = sp._get('recommendations', seed_genres=genre, limit=1, min_popularity=difficulty)['tracks'][0]
     if song_json:
-        song = (Song
-                .with_album(song_json['album']['name'])
-                .with_artist(song_json['artists'][0]['name'])
-                .with_title(song_json['name'])
-                .with_genre(genre)
-                .with_album_art(song_json['album']['images'][1]['url'])
-                .with_preview_url(_get_only_id(song_json['preview_url'])))
-        return song
+        final_song = (Song
+                      .with_album(song_json['album']['name'])
+                      .with_artist(song_json['artists'][0]['name'])
+                      .with_title(song_json['name'])
+                      .with_genre(genre)
+                      .with_album_art(song_json['album']['images'][1]['url'])
+                      .with_preview_url(_get_only_id(song_json['preview_url'])))
+        return final_song
     else:
         print 'Cannot get recommendation'
         raise Exception
@@ -71,8 +72,8 @@ def get_song_from_artist(artist, difficulty=50):
     items = results['artists']['items']
     if items:
         artist = items[0]
-        id = artist['id']
-        song_json = sp._get('recommendations', seed_artists=id, limit=1, min_popularity=difficulty)['tracks'][0]
+        artist_id = artist['id']
+        song_json = sp._get('recommendations', seed_artists=artist_id, limit=1, min_popularity=difficulty)['tracks'][0]
         if song_json:
             song = (Song
                     .with_album(song_json['album']['name'])
