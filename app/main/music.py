@@ -15,7 +15,7 @@ class Song:
         self.preview_url = preview_url
 
     def to_json(self):
-        json.dumps(self, default=lambda x: x.__dict__)
+        return json.dumps(self, default=lambda x: x.__dict__)
 
 
 def refresh_spotify_client():
