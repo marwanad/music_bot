@@ -19,8 +19,8 @@ class Responder(object):
         )
 
         kik.send_messages([
-            message,
-            TextMessage(to=to, chat_id=chat_id, body=Game.get_game(chat_id).state)
+            TextMessage(to=to, chat_id=chat_id, body=Game.get_game(chat_id).state),
+            message
         ])
 
     @staticmethod
