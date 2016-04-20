@@ -42,6 +42,7 @@ def receive():
                 if srs.match_group_sr('genre', body):
                     game.set_state(StateType.ANSWER_TIME);
                     Handler.handle_song(to, chat_id, music.get_song_from_genre(body))
+                    print ("handling from genre + ", body)
                 elif srs.match_group_sr('artist', body):
                     game.set_state(StateType.ANSWER_TIME);
                     Handler.handle_song(to, chat_id, music.get_song_from_artist(body))

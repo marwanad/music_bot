@@ -36,13 +36,15 @@ class Handler(object):
 
     @staticmethod
     def handle_song(to, chat_id, song_id=None):
-        if not song_id:
+        track_preview_id = song_id
+        if not track_preview_id:
             # grab a random song id (prob from popular playlist)
-            song_id = music.get_song_from_genre('pop')
-            body = 'Tap song above'
-            Game.get_game(chat_id).set_state(StateType.INITIAL)
-            Responder.send_wubble_response(to, chat_id, song_id)
-            Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'])
+            track_preview_id = music.get_song_from_genre('pop')
+
+        body = 'Tap song above'
+        Game.get_game(chat_id).set_state(StateType.INITIAL)
+        Responder.send_wubble_response(to, chat_id, track_preview_id)
+        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
     def handle_back(to, chat_id):
