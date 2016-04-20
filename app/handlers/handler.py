@@ -37,7 +37,7 @@ class Handler(object):
             # grab a random song id (prob from popular playlist)
             track_preview_id = music.get_song_from_genre('pop')
 
-        get_game(chat_id).set_state(StateType.ANSWER_TIME)
+        get_game(c hat_id).set_state(StateType.ANSWER_TIME)
         get_game(chat_id).set_answer("Ultralight Beam")
         Responder.send_wubble_response(to, chat_id, track_preview_id)
         Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'], hidden=True)

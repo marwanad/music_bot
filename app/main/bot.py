@@ -4,6 +4,7 @@ from kik.messages import messages_from_json, TextMessage, StartChattingMessage
 from app.handlers.handler import Handler
 from app.xlib.game import StateType, get_game
 from app.xlib.sr_strings import srs
+from ..models import State
 
 from . import main
 from setup import kik
