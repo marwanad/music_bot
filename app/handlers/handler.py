@@ -3,7 +3,7 @@ from app.xlib.game import StateType, Game
 from app.xlib.sr_strings import srs
 from ..main import music
 from ..decorators import check_state
-
+import operator
 
 class Handler(object):
     @staticmethod
@@ -61,8 +61,11 @@ class Handler(object):
     @staticmethod
     def handle_score(to, chat_id):
         game = Game.get_game(chat_id)
-        body = str(game.scores)
-        Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'])
+        sorted_scores = sorted(game.scores.items(), key=operator.itemgetter(1))
+        score_string = 'High Scores: \n'
+        for key in sorted_scores:
+            score_string = score_string + key + ': ' + str(sorted_scores[key]) + '\n'
+        Responder.send_text_response(to, chat_id, score_string, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
     def handle_settings(to, chat_id):
