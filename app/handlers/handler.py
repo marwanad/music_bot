@@ -96,9 +96,9 @@ class Handler(object):
         pass
         # hidden = True
         # # todo hints?
-        # if body.lower() == 'back':
-        #     Handler.handle_back(to, game)
-        #     return
+        if body.lower() == 'back':
+            Handler.handle_back(to, game)
+            return
         # elif game.current_song and body.lower() == game.current_song.title.lower():
         #     game.set_state(StateType.INITIAL)
         #     game.set_current_song(None)
