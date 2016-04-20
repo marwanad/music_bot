@@ -2,8 +2,7 @@ from flask import request, Response, render_template
 from kik.messages import messages_from_json, TextMessage, StartChattingMessage
 
 from app.handlers.handler import Handler
-from app.xlib.game import Game, StateType
-from app.xlib.responder import Responder
+from app.xlib.game import StateType, get_game
 from app.xlib.sr_strings import srs
 
 from . import main
@@ -30,7 +29,7 @@ def receive():
         chat_id = message.chat_id
         body = message.body.lower()
         # do something with this game
-        game = Game.get_game(chat_id)
+        game = get_game(chat_id)
         if isinstance(message, StartChattingMessage):
             Handler.handle_intro(to, chat_id)
         elif isinstance(message, TextMessage):
