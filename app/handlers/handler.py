@@ -81,7 +81,7 @@ class Handler(object):
         if body.lower() == 'back':
             Handler.handle_back(to, chat_id)
             return
-        elif body.lower() == game.answer.lower():
+        elif game.current_song and body.lower() == game.current_song.title.lower():
             game.set_state(StateType.INITIAL)
             game.set_current_song(None)
             game.increment_score(to)
