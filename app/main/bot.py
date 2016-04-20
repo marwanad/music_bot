@@ -2,7 +2,7 @@ from flask import request, Response, render_template
 from kik.messages import messages_from_json, TextMessage, StartChattingMessage
 
 from app.handlers.handler import Handler
-from app.xlib.game import Game
+from app.xlib.game import Game, StateType
 from app.xlib.sr_strings import srs
 
 from . import main
@@ -40,10 +40,10 @@ def receive():
             fn = srs.srs.get(body)
             if not fn:
                 if srs.match_group_sr('genre', body):
-                    # enter "listening for answers" state
+                    game.set_state(StateType.ANSWER_TIME);
                     Handler.handle_song(to, chat_id, music.get_song_from_genre(body))
                 elif srs.match_group_sr('artist', body):
-                    # enter "listening for answers" state
+                    game.set_state(StateType.ANSWER_TIME);
                     Handler.handle_song(to, chat_id, music.get_song_from_artist(body))
                 else:
                     Handler.handle_fallback(to, chat_id, body)
