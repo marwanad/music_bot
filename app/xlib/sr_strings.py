@@ -11,6 +11,10 @@ class SuggestedResponses(object):
     def register_group_sr(self, name, sr_names):
         self.grouped_srs[name] = [TextResponse(sr) for sr in sr_names]
 
+    def match_group_sr(self, group_sr, message):
+        return message in map(lambda x: x.body.lower(), self.grouped_srs[group_sr])
+
+
 
 srs = SuggestedResponses()
 
