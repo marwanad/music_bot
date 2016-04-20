@@ -15,3 +15,4 @@ class StateString(object):
     BACK = 'Ok, heading back'
     SHARE = 'Share'
     SETTINGS = 'Settings'
+    SCORE = 'Score: '
