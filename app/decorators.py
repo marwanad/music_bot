@@ -1,5 +1,5 @@
 from xlib.game import Game
-import handlers.handler
+import app.handlers.handler
 
 def check_state(*wargs):
     def wrap(fn):
