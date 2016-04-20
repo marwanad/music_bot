@@ -21,6 +21,9 @@ class Game(object):
     def increment_score(self, username):
         self.scores[username] = self.scores.get(username, 0) + 1
 
+    def set_answer(self, answer):
+        self.answer = answer
+
     @classmethod
     def get_game(cls, chat_id):
         if not GAMES.get(chat_id):
