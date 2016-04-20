@@ -1,10 +1,15 @@
 import os
 import spotipy
-from setup import sp
+import setup
+
+def refresh_spotify_client():
+    return spotipy.Spotify(auth=setup.get_spotify_token())
+
+
+sp = refresh_spotify_client()
 
 def get_genres():
     return sp.recommendation_genre_seeds()['genres']
-
 
 def get_song_from_genre(genre, difficulty=50):
     song = sp._get('recommendations', seed_genres=genre, limit=1, min_popularity=difficulty)
@@ -30,3 +35,4 @@ def get_song_from_artist(artist, difficulty=50):
 
 def _get_only_id(url):
     return url.split("/")[4]
+    

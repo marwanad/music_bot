@@ -10,6 +10,10 @@ import music
 
 preview_base_url = "https://p.scdn.co/mp3-preview/"
 
+@main.before_request
+def before_request():
+    music.refresh_spotify_client()
+            
 @main.route('/receive', methods=['POST'])
 def receive():
     if not kik.verify_signature(request.headers.get('X-Kik-Signature'), request.get_data()):
