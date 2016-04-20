@@ -3,6 +3,7 @@ from kik.messages import messages_from_json, TextMessage, StartChattingMessage
 
 from app.handlers.handler import Handler
 from app.xlib.game import Game, StateType
+from app.xlib.responder import Responder
 from app.xlib.sr_strings import srs
 
 from . import main
@@ -33,6 +34,8 @@ def receive():
         if isinstance(message, StartChattingMessage):
             Handler.handle_intro(to, chat_id)
         elif isinstance(message, TextMessage):
+            if body == 'state':
+                Responder.send_text_response(to, chat_id, game.state)
 
             if game.state == StateType.ANSWER_TIME:
                 Handler.handle_answer(to, chat_id, body)
