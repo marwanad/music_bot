@@ -4,7 +4,7 @@ from app.xlib.sr_strings import srs
 from app.xlib.states import StateString
 from ..main import music
 from ..decorators import check_state
-
+import operator
 
 class Handler(object):
     @staticmethod
@@ -55,7 +55,9 @@ class Handler(object):
     @staticmethod
     def handle_score(to, chat_id, body=StateString.SCORE):
         game = Game.get_game(chat_id)
-        body += str(game.scores)
+        sorted_scores = sorted(game.scores.items(), key=operator.itemgetter(1))
+        for key in sorted_scores:
+            body = body + key + ': ' + str(sorted_scores[key]) + '\n'
         Responder.send_text_response(to, chat_id, body, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
