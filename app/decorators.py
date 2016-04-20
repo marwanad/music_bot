@@ -8,6 +8,6 @@ def check_state(*wargs):
                 fn(*args)
             else:
                 handler.Handler.handle_fallback(*args)
-            return wrapper
-
+        return wrapper
+        
     return wrap
