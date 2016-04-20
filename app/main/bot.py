@@ -42,11 +42,9 @@ def receive():
                 genres = music.get_genres()
                 # genres in this list probably need to be processed before checking against body
                 if body in genres:
-                    game.set_state(StateType.ANSWER_TIME);
                     Handler.handle_song(to, chat_id, music.get_song_from_genre(body))
                     print ("handling from genre + ", body)
                 elif srs.match_group_sr('artist', body):
-                    game.set_state(StateType.ANSWER_TIME);
                     Handler.handle_song(to, chat_id, music.get_song_from_artist(body))
                 else:
                     Handler.handle_fallback(to, chat_id, body)
