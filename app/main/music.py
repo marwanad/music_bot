@@ -17,6 +17,9 @@ class Song:
     def to_json(self):
         return json.dumps(self, default=lambda x: x.__dict__)
 
+    def match(self, answer):
+        return self.title.strip().lower() == answer.strip().lower()
+
 
 def refresh_spotify_client():
     return spotipy.Spotify(auth=setup.get_spotify_token())
