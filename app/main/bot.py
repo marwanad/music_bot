@@ -30,7 +30,7 @@ def receive():
 
         if not db.session.query(Game).filter(Game.id == chat_id).count():
             print("No game found in db, creating a new game instance and adding to db")
-            game = Game(id=chat_id, state=StateType.INITIAL)
+            game = Game(chatId=chat_id, state=StateType.INITIAL)
             db.session.add(game)
             db.session.commit()
 
