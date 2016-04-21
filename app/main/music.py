@@ -6,6 +6,15 @@ import setup
 
 preview_base_url="https://p.scdn.co/mp3-preview/"
 
+def refresh_spotify_client():
+    return spotipy.Spotify(auth=setup.get_spotify_token())
+
+sp = refresh_spotify_client()
+
+
+def get_genres():
+    return sp.recommendation_genre_seeds()['genres']
+
 class Genre:
     GENRES = get_genres()
 
@@ -23,7 +32,6 @@ class Song:
 
     def to_json_string(self):
         return json.dumps(self, default=lambda x: x.__dict__)
-
 
 def refresh_spotify_client():
     return spotipy.Spotify(auth=setup.get_spotify_token())
