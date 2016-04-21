@@ -1,5 +1,3 @@
-import json
-
 from app.xlib.responder import Responder
 from app.xlib.game import StateType
 from app.xlib.sr_strings import srs
@@ -7,6 +5,7 @@ from app.xlib.states import StateString
 from ..main import music
 from .. import db
 from ..decorators import check_state
+import json
 
 
 class Handler(object):
@@ -70,11 +69,11 @@ class Handler(object):
     @staticmethod
     @check_state(StateType.INITIAL)
     def handle_score(to, game, body=StateString.SCORE):
-        pass
-        # sorted_scores = sorted(game.scores.items(), key=lambda x: x[1])
-        # for tuple in sorted_scores:
-        #     body = body + tuple[0] + ': ' + str(tuple[1]) + '\n'
-        # Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs[StateType.INITIAL])
+        scores = json.loads(game.scores)[0]
+        sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+        for tup in sorted_scores:
+            body = body + tup[0] + ': ' + str(tup[1]) + '\n'
+        Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
     @check_state(StateType.INITIAL)
@@ -118,7 +117,10 @@ class Handler(object):
             if song.title == body:
                 game.state = StateType.INITIAL
                 game.song = '{}'
-                #todo, increment score
+
+                scores = json.loads(game.scores)
+                scores[to] = scores.get(to, 0) + 1
+                game.scores = json.dumps(scores)
 
                 response = 'Correct!'
                 keyboards = srs.grouped_srs[StateType.INITIAL]

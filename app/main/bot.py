@@ -55,16 +55,13 @@ def receive():
                         Handler.handle_song(to, game, music.get_song_from_genre(body))
                     except:
                         Handler.handle_error(to, game)
-                    return Response(status=200)
-
-                if game.state == StateType.ARTIST_SELECT or game.state == StateType.INITIAL:
+                elif game.state == StateType.ARTIST_SELECT or game.state == StateType.INITIAL:
                     try:
                         Handler.handle_song(to, game, music.get_song_from_artist(body))
                     except:
                         Handler.handle_error(to, game)
-                    return Response(status=200)
-
-                Handler.handle_fallback(to, game, body)
+                else:
+                    Handler.handle_fallback(to, game, body)
                 return Response(status=200)
             getattr(Handler, fn)(to, game)
         else:
