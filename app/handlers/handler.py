@@ -1,5 +1,5 @@
 from app.xlib.responder import Responder
-from app.xlib.game import StateType
+from app.xlib.states import StateType
 from app.xlib.sr_strings import srs
 from app.xlib.states import StateString
 from ..main import music
@@ -45,10 +45,13 @@ class Handler(object):
             song = music.get_song_from_genre('pop')
 
         game.state = StateType.ANSWER_TIME
-        game.song = song.to_json()
-        print("Adding song json to the db: ", game.song)
         db.session.commit()
-        Responder.send_wubble_response(to, game.id, track_preview)
+        
+        # game.song = song.to_json()
+        # db.session.commit()
+
+        print("Adding song json to the db: ", game.song)
+        Responder.send_wubble_response(to, game.id, song)
 
         # remove this after, debug purposes
         song_details = 'title: ' + song.title + '\n' + 'artist: ' + song.artist + '\n'
@@ -119,4 +122,4 @@ class Handler(object):
         else:
             response = 'Incorrect'
             keyboards = srs.grouped_srs['answer']
-        Responder.send_text_response(to, game.id, response, keyboards, hidden)
+        Responder.send_text_response(to, game.id, response, keyboards, hide_sr)

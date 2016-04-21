@@ -12,7 +12,7 @@ class Song:
         self.title = title
         self.genre = genre
         self.album_art = album_art
-        self.preview_url = preview_url
+        self.preview_id = preview_id
 
     def to_json(self):
         return json.dumps(self, default=lambda x: x.__dict__)
@@ -21,9 +21,7 @@ class Song:
 def refresh_spotify_client():
     return spotipy.Spotify(auth=setup.get_spotify_token())
 
-
 sp = refresh_spotify_client()
-
 
 def get_genres():
     return sp.recommendation_genre_seeds()['genres']
