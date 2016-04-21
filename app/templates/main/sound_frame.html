@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Single Song Player with Amplitude.js</title>
+<head>
+		<title></title>
 		<script type="text/javascript" src="{{ url_for('static', filename='amplitude.min.js') }}"></script>
 		<!-- jQuery only used to help with animations and NON Amplitude elements -->
 		<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
@@ -18,29 +18,18 @@
 					"live": false,
 				}
 			],
+			"autoplay": true,
 			"default_album_art": "{{ url_for('static', filename='no-cover.png') }}"
 		});
-		/*
-			jQuery Visual Helpers
-		*/
-		$('.amplitude-play-pause').click(function() {
-		    console.log("CLICKED")
-		    $('.amplitude-play-pause').toggleClass('amplitude-paused');
-		    $('.amplitude-play-pause').toggleClass('amplitude-play');
-		})
 	</script>
 	<body>
-		<!-- Begin Small Player -->
-            <!-- Begin Small Player Middle -->
 			<div id="small-player-middle">
-                <!-- Begin Controls Container -->
                 <div id="small-player-middle-controls">
-                    <div class="amplitude-play-pause amplitude-paused"></div>
+                    <div class="amplitude-play-pause amplitude-playing" amplitude-main-play-pause="true"></div>
                 </div>
                 <div id="current-time">
                     <span class="amplitude-current-minutes" amplitude-single-current-minutes="true">0</span>:<span class="amplitude-current-seconds" amplitude-single-current-seconds="true">00</span>
                 </div>
 			</div>
-		<!-- End Small Player -->
 	</body>
 </html>
