@@ -71,7 +71,7 @@ class Handler(object):
     @staticmethod
     def handle_score(to, game, body=StateString.SCORE):
         scores = json.loads(game.scores)[0]
-        sorted_scores = sorted(scores.items(), key=lambda x: x[1])
+        sorted_scores = reversed(sorted(scores.items(), key=lambda x: x[1]))
         for tuple in sorted_scores:
             body = body + tuple[0] + ': ' + str(tuple[1]) + '\n'
         Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs['menu'])
