@@ -1,10 +1,11 @@
 from app.xlib.responder import Responder
-from app.xlib.game import StateType
+from app.xlib.states import StateType
 from app.xlib.sr_strings import srs
 from app.xlib.states import StateString
 from ..main import music
 from .. import db
 from ..decorators import check_state
+import json
 
 class Handler(object):
     @staticmethod
@@ -41,18 +42,21 @@ class Handler(object):
         track_preview = song
         if not track_preview:
             # grab a random song id (prob from popular playlist)
-            track_preview = music.get_song_from_genre('pop')
+            song = music.get_song_from_genre('pop')
 
         game.state = StateType.ANSWER_TIME
         db.session.commit()
         
-        # get_game(chat_id).set_current_song(track_preview)
-        Responder.send_wubble_response(to, game.id, track_preview)
+        game.song = song.to_json()
+        db.session.commit()
 
         # for testing purposes
         song_details = 'title: ' + track_preview.title + '\n' + 'artist: ' + track_preview.artist + '\n';
         Responder.send_text_response(to, game.id, song_details)
         Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs['menu'], hidden=True)
+
+        print("Adding song json to the db: ", game.song)
+        Responder.send_wubble_response(to, game.id, song, keyboards=srs.grouped_srs['answer'])
 
     @staticmethod
     def handle_back(to, game, response=StateString.BACK):
@@ -68,11 +72,11 @@ class Handler(object):
 
     @staticmethod
     def handle_score(to, game, response=StateString.SCORE):
-        pass
-        # sorted_scores = sorted(game.scores.items(), key=lambda x: x[1])
-        # for tuple in sorted_scores:
-        #     response = response + tuple[0] + ': ' + str(tuple[1]) + '\n'
-        # Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs['menu'])
+        scores = json.loads(game.scores)
+        sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+        for tup in sorted_scores:
+            response = response + tup[0] + ': ' + str(tup[1]) + '\n'
+        Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
     def handle_settings(to, game, response=StateString.SETTINGS):
@@ -102,21 +106,30 @@ class Handler(object):
         Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
-    def handle_answer(to, game, response):
-        pass
-        # hidden = True
+    def handle_answer(to, game, body):
+
+        hide_sr = True
+        body = body.lower()
         # # todo hints?
-        if response.lower() == 'back':
+
+        if body == 'back':
             Handler.handle_back(to, game)
             return
-        # elif game.current_song and response.lower() == game.current_song.title.lower():
-        #     game.set_state(StateType.INITIAL)
-        #     game.set_current_song(None)
-        #     game.increment_score(to)
-        #     response = 'Correct!'
-        #     keyboards = srs.grouped_srs['menu']
-        #     hidden = False
-        # else:
-        #     response = 'Incorrect'
-        #     keyboards = srs.grouped_srs['answer']
-        # Responder.send_text_response(to, game.id, response, keyboards, hidden)
+        elif game.song and body == json.loads(game.song)['title'].lower():
+            # TODO ignore punctuation in both guess and answer
+            game.state = StateType.INITIAL
+            game.song = None
+
+            # increment score
+            scores = json.loads(game.scores)
+            scores[to] = scores.get(to, 0) + 1
+            game.scores = json.dumps(scores)
+            db.session.commit()
+            
+            response = 'Correct!'
+            keyboards = srs.grouped_srs['menu']
+            hide_sr = False
+        else:
+            response = 'Incorrect'
+            keyboards = srs.grouped_srs['answer']
+        Responder.send_text_response(to, game.id, response, keyboards, hide_sr)
