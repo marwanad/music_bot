@@ -42,9 +42,7 @@ def receive():
         if isinstance(message, StartChattingMessage):
             Handler.handle_intro(to, game)
         elif isinstance(message, TextMessage):
-            print "mention", mention
-            print "body", len(body)
-            if not str(body).strip() and mention and game.state == StateType.INITIAL:
+            if not body and mention and game.state == StateType.INITIAL:
                 Handler.handle_song(to, game, song=music.get_song_from_playlist())
                 return Response(status=200)
 

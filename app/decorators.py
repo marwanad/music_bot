@@ -4,8 +4,6 @@ def check_state(*wargs):
     def wrap(fn):
         def wrapper(*args, **kwargs):
             game = args[1]
-            print 'GAME STATE', game.state
-            print 'WARGS', wargs
             if game.state in wargs:
                 fn(*args, **kwargs)
                 db.session.commit()
