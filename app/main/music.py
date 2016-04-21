@@ -3,6 +3,10 @@ import spotipy
 import setup
 
 
+class Genre:
+    GENRES = get_genres()
+
+
 class Song:
     """Creates objects from Spotify music"""
 
@@ -54,12 +58,12 @@ def get_song_from_artist(artist, difficulty=50):
         song_json = sp._get('recommendations', seed_artists=artist_id, limit=1, min_popularity=difficulty)['tracks'][0]
         if song_json:
             song = Song(
-                    song_json['album']['name'],
-                    song_json['artists'][0]['name'],
-                    song_json['name'],
-                    None,
-                    song_json['album']['images'][1]['url'],
-                    _get_only_id(song_json['preview_url']))
+                song_json['album']['name'],
+                song_json['artists'][0]['name'],
+                song_json['name'],
+                None,
+                song_json['album']['images'][1]['url'],
+                _get_only_id(song_json['preview_url']))
             return song
         else:
             print 'Cannot parse song info'

@@ -1,5 +1,6 @@
 from kik.messages import TextResponse
 
+
 class SuggestedResponses(object):
     def __init__(self):
         self.srs = dict()
@@ -13,7 +14,6 @@ class SuggestedResponses(object):
 
     def match_group_sr(self, group_sr, message):
         return message in map(lambda x: x.body.lower(), self.grouped_srs[group_sr])
-
 
 
 srs = SuggestedResponses()

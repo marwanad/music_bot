@@ -27,4 +27,4 @@ def get_spotify_token():
                       data=token_data)
 
     token_response_json = r.json()
-    return token_response_json['access_token'];
+    return token_response_json['access_token']

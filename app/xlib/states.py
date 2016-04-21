@@ -16,3 +16,4 @@ class StateString(object):
     SHARE = 'Share'
     SETTINGS = 'Settings'
     SCORE = 'Score: \n'
+    ERROR = 'Seems like I can\'t fetch that right now, headed back'

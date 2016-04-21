@@ -83,6 +83,13 @@ class Handler(object):
         Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
+    def handle_error(to, game, body=StateString.ERROR):
+        game.state = StateType.INITIAL
+        db.session.commit()
+
+        Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs['menu'])
+
+    @staticmethod
     def handle_fallback(to, game, body=None):
         if body:
             body = 'I don\'t understand what you mean by "{}"'.format(body)
