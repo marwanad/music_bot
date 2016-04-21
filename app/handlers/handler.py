@@ -78,11 +78,11 @@ class Handler(object):
     def handle_difficulty(to, game, body):
         game.state = StateType.INITIAL
         if body == 'easy':
-            game.difficulty = 80
+            game.difficulty = 60
         elif body == 'hard':
-            game.difficulty = 20
+            game.difficulty = 0
         elif body == 'medium':
-            game.difficulty = 50
+            game.difficulty = 30
             
         response = 'Difficulty has been set to ' + body
 
