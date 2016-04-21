@@ -41,7 +41,11 @@ class Handler(object):
     def handle_song(to, game, song=None, body=StateString.SONG):
         track_preview = song
         if not track_preview:
-            track_preview = music.get_song_from_playlist()
+            try:
+                track_preview = music.get_song_from_playlist()
+            except:
+                Handler.handle_error(to, game)
+                return
 
         game.state = StateType.ANSWER_TIME
         db.session.commit()
