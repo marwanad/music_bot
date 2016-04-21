@@ -26,7 +26,7 @@ def receive():
         to = message.from_user
         chat_id = message.chat_id
         body = message.body.lower()
-        mention = message.mention
+        participants = message.participiants
 
         if not db.session.query(Game).filter(Game.id == chat_id).count():
             print("No game found in db, creating a new game instance and adding to db")
@@ -42,6 +42,10 @@ def receive():
         if isinstance(message, StartChattingMessage):
             Handler.handle_intro(to, game)
         elif isinstance(message, TextMessage):
+            print "participants %r", participants
+            if participants and game.state == StateType.INITIAL:
+                Handler.handle_song(to, game, song=music.get_song_from_playlist())
+                return Response(status=200)
 
             if game.state == StateType.ANSWER_TIME:
                 Handler.handle_answer(to, game, body)
@@ -54,8 +58,6 @@ def receive():
                     Handler.handle_song(to, game, song=music.get_song_from_genre(body))
                 elif game.state == StateType.ARTIST_SELECT or game.state == StateType.INITIAL:
                     Handler.handle_song(to, game, song=music.get_song_from_artist(body))
-                elif mention and game.state == StateType.INITIAL:
-                    Handler.handle_song(to, game, song=music.get_song_from_playlist())
                 else:
                     Handler.handle_fallback(to, game, body)
                 return Response(status=200)
