@@ -46,8 +46,9 @@ class Handler(object):
 
         game.state = StateType.ANSWER_TIME
         db.session.commit()
-        
-        # get_game(chat_id).set_current_song(track_preview)
+
+        game.song = track_preview.to_json()
+        db.session.commit()
         Responder.send_wubble_response(to, game.id, track_preview)
 
         # for testing purposes
@@ -69,17 +70,17 @@ class Handler(object):
 
     @staticmethod
     def handle_score(to, game, body=StateString.SCORE):
-        pass
-        # sorted_scores = sorted(game.scores.items(), key=lambda x: x[1])
-        # for tuple in sorted_scores:
-        #     body = body + tuple[0] + ': ' + str(tuple[1]) + '\n'
-        # Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs['menu'])
+        scores = json.loads(game.scores)[0]
+        sorted_scores = sorted(scores.items(), key=lambda x: x[1])
+        for tuple in sorted_scores:
+            body = body + tuple[0] + ': ' + str(tuple[1]) + '\n'
+        Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
     def handle_settings(to, game, body=StateString.SETTINGS):
         game.state = StateType.INITIAL
         db.session.commit()
-        
+
         Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
@@ -94,19 +95,26 @@ class Handler(object):
     @staticmethod
     def handle_answer(to, game, body):
         pass
-        # hidden = True
+        hidden = True
         # # todo hints?
         if body.lower() == 'back':
             Handler.handle_back(to, game)
             return
-        # elif game.current_song and body.lower() == game.current_song.title.lower():
-        #     game.set_state(StateType.INITIAL)
-        #     game.set_current_song(None)
-        #     game.increment_score(to)
-        #     response = 'Correct!'
-        #     keyboards = srs.grouped_srs['menu']
-        #     hidden = False
-        # else:
-        #     response = 'Incorrect'
-        #     keyboards = srs.grouped_srs['answer']
-        # Responder.send_text_response(to, game.id, response, keyboards, hidden)
+        elif game.song  and body.lower() == json.loads(game.song)[0][title].lower():
+            # TODO ignore punctuation in both guess and answer
+            game.state = StateType.INITIAL
+            game.song = None
+
+            # increment score
+            scores = json.loads(game.scores)[0]
+            scores[to] = scores.get(to, 0) + 1
+            game.scores = json.dumps(scores)
+
+            db.session.commit()
+            response = 'Correct!'
+            keyboards = srs.grouped_srs['menu']
+            hidden = False
+        else:
+            response = 'Incorrect'
+            keyboards = srs.grouped_srs['answer']
+        Responder.send_text_response(to, game.id, response, keyboards, hidden)
