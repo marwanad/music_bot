@@ -4,6 +4,8 @@ class StateType(object):
     GENRE_SELECT = "genre_select"
     ARTIST_SELECT = "artist_select"
     ANSWER_TIME = "answer_time"
+    SETTINGS = "settings"
+    DIFFICULTY = "difficulty"
 
 
 class StateString(object):
@@ -13,5 +15,6 @@ class StateString(object):
     ARTIST = 'Select or type an artist'
     BACK = 'Ok, heading back to main menu'
     SETTINGS = 'Settings'
+    DIFFICULTY = 'Select your difficulty'
     SCORE = 'Score: \n'
     ERROR = 'Seems like I can\'t fetch that right now, going back to main menu'
