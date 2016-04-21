@@ -7,6 +7,15 @@ import string
 
 preview_base_url="https://p.scdn.co/mp3-preview/"
 
+def refresh_spotify_client():
+    return spotipy.Spotify(auth=setup.get_spotify_token())
+
+sp = refresh_spotify_client()
+
+
+def get_genres():
+    return sp.recommendation_genre_seeds()['genres']
+
 class Genre:
     GENRES = get_genres()
 
@@ -29,16 +38,6 @@ class Song:
         title_no_punc = self.title.translate(string.maketrans("",""), string.punctuation).strip().lower()
         answer_no_punc = answer.translate(string.maketrans("",""), string.punctuation).strip().lower()
         return title_no_punc == answer_no_punc
-
-
-def refresh_spotify_client():
-    return spotipy.Spotify(auth=setup.get_spotify_token())
-
-sp = refresh_spotify_client()
-
-def get_genres():
-    return sp.recommendation_genre_seeds()['genres']
-
 
 def get_song_from_playlist(ownerid='spotify', playlistid='5FJXhjdILmRA2z5bvz4nzf'):
     print "Getting song from playlist {0} owned by {1}".format(playlistid, ownerid)
