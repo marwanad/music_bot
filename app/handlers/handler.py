@@ -36,11 +36,7 @@ class Handler(object):
     @check_state(StateType.GENRE_SELECT, StateType.ARTIST_SELECT, StateType.START_SELECT)
     def handle_song(to, game, song=None, body=StateString.SONG):
         if not song:
-            try:
-                song = music.get_song_from_playlist()
-            except:
-                Handler.handle_error(to, game)
-                return
+            song = music.get_song_from_playlist()
 
         game.state = StateType.ANSWER_TIME
         game.song = song.to_json_string()
