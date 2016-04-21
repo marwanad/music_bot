@@ -3,7 +3,6 @@ import random
 
 import spotipy
 import setup
-import string
 
 preview_base_url="https://p.scdn.co/mp3-preview/"
 
@@ -34,10 +33,6 @@ class Song:
     def to_json_string(self):
         return json.dumps(self, default=lambda x: x.__dict__)
 
-    def match(self, answer):
-        title_no_punc = self.title.translate(string.maketrans("",""), string.punctuation).strip().lower()
-        answer_no_punc = answer.translate(string.maketrans("",""), string.punctuation).strip().lower()
-        return title_no_punc == answer_no_punc
 
 def get_song_from_playlist(ownerid='spotify', playlistid='5FJXhjdILmRA2z5bvz4nzf'):
     print "Getting song from playlist {0} owned by {1}".format(playlistid, ownerid)
