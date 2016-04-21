@@ -1,6 +1,7 @@
 import json
 import spotipy
 import setup
+import string
 
 
 class Song:
@@ -18,7 +19,9 @@ class Song:
         return json.dumps(self, default=lambda x: x.__dict__)
 
     def match(self, answer):
-        return self.title.strip().lower() == answer.strip().lower()
+        title_no_punc = self.title.translate(string.maketrans("",""), string.punctuation).strip().lower()
+        answer_no_punc = answer.translate(string.maketrans("",""), string.punctuation).strip().lower()
+        return title_no_punc == answer_no_punc
 
 
 def refresh_spotify_client():
