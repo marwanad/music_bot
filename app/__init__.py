@@ -1,6 +1,5 @@
 from flask import Flask
 
-from app.main.bot import main
 from config import config
 from flask.ext.sqlalchemy import SQLAlchemy
 import os
@@ -12,6 +11,8 @@ db = SQLAlchemy(app)
 
 def create_app(config_name):
     app.config.from_object(config[config_name])
+
+    from app.main.bot import main
     app.register_blueprint(main)
 
     return app
