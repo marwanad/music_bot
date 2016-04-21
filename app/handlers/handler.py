@@ -112,7 +112,7 @@ class Handler(object):
         
         if body == 'back':
             back_message = 'Giving up? The song was "' + song['title'] + '" by ' + song['artist']
-            Handler.handle_back(to, game, back_message)
+            Handler.handle_back(to, game, body, back_message)
         else:
             if song and util.guess_matches_answer(body, song['title'].lower()):
                 game.state = StateType.INITIAL
