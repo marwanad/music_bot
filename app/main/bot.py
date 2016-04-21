@@ -44,7 +44,7 @@ def receive():
 
         elif isinstance(message, TextMessage):
             if not body and mention and game.state == StateType.INITIAL:
-                Handler.handle_song(to, game, song=music.get_song_from_playlist())
+                Handler.handle_song(to, game, None, song=music.get_song_from_playlist())
                 return Response(status=200)
 
             if game.state == StateType.ANSWER_TIME:
@@ -55,9 +55,9 @@ def receive():
             if not fn:
                 if body in music.Genre.GENRES and (
                                 game.state == StateType.GENRE_SELECT or game.state == StateType.INITIAL):
-                    Handler.handle_song(to, game, song=music.get_song_from_genre(body, game.difficulty))
+                    Handler.handle_song(to, game, body, song=music.get_song_from_genre(body, game.difficulty))
                 elif game.state == StateType.ARTIST_SELECT or game.state == StateType.INITIAL:
-                    Handler.handle_song(to, game, song=music.get_song_from_artist(body, game.difficulty))
+                    Handler.handle_song(to, game, body, song=music.get_song_from_artist(body, game.difficulty))
                 else:
                     Handler.handle_fallback(to, game, body)
                 return Response(status=200)
