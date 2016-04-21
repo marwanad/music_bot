@@ -48,13 +48,10 @@ class Handler(object):
 
         Responder.send_wubble_response(to, game.id, song.preview_url)
 
-        Responder.send_text_response(to, game.id, song.title)
-        Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs[StateType.INITIAL], hidden=True)
-
     @staticmethod
     def handle_back(to, game, body=StateString.BACK):
         game.state = StateType.INITIAL
-        game.song = '{}'
+        game.song = None
         db.session.commit()
         Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs[StateType.INITIAL])
 
@@ -68,7 +65,7 @@ class Handler(object):
     @staticmethod
     @check_state(StateType.INITIAL)
     def handle_score(to, game, body=StateString.SCORE):
-        scores = json.loads(game.scores)[0]
+        scores = json.loads(game.scores)
         sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
         for tup in sorted_scores:
             body = body + tup[0] + ': ' + str(tup[1]) + '\n'
@@ -79,13 +76,13 @@ class Handler(object):
     def handle_settings(to, game, body=StateString.SETTINGS):
         #todo: need to finish settings implementation
         game.state = StateType.INITIAL
-        game.song = '{}'
+        game.song = None
         Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs[StateType.INITIAL])
 
     @staticmethod
     def handle_error(to, game, body=StateString.ERROR):
         game.state = StateType.INITIAL
-        game.song = '{}'
+        game.song = None
         db.session.commit()
         Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs[StateType.INITIAL])
 
@@ -115,7 +112,7 @@ class Handler(object):
 
             if song and body == json.loads(song)['title'].lower():
                 game.state = StateType.INITIAL
-                game.song = '{}'
+                game.song = None
 
                 scores = json.loads(game.scores)
                 scores[to] = scores.get(to, 0) + 1

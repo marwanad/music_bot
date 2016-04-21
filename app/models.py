@@ -1,14 +1,13 @@
 import json
 from app import db
-from sqlalchemy.dialects.postgresql import JSON
 
 
 class Game(db.Model):
     __tablename__ = 'games'
     id = db.Column(db.String, primary_key=True)
     state = db.Column(db.Text)
-    song = db.Column(JSON)
-    scores = db.Column(JSON)
+    song = db.Column(db.Text)
+    scores = db.Column(db.Text)
 
 
 def __init__(self, chatId, state, song=None, scores=json.dumps(dict())):
