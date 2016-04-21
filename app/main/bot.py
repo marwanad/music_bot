@@ -7,7 +7,7 @@ from app import db
 from app.handlers.handler import Handler
 from app.models import Game
 from app.xlib.sr_strings import srs
-from app.xlib.game import StateType
+from app.xlib.states import StateType
 
 main = Blueprint('main', __name__)
 
@@ -53,7 +53,7 @@ def receive():
             if not fn:
                 try:
                     if body in music.Genre.GENRES and (
-                            game.state == StateType.GENRE_SELECT or game.state == StateType.INITIAL):
+                                    game.state == StateType.GENRE_SELECT or game.state == StateType.INITIAL):
                         Handler.handle_song(to, game, music.get_song_from_genre(body))
                     elif game.state == StateType.ARTIST_SELECT or game.state == StateType.INITIAL:
                         Handler.handle_song(to, game, music.get_song_from_artist(body))

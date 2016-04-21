@@ -1,5 +1,5 @@
 from app.xlib.responder import Responder
-from app.xlib.game import StateType
+from app.xlib.states import StateType
 from app.xlib.sr_strings import srs
 from app.xlib.states import StateString
 from ..main import music
@@ -44,12 +44,11 @@ class Handler(object):
 
         game.state = StateType.ANSWER_TIME
         game.song = song.to_json_string()
+        print("Adding song json to the db: ", game.song)
 
         Responder.send_wubble_response(to, game.id, song.preview_url)
 
-        # for testing purposes
-        song_details = 'title: ' + song.title + '\n' + 'artist: ' + song.artist + '\n'
-        Responder.send_text_response(to, game.id, song_details)
+        Responder.send_text_response(to, game.id, song.title)
         Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs[StateType.INITIAL], hidden=True)
 
     @staticmethod
@@ -114,7 +113,7 @@ class Handler(object):
                 Handler.handle_error(to, game)
                 return
 
-            if song.title == body:
+            if song and body == json.loads(song)['title'].lower():
                 game.state = StateType.INITIAL
                 game.song = '{}'
 

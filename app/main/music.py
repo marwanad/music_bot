@@ -3,6 +3,7 @@ import random
 
 import spotipy
 import setup
+import string
 
 
 class Genre:
@@ -12,24 +13,27 @@ class Genre:
 class Song:
     """Creates objects from Spotify music"""
 
-    def __init__(self, album=None, artist=None, title=None, genre=None, album_art=None, preview_url=None):
+    def __init__(self, album=None, artist=None, title=None, genre=None, album_art=None, preview_id=None):
         self.album = album
         self.artist = artist
         self.title = title
         self.genre = genre
         self.album_art = album_art
-        self.preview_url = preview_url
+        self.preview_id = preview_id
 
     def to_json_string(self):
         return json.dumps(self, default=lambda x: x.__dict__)
+
+    def match(self, answer):
+        title_no_punc = self.title.translate(string.maketrans("",""), string.punctuation).strip().lower()
+        answer_no_punc = answer.translate(string.maketrans("",""), string.punctuation).strip().lower()
+        return title_no_punc == answer_no_punc
 
 
 def refresh_spotify_client():
     return spotipy.Spotify(auth=setup.get_spotify_token())
 
-
 sp = refresh_spotify_client()
-
 
 def get_genres():
     return sp.recommendation_genre_seeds()['genres']
