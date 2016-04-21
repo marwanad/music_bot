@@ -65,9 +65,9 @@ def receive():
                 genres = music.get_genres()
                 # genres in this list probably need to be processed before checking against body
                 if body in genres:
-                    Handler.handle_song(to, game, music.get_song_from_genre(body))
+                    Handler.handle_song(to, game, music.get_song_from_genre(body, game.difficulty))
                 elif srs.match_group_sr('artist', body):
-                    Handler.handle_song(to, game, music.get_song_from_artist(body))
+                    Handler.handle_song(to, game, music.get_song_from_artist(body, game.difficulty))
                 else:
                     Handler.handle_fallback(to, game, body)
                 return Response(status=200)

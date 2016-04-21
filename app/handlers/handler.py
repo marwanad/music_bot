@@ -85,6 +85,10 @@ class Handler(object):
     def handle_difficulty(to, game, body, response=StateString.DIFFICULTY):
         game.state = StateType.DIFFICULTY
         db.session.commit()
+        if body == 'easy':
+            game.difficulty = 80
+        elif body == 'hard':
+            game.difficulty = 20
 
         Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs['difficulty'])
 
@@ -98,14 +102,14 @@ class Handler(object):
         Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
-    def handle_answer(to, game, body):
+    def handle_answer(to, game, response):
         pass
         # hidden = True
         # # todo hints?
-        if body.lower() == 'back':
+        if response.lower() == 'back':
             Handler.handle_back(to, game)
             return
-        # elif game.current_song and body.lower() == game.current_song.title.lower():
+        # elif game.current_song and response.lower() == game.current_song.title.lower():
         #     game.set_state(StateType.INITIAL)
         #     game.set_current_song(None)
         #     game.increment_score(to)
