@@ -38,7 +38,7 @@ class Handler(object):
 
     @staticmethod
     @check_state(StateType.GENRE_SELECT, StateType.ARTIST_SELECT, StateType.INITIAL)
-    def handle_song(to, game, song=None, response=StateString.SONG):
+    def handle_song(to, game, song=None):
         if not song:
             song = music.get_song_from_playlist()
 
@@ -85,7 +85,7 @@ class Handler(object):
         Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateType.INITIAL])
 
     @staticmethod
-    def handle_fallback(to, game, response=None, song=None):
+    def handle_fallback(to, game, response=None):
         if response:
             response = 'I don\'t understand what you mean by "{}"'.format(response)
         else:
