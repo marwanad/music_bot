@@ -42,7 +42,7 @@ def receive():
             Handler.handle_intro(to, game)
 
         elif isinstance(message, TextMessage):
-        	body = message.body.lower()
+            body = message.body.lower()
             if not body and mention and game.state == StateType.INITIAL:
                 Handler.handle_song(to, game, song=music.get_song_from_playlist())
                 return Response(status=200)
