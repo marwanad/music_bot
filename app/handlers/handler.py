@@ -10,7 +10,7 @@ class Handler(object):
     @staticmethod
     @check_state(StateType.INITIAL)
     def handle_intro(to, game, body=StateString.INTRO):
-        Responder.send_text_response(to, game.id, body)
+        Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
     @check_state(StateType.INITIAL)
@@ -27,7 +27,6 @@ class Handler(object):
         db.session.commit()
 
         Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs['genre'])
-        srs.register_sr('genre', 'handle_genre')
 
     @staticmethod
     @check_state(StateType.START_SELECT)
@@ -41,8 +40,7 @@ class Handler(object):
     def handle_song(to, game, song=None, body=StateString.SONG):
         track_preview = song
         if not track_preview:
-            # grab a random song id (prob from popular playlist)
-            track_preview = music.get_song_from_genre('pop')
+            track_preview = music.get_song_from_playlist()
 
         game.state = StateType.ANSWER_TIME
         db.session.commit()
@@ -51,7 +49,7 @@ class Handler(object):
         Responder.send_wubble_response(to, game.id, track_preview)
 
         # for testing purposes
-        song_details = 'title: ' + track_preview.title + '\n' + 'artist: ' + track_preview.artist + '\n';
+        song_details = 'title: ' + track_preview.title + '\n' + 'artist: ' + track_preview.artist + '\n'
         Responder.send_text_response(to, game.id, song_details)
         Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs['menu'], hidden=True)
 

@@ -1,4 +1,6 @@
 import json
+import random
+
 import spotipy
 import setup
 
@@ -31,6 +33,22 @@ sp = refresh_spotify_client()
 
 def get_genres():
     return sp.recommendation_genre_seeds()['genres']
+
+
+def get_song_from_playlist(ownerid='spotify', playlistid='5FJXhjdILmRA2z5bvz4nzf'):
+    print "Getting song from playlist {0} owned by {1}".format(playlistid, ownerid)
+    try:
+        songs = sp.user_playlist_tracks(ownerid, playlist_id=playlistid)['items']
+        song = random.choice(songs)['track']
+        final_song = Song(album=song['album']['name'],
+                          artist=song['artists'][0]['name'],
+                          title=song['name'],
+                          album_art=song['album']['images'][1]['url'],
+                          preview_url=_get_only_id(song['preview_url']))
+        return final_song
+    except:
+        print 'Could not get playlist song'
+        raise Exception
 
 
 def get_song_from_genre(genre, difficulty=50):

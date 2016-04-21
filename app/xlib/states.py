@@ -9,8 +9,8 @@ class StateType(object):
 class StateString(object):
     INTRO = 'Hi you reached the intro stage, tap a sr for more options'
     START_QUIZ = 'Select genre, artist, or random'
-    GENRE = 'Select a genre'
-    ARTIST = 'Select an artist'
+    GENRE = 'Select or type a genre'
+    ARTIST = 'Select or type an artist'
     SONG = 'Tap song above. Answer below'
     BACK = 'Ok, heading back'
     SHARE = 'Share'
