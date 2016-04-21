@@ -30,7 +30,7 @@ def receive():
 
         if not db.session.query(Game).filter(Game.id == chat_id).count():
             print("No game found in db, creating a new game instance and adding to db")
-            game = Game(chatId=chat_id, state=StateType.INITIAL)
+            game = Game(id=chat_id, state=StateType.INITIAL)
             db.session.add(game)
             db.session.commit()
 
@@ -42,6 +42,10 @@ def receive():
         if isinstance(message, StartChattingMessage):
             Handler.handle_intro(to, game)
         elif isinstance(message, TextMessage):
+            print "mention %r", mention
+            if not body and mention and game.state == StateType.INITIAL:
+                Handler.handle_song(to, game, song=music.get_song_from_playlist())
+                return Response(status=200)
 
             if game.state == StateType.ANSWER_TIME:
                 Handler.handle_answer(to, game, body)
@@ -49,18 +53,13 @@ def receive():
 
             fn = srs.srs.get(body)
             if not fn:
-                try:
-                    if body in music.Genre.GENRES and (
-                                    game.state == StateType.GENRE_SELECT or game.state == StateType.INITIAL):
-                        Handler.handle_song(to, game, music.get_song_from_genre(body))
-                    elif game.state == StateType.ARTIST_SELECT or game.state == StateType.INITIAL:
-                        Handler.handle_song(to, game, music.get_song_from_artist(body))
-                    elif mention and game.state == StateType.INITIAL:
-                        Handler.handle_song(to, game, music.get_song_from_playlist())
-                    else:
-                        Handler.handle_fallback(to, game, body)
-                except:
-                    Handler.handle_error(to, game)
+                if body in music.Genre.GENRES and (
+                                game.state == StateType.GENRE_SELECT or game.state == StateType.INITIAL):
+                    Handler.handle_song(to, game, song=music.get_song_from_genre(body))
+                elif game.state == StateType.ARTIST_SELECT or game.state == StateType.INITIAL:
+                    Handler.handle_song(to, game, song=music.get_song_from_artist(body))
+                else:
+                    Handler.handle_fallback(to, game, body)
                 return Response(status=200)
             getattr(Handler, fn)(to, game)
         else:

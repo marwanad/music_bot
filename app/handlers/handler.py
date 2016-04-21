@@ -37,17 +37,13 @@ class Handler(object):
     @check_state(StateType.GENRE_SELECT, StateType.ARTIST_SELECT, StateType.START_SELECT)
     def handle_song(to, game, song=None, body=StateString.SONG):
         if not song:
-            try:
-                song = music.get_song_from_playlist()
-            except:
-                Handler.handle_error(to, game)
-                return
+            song = music.get_song_from_playlist()
 
         game.state = StateType.ANSWER_TIME
         game.song = song.to_json_string()
         print("Adding song json to the db: ", game.song)
 
-        Responder.send_wubble_response(to, game.id, song.preview_url)
+        Responder.send_wubble_response(to, game.id, song.preview_id, keyboards=srs.grouped_srs[StateType.ANSWER_TIME])
 
     @staticmethod
     def handle_back(to, game, body=StateString.BACK):
@@ -88,7 +84,7 @@ class Handler(object):
         Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs[StateType.INITIAL])
 
     @staticmethod
-    def handle_fallback(to, game, body=None):
+    def handle_fallback(to, game, body=None, song=None):
         if body:
             body = 'I don\'t understand what you mean by "{}"'.format(body)
         else:
@@ -110,8 +106,7 @@ class Handler(object):
             except:
                 Handler.handle_error(to, game)
                 return
-
-            if song and util.guess_matches_answer(body, json.loads(song)['title']):
+            if song and body == song['title'].lower()
                 game.state = StateType.INITIAL
                 game.song = None
 

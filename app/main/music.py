@@ -51,7 +51,7 @@ def get_song_from_playlist(ownerid='spotify', playlistid='5FJXhjdILmRA2z5bvz4nzf
                           artist=song['artists'][0]['name'],
                           title=song['name'],
                           album_art=song['album']['images'][1]['url'],
-                          preview_url=_get_only_id(song['preview_url']))
+                          preview_id=_get_only_id(song['preview_url']))
         return final_song
     except:
         print 'Could not get playlist song'
