@@ -91,17 +91,23 @@ class Handler(object):
     @staticmethod
     @check_state(StateType.ANSWER_TIME)
     def handle_answer(to, game, body):
+        if not game:
+            Handler.handle_error(to, game)
+            return
+
         hidden_sr = True
         # todo hints?
+
         try:
             song = json.loads(game.song)
         except:
             Handler.handle_error(to, game)
             return
+        
         if body == 'back':
             back_message = 'Giving up? The song was "' + song['title'] + '" by ' + song['artist']
             Handler.handle_back(to, game, back_message)
-        elif game:
+        else:
             if song and util.guess_matches_answer(body, song['title'].lower()):
                 game.state = StateType.INITIAL
                 game.song = None
