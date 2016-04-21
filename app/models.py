@@ -8,7 +8,8 @@ class Game(db.Model):
     state = db.Column(db.Text)
     song = db.Column(db.Text)
     scores = db.Column(db.Text)
-
+    difficulty = db.Column(db.Text)
+    
     def __init__(self, chatId, state, song=None, scores=json.dumps(dict()), difficulty=50):
         self.id = chatId
         self.state = state
