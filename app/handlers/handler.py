@@ -106,7 +106,7 @@ class Handler(object):
                 Handler.handle_error(to, game)
                 return
 
-            if song and body == json.loads(song)['title'].lower():
+            if song and body == song['title'].lower():
                 game.state = StateType.INITIAL
                 game.song = None
 
