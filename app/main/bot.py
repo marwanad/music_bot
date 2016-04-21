@@ -50,17 +50,19 @@ def receive():
 
             fn = srs.srs.get(body)
             if not fn:
-                if body in music.Genre.GENRES and game.state == StateType.GENRE_SELECT:
+                if body in music.Genre.GENRES and (game.state == StateType.GENRE_SELECT or game.state == StateType.INITIAL):
                     try:
                         Handler.handle_song(to, game, music.get_song_from_genre(body))
                     except:
                         Handler.handle_error(to, game)
+                    return Response(status=200)
 
-                if body in srs.match_group_sr('artist', body) or game.state == StateType.ARTIST_SELECT:
+                if game.state == StateType.ARTIST_SELECT or game.state == StateType.INITIAL:
                     try:
                         Handler.handle_song(to, game, music.get_song_from_artist(body))
                     except:
                         Handler.handle_error(to, game)
+                    return Response(status=200)
 
                 Handler.handle_fallback(to, game, body)
                 return Response(status=200)

@@ -1,3 +1,5 @@
+import json
+
 from app.xlib.responder import Responder
 from app.xlib.game import StateType
 from app.xlib.sr_strings import srs
@@ -102,20 +104,26 @@ class Handler(object):
     @staticmethod
     @check_state(StateType.ANSWER_TIME)
     def handle_answer(to, game, body):
-        pass
-        # hidden = True
-        # # todo hints?
-        if body.lower() == 'back':
+        hidden = True
+        # todo hints?
+        if body == 'back':
             Handler.handle_back(to, game)
-            return
-            # elif game.current_song and body.lower() == game.current_song.title.lower():
-            #     game.set_state(StateType.INITIAL)
-            #     game.set_current_song(None)
-            #     game.increment_score(to)
-            #     response = 'Correct!'
-            #     keyboards = srs.grouped_srs[StateType.INITIAL]
-            #     hidden = False
-            # else:
-            #     response = 'Incorrect'
-            #     keyboards = srs.grouped_srs[StateType.ANSWER_TIME]
-            # Responder.send_text_response(to, game.id, response, keyboards, hidden)
+        elif game:
+            try:
+                song = json.loads(game.song)
+            except:
+                Handler.handle_error(to, game)
+                return
+
+            if song.title == body:
+                game.state = StateType.INITIAL
+                game.song = '{}'
+                #todo, increment score
+
+                response = 'Correct!'
+                keyboards = srs.grouped_srs[StateType.INITIAL]
+                hidden = False
+            else:
+                response = 'Incorrect'
+                keyboards = srs.grouped_srs[StateType.ANSWER_TIME]
+            Responder.send_text_response(to, game.id, response, keyboards, hidden)
