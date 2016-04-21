@@ -106,7 +106,7 @@ class Handler(object):
             except:
                 Handler.handle_error(to, game)
                 return
-            if song and body == song['title'].lower()
+            if song and util.guess_matches_answer(body, song['title'].lower()):
                 game.state = StateType.INITIAL
                 game.song = None
 

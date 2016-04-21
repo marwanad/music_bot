@@ -33,14 +33,6 @@ class Song:
     def to_json_string(self):
         return json.dumps(self, default=lambda x: x.__dict__)
 
-def refresh_spotify_client():
-    return spotipy.Spotify(auth=setup.get_spotify_token())
-
-sp = refresh_spotify_client()
-
-def get_genres():
-    return sp.recommendation_genre_seeds()['genres']
-
 
 def get_song_from_playlist(ownerid='spotify', playlistid='5FJXhjdILmRA2z5bvz4nzf'):
     print "Getting song from playlist {0} owned by {1}".format(playlistid, ownerid)
