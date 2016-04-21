@@ -1,12 +1,12 @@
-from models import Game
+from app import db
 
 def check_state(*wargs):
     def wrap(fn):
         def wrapper(*args, **kwargs):
-            print 'ARGUMENTS: ', args
             game = args[1]
             if game.state in wargs:
                 fn(*args, **kwargs)
+                db.session.commit()
             else:
                 from handlers import handler
 

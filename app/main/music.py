@@ -1,7 +1,14 @@
 import json
+import random
+
 import spotipy
 import setup
 import string
+
+preview_base_url="https://p.scdn.co/mp3-preview/"
+
+class Genre:
+    GENRES = get_genres()
 
 
 class Song:
@@ -15,7 +22,7 @@ class Song:
         self.album_art = album_art
         self.preview_id = preview_id
 
-    def to_json(self):
+    def to_json_string(self):
         return json.dumps(self, default=lambda x: x.__dict__)
 
     def match(self, answer):
@@ -31,6 +38,22 @@ sp = refresh_spotify_client()
 
 def get_genres():
     return sp.recommendation_genre_seeds()['genres']
+
+
+def get_song_from_playlist(ownerid='spotify', playlistid='5FJXhjdILmRA2z5bvz4nzf'):
+    print "Getting song from playlist {0} owned by {1}".format(playlistid, ownerid)
+    try:
+        songs = sp.user_playlist_tracks(ownerid, playlist_id=playlistid)['items']
+        song = random.choice(songs)['track']
+        final_song = Song(album=song['album']['name'],
+                          artist=song['artists'][0]['name'],
+                          title=song['name'],
+                          album_art=song['album']['images'][1]['url'],
+                          preview_url=_get_only_id(song['preview_url']))
+        return final_song
+    except:
+        print 'Could not get playlist song'
+        raise Exception
 
 
 def get_song_from_genre(genre, difficulty=50):
@@ -58,12 +81,12 @@ def get_song_from_artist(artist, difficulty=50):
         song_json = sp._get('recommendations', seed_artists=artist_id, limit=1, min_popularity=difficulty)['tracks'][0]
         if song_json:
             song = Song(
-                    song_json['album']['name'],
-                    song_json['artists'][0]['name'],
-                    song_json['name'],
-                    None,
-                    song_json['album']['images'][1]['url'],
-                    _get_only_id(song_json['preview_url']))
+                song_json['album']['name'],
+                song_json['artists'][0]['name'],
+                song_json['name'],
+                None,
+                song_json['album']['images'][1]['url'],
+                _get_only_id(song_json['preview_url']))
             return song
         else:
             print 'Cannot parse song info'
