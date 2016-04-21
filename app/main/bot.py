@@ -52,11 +52,11 @@ def receive():
                 try:
                     if body in music.Genre.GENRES and (
                                     game.state == StateType.GENRE_SELECT or game.state == StateType.INITIAL):
-                        Handler.handle_song(to, game, music.get_song_from_genre(body))
+                        Handler.handle_song(to, game, song=music.get_song_from_genre(body))
                     elif game.state == StateType.ARTIST_SELECT or game.state == StateType.INITIAL:
-                        Handler.handle_song(to, game, music.get_song_from_artist(body))
+                        Handler.handle_song(to, game, song=music.get_song_from_artist(body))
                     elif mention and game.state == StateType.INITIAL:
-                        Handler.handle_song(to, game, music.get_song_from_playlist())
+                        Handler.handle_song(to, game, song=music.get_song_from_playlist())
                     else:
                         Handler.handle_fallback(to, game, body)
                 except:
