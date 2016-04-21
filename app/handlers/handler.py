@@ -9,36 +9,35 @@ from ..decorators import check_state
 class Handler(object):
     @staticmethod
     @check_state(StateType.INITIAL)
-    def handle_intro(to, game, body=StateString.INTRO):
-        Responder.send_text_response(to, game.id, body)
+    def handle_intro(to, game, response=StateString.INTRO):
+        Responder.send_text_response(to, game.id, response)
 
     @staticmethod
     @check_state(StateType.INITIAL)
-    def handle_start_quiz(to, game, body=StateString.START_QUIZ):
+    def handle_start_quiz(to, game, response=StateString.START_QUIZ):
 
         game.state = StateType.START_SELECT
         db.session.commit()
-        Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs['song_options'])
+        Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs['song_options'])
 
     @staticmethod
     @check_state(StateType.START_SELECT)
-    def handle_genre(to, game, body=StateString.GENRE):
+    def handle_genre(to, game, response=StateString.GENRE):
         game.state = StateType.GENRE_SELECT
         db.session.commit()
 
-        Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs['genre'])
-        srs.register_sr('genre', 'handle_genre')
+        Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs['genre'])
 
     @staticmethod
     @check_state(StateType.START_SELECT)
-    def handle_artist(to, game, body=StateString.ARTIST):
+    def handle_artist(to, game, response=StateString.ARTIST):
         game.state = StateType.ARTIST_SELECT
         db.session.commit()
 
-        Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs['artist'])
+        Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs['artist'])
 
     @staticmethod
-    def handle_song(to, game, song=None, body=StateString.SONG):
+    def handle_song(to, game, song=None, response=StateString.SONG):
         track_preview = song
         if not track_preview:
             # grab a random song id (prob from popular playlist)
@@ -53,43 +52,50 @@ class Handler(object):
         # for testing purposes
         song_details = 'title: ' + track_preview.title + '\n' + 'artist: ' + track_preview.artist + '\n';
         Responder.send_text_response(to, game.id, song_details)
-        Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs['menu'], hidden=True)
+        Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs['menu'], hidden=True)
 
     @staticmethod
-    def handle_back(to, game, body=StateString.BACK):
+    def handle_back(to, game, response=StateString.BACK):
         game.state = StateType.INITIAL
         db.session.commit()
 
-        Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs['menu'])
+        Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
-    def handle_share(to, game, body=StateString.SHARE):
+    def handle_share(to, game, response=StateString.SHARE):
         game.state = StateType.INITIAL
         db.session.commit()
 
     @staticmethod
-    def handle_score(to, game, body=StateString.SCORE):
+    def handle_score(to, game, response=StateString.SCORE):
         pass
         # sorted_scores = sorted(game.scores.items(), key=lambda x: x[1])
         # for tuple in sorted_scores:
-        #     body = body + tuple[0] + ': ' + str(tuple[1]) + '\n'
-        # Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs['menu'])
+        #     response = response + tuple[0] + ': ' + str(tuple[1]) + '\n'
+        # Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
-    def handle_settings(to, game, body=StateString.SETTINGS):
-        game.state = StateType.INITIAL
+    def handle_settings(to, game, response=StateString.SETTINGS):
+        game.state = StateType.SETTINGS
         db.session.commit()
         
-        Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs['menu'])
+        Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs['settings'])
 
     @staticmethod
-    def handle_fallback(to, game, body=None):
-        if body:
-            body = 'I don\'t understand what you mean by "{}"'.format(body)
-        else:
-            body = 'Not a text message'
+    def handle_difficulty(to, game, body, response=StateString.DIFFICULTY):
+        game.state = StateType.DIFFICULTY
+        db.session.commit()
 
-        Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs['menu'])
+        Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs['difficulty'])
+
+    @staticmethod
+    def handle_fallback(to, game, response=None):
+        if response:
+            response = 'I don\'t understand what you mean by "{}"'.format(response)
+        else:
+            response = 'Not a text message'
+
+        Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs['menu'])
 
     @staticmethod
     def handle_answer(to, game, body):

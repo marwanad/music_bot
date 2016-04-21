@@ -4,6 +4,8 @@ class StateType(object):
     GENRE_SELECT = "genre_select"
     ARTIST_SELECT = "artist_select"
     ANSWER_TIME = "answer_time"
+    SETTINGS = "settings"
+    DIFFICULTY = "difficulty"
 
 
 class StateString(object):
@@ -15,4 +17,5 @@ class StateString(object):
     BACK = 'Ok, heading back'
     SHARE = 'Share'
     SETTINGS = 'Settings'
+    DIFFICULTY = 'Select your difficulty'
     SCORE = 'Score: \n'

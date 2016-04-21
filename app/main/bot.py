@@ -44,7 +44,13 @@ def receive():
 
         if isinstance(message, StartChattingMessage):
             Handler.handle_intro(to, chat_id)
-        elif isinstance(message, TextMessage):            
+        elif isinstance(message, TextMessage):
+
+            if game.state == StateType.SETTINGS:
+                Handler.handle_settings(to, game, body)
+
+            if game.state == StateType.DIFFICULTY:
+                Handler.handle_difficulty(to, game, body)
 
             if game.state == StateType.ANSWER_TIME:
                 Handler.handle_answer(to, game, body)
@@ -65,7 +71,7 @@ def receive():
                 else:
                     Handler.handle_fallback(to, game, body)
                 return Response(status=200)
-            getattr(Handler, fn)(to, game)
+            getattr(Handler, fn)(to, game, body)
         else:
             Handler.handle_fallback(to, game)
         return Response(status=200)
