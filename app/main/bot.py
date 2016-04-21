@@ -69,5 +69,5 @@ def receive():
 
 
 @main.route('/musicplayer/<id>', methods=['GET'])
-def music_player(id, preview_base_url="https://p.scdn.co/mp3-preview/"):
-    return render_template('main/sound_frame.html', preview_url=preview_base_url + id)
+def music_player(id):
+    return render_template('main/sound_frame.html', preview_url=music.preview_base_url + id)

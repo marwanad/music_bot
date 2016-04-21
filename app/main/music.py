@@ -5,6 +5,7 @@ import spotipy
 import setup
 import string
 
+preview_base_url="https://p.scdn.co/mp3-preview/"
 
 class Genre:
     GENRES = get_genres()
