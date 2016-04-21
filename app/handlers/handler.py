@@ -88,6 +88,7 @@ class Handler(object):
     @staticmethod
     def handle_error(to, game, body=StateString.ERROR):
         game.state = StateType.INITIAL
+        game.song = '{}'
         db.session.commit()
 
         Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs[StateType.INITIAL])
