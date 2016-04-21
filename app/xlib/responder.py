@@ -22,13 +22,18 @@ class Responder(object):
         ])
 
     @staticmethod
-    def send_wubble_response(to, chat_id, song):
-        kik.send_messages([
-            WubbleMessage(
-                to=to,
-                chat_id=chat_id,
-                width=130,
-                height=143,
-                url=url_for("main.music_player", id=song.preview_id, _external=True)
+    def send_wubble_response(to, chat_id, song, keyboards=None):
+        message = WubbleMessage(to=to, chat_id=chat_id, width=130, height=143,
+            url=url_for("main.music_player", id=song.preview_id, _external=True))
+        
+        if keyboards:
+            message.keyboards.append(
+                SuggestedResponseKeyboard(
+                    hidden=True,
+                    responses=keyboards
+                )
             )
+
+        kik.send_messages([
+            message
         ])

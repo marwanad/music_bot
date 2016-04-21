@@ -48,14 +48,10 @@ class Handler(object):
         db.session.commit()
         
         game.song = song.to_json()
-        # db.session.commit()
+        db.session.commit()
 
         print("Adding song json to the db: ", game.song)
-        Responder.send_wubble_response(to, game.id, song)
-
-        Responder.send_text_response(to, game.id, song.title, keyboards=srs.grouped_srs['menu'], hidden=True)
-
-        Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs['menu'], hidden=True)
+        Responder.send_wubble_response(to, game.id, song, keyboards=srs.grouped_srs['answer'])
 
     @staticmethod
     def handle_back(to, game, body=StateString.BACK):
@@ -71,7 +67,7 @@ class Handler(object):
 
     @staticmethod
     def handle_score(to, game, body=StateString.SCORE):
-        scores = json.loads(game.scores)[0]
+        scores = json.loads(game.scores)
         sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
         for tup in sorted_scores:
             body = body + tup[0] + ': ' + str(tup[1]) + '\n'
@@ -103,7 +99,7 @@ class Handler(object):
         if body == 'back':
             Handler.handle_back(to, game)
             return
-        elif game.song and body == json.loads(game.song)[title].lower():
+        elif game.song and body == json.loads(game.song)['title'].lower():
             # TODO ignore punctuation in both guess and answer
             game.state = StateType.INITIAL
             game.song = None
