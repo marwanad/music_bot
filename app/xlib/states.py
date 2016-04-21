@@ -7,13 +7,12 @@ class StateType(object):
 
 
 class StateString(object):
-    INTRO = 'Hi you reached the intro stage, tap a sr for more options'
-    START_QUIZ = 'Select genre, artist, or random'
+    INTRO = 'Welcome to MusIQ! How well do you know your music? Compete with friends to find out'
+    START_QUIZ = 'Do you want to be quizzed by genre, artist, or just a random song?'
     GENRE = 'Select or type a genre'
     ARTIST = 'Select or type an artist'
-    SONG = 'Tap song above. Answer below'
-    BACK = 'Ok, heading back'
+    BACK = 'Ok, heading back to main menu'
     SHARE = 'Share'
     SETTINGS = 'Settings'
     SCORE = 'Score: \n'
-    ERROR = 'Seems like I can\'t fetch that right now, headed back'
+    ERROR = 'Seems like I can\'t fetch that right now, going back to main menu'

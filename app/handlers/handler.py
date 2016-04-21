@@ -35,7 +35,7 @@ class Handler(object):
 
     @staticmethod
     @check_state(StateType.GENRE_SELECT, StateType.ARTIST_SELECT, StateType.START_SELECT)
-    def handle_song(to, game, song=None, body=StateString.SONG):
+    def handle_song(to, game, song=None):
         if not song:
             song = music.get_song_from_playlist()
 
@@ -98,14 +98,15 @@ class Handler(object):
     def handle_answer(to, game, body):
         hidden_sr = True
         # todo hints?
+        try:
+            song = json.loads(game.song)
+        except:
+            Handler.handle_error(to, game)
+            return
         if body == 'back':
-            Handler.handle_back(to, game)
+            back_message = 'Giving up? The song was "' + song['title'] + '" by ' + song['artist']
+            Handler.handle_back(to, game, back_message)
         elif game:
-            try:
-                song = json.loads(game.song)
-            except:
-                Handler.handle_error(to, game)
-                return
             if song and util.guess_matches_answer(body, song['title'].lower()):
                 game.state = StateType.INITIAL
                 game.song = None
