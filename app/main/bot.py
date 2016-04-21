@@ -25,7 +25,6 @@ def receive():
     for message in messages:
         to = message.from_user
         chat_id = message.chat_id
-        body = message.body.lower()
         mention = message.mention
 
         if not db.session.query(Game).filter(Game.id == chat_id).count():
@@ -43,6 +42,7 @@ def receive():
             Handler.handle_intro(to, game)
 
         elif isinstance(message, TextMessage):
+        	body = message.body.lower()
             if not body and mention and game.state == StateType.INITIAL:
                 Handler.handle_song(to, game, song=music.get_song_from_playlist())
                 return Response(status=200)
