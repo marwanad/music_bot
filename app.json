@@ -1,0 +1,50 @@
+{
+  "name": "music_bot",
+  "scripts": {
+  },
+  "env": {
+    "MUSIK_API_KEY": {
+      "required": true
+    },
+    "MUSIK_USERNAME": {
+      "required": true
+    },
+    "SONGIQ_DB_ADMIN": {
+      "required": true
+    },
+    "SONGIQ_DB_HOST": {
+      "required": true
+    },
+    "SONGIQ_DB_PASS": {
+      "required": true
+    },
+    "SPOTIFY_USERNAME": {
+      "required": true
+    },
+    "SPOTIPY_CLIENT_ID": {
+      "required": true
+    },
+    "SPOTIPY_CLIENT_SECRET": {
+      "required": true
+    },
+    "SPOTIPY_REDIRECT_URI": {
+      "required": true
+    },
+    "SPOTIPY_REFRESH_TOKEN": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+    "heroku-postgresql"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+}
