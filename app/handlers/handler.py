@@ -86,7 +86,7 @@ class Handler(object):
         elif body == 'hard':
             game.difficulty = 20
 
-        Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateString.INITIAL])
+        Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateType.INITIAL])
 
     @staticmethod
     def handle_fallback(to, game, response=None, song=None):
