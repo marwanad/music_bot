@@ -12,7 +12,6 @@ class Responder(object):
         if keyboards:
             message.keyboards.append(
                 SuggestedResponseKeyboard(
-                    to=to,
                     hidden=hidden,
                     responses=keyboards
                 )
