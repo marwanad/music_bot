@@ -7,3 +7,4 @@ def guess_matches_answer(guess, answer):
     guess_no_punc = regex.sub('', guess).strip().lower()
     answer_no_punc = regex.sub('', answer).strip().lower()
     return guess_no_punc == answer_no_punc
+
