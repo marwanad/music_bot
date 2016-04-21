@@ -69,18 +69,22 @@ class Handler(object):
 
     @staticmethod
     @check_state(StateType.INITIAL)
-    def handle_settings(to, game, body, response=StateString.SETTINGS):
+    def handle_settings(to, game, body, response=StateString.DIFFICULTY):
         game.state = StateType.SETTINGS
         Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateType.DIFFICULTY])
 
     @staticmethod
     @check_state(StateType.SETTINGS)
-    def handle_difficulty(to, game, body, response=StateString.DIFFICULTY):
+    def handle_difficulty(to, game, body):
         game.state = StateType.INITIAL
         if body == 'easy':
             game.difficulty = 80
         elif body == 'hard':
             game.difficulty = 20
+        elif body == 'medium':
+            game.difficulty = 50
+            
+        response = 'Difficulty has been set to ' + body
 
         Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateType.INITIAL])
 

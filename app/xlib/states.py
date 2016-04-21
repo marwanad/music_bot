@@ -14,7 +14,6 @@ class StateString(object):
     GENRE = 'Select or type a genre'
     ARTIST = 'Select or type an artist'
     BACK = 'Ok, heading back to main menu'
-    SETTINGS = 'Settings'
     DIFFICULTY = 'Select your difficulty'
     SCORE = 'Score: \n'
     ERROR = 'Seems like I can\'t fetch that right now, going back to main menu'
