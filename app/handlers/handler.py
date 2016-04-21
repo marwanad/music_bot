@@ -54,13 +54,6 @@ class Handler(object):
 
     @staticmethod
     @check_state(StateType.INITIAL)
-    def handle_share(to, game, body=StateString.SHARE):
-        #todo: need to finish settings implementation
-        game.state = StateType.INITIAL
-        Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs[StateType.INITIAL])
-
-    @staticmethod
-    @check_state(StateType.INITIAL)
     def handle_score(to, game, body=StateString.SCORE):
         print 'game', game
         print 'scores', game.scores
