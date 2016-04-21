@@ -62,8 +62,8 @@ class Handler(object):
     @staticmethod
     @check_state(StateType.INITIAL)
     def handle_score(to, game, body=StateString.SCORE):
-        print 'game %r', game
-        print 'scores %r', game.scores
+        print 'game', game
+        print 'scores', game.scores
         scores = json.loads(game.scores)
         sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
         for tup in sorted_scores:

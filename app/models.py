@@ -9,12 +9,11 @@ class Game(db.Model):
     song = db.Column(db.Text)
     scores = db.Column(db.Text)
 
-
-def __init__(self, chatId, state, song=None, scores=json.dumps(dict())):
-    self.id = chatId
-    self.state = state
-    self.song = song
-    self.scores = scores
+    def __init__(self, chatId, state, song=None, scores=json.dumps(dict())):
+        self.id = chatId
+        self.state = state
+        self.song = song
+        self.scores = scores
 
 
 def __repr__(self):
