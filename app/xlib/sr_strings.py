@@ -23,8 +23,7 @@ class SuggestedResponses(object):
 
 srs = SuggestedResponses()
 
-srs.register_sr('start a quiz', 'handle_start_quiz')
-srs.register_sr('share', 'handle_share')
+srs.register_sr(['start', 'start quiz', 'start a quiz'], 'handle_start_quiz')
 srs.register_sr('scores', 'handle_score')
 srs.register_sr('settings', 'handle_settings')
 srs.register_sr('genre', 'handle_genre')
