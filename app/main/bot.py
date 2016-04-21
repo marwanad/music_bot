@@ -26,7 +26,7 @@ def receive():
         to = message.from_user
         chat_id = message.chat_id
         body = message.body.lower()
-        participants = message.participiants
+        mention = message.mention
 
         if not db.session.query(Game).filter(Game.id == chat_id).count():
             print("No game found in db, creating a new game instance and adding to db")
@@ -42,8 +42,8 @@ def receive():
         if isinstance(message, StartChattingMessage):
             Handler.handle_intro(to, game)
         elif isinstance(message, TextMessage):
-            print "participants %r", participants
-            if participants and game.state == StateType.INITIAL:
+            print "mention %r", mention
+            if not body and mention and game.state == StateType.INITIAL:
                 Handler.handle_song(to, game, song=music.get_song_from_playlist())
                 return Response(status=200)
 
