@@ -1,11 +1,12 @@
-from . import db
 import json
+from app import db
+
 
 class Game(db.Model):
 	__tablename__ = 'games'
 	id = db.Column(db.String, primary_key=True)
-	state = db.Column(db.String(64))
-	song = db.Column(db.String(64))
+	state = db.Column(db.Text)
+	song = db.Column(db.Text)
 	scores = db.Column(db.Text)
 
 	def __init__(self, chatId, state, song=None, scores=json.dumps(dict()), difficulty=50):
@@ -17,5 +18,6 @@ class Game(db.Model):
 	def __repr__(self):
 		return '<Game %r>' % self.state
 
-	def __repr__(self):
-		return '<Game state is: %r>' % self.state
+
+def __repr__(self):
+    return '<Game state is: %r>' % self.state
