@@ -58,7 +58,7 @@ class Handler(object):
 
     @staticmethod
     @check_state(StateType.INITIAL)
-    def handle_score(to, game, body=StateString.SCORE):
+    def handle_score(to, game, response=StateString.SCORE):
         print 'game', game
         print 'scores', game.scores
         scores = json.loads(game.scores)
