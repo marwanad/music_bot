@@ -49,18 +49,15 @@ def receive():
 
             fn = srs.srs.get(body)
             if not fn:
-                try:
-                    if body in music.Genre.GENRES and (
-                                    game.state == StateType.GENRE_SELECT or game.state == StateType.INITIAL):
-                        Handler.handle_song(to, game, song=music.get_song_from_genre(body))
-                    elif game.state == StateType.ARTIST_SELECT or game.state == StateType.INITIAL:
-                        Handler.handle_song(to, game, song=music.get_song_from_artist(body))
-                    elif mention and game.state == StateType.INITIAL:
-                        Handler.handle_song(to, game, song=music.get_song_from_playlist())
-                    else:
-                        Handler.handle_fallback(to, game, body)
-                except:
-                    Handler.handle_error(to, game)
+                if body in music.Genre.GENRES and (
+                                game.state == StateType.GENRE_SELECT or game.state == StateType.INITIAL):
+                    Handler.handle_song(to, game, song=music.get_song_from_genre(body))
+                elif game.state == StateType.ARTIST_SELECT or game.state == StateType.INITIAL:
+                    Handler.handle_song(to, game, song=music.get_song_from_artist(body))
+                elif mention and game.state == StateType.INITIAL:
+                    Handler.handle_song(to, game, song=music.get_song_from_playlist())
+                else:
+                    Handler.handle_fallback(to, game, body)
                 return Response(status=200)
             getattr(Handler, fn)(to, game)
         else:
