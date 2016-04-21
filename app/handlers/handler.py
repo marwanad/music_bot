@@ -42,7 +42,7 @@ class Handler(object):
         game.song = song.to_json_string()
         print("Adding song json to the db: ", game.song)
 
-        Responder.send_wubble_response(to, game.id, song.preview_url)
+        Responder.send_wubble_response(to, game.id, song.preview_id)
 
     @staticmethod
     def handle_back(to, game, body=StateString.BACK):
