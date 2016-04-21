@@ -99,7 +99,7 @@ class Handler(object):
     @staticmethod
     @check_state(StateType.ANSWER_TIME)
     def handle_answer(to, game, body):
-        hidden = True
+        hidden_sr = True
         # todo hints?
         if body == 'back':
             Handler.handle_back(to, game)
@@ -120,8 +120,8 @@ class Handler(object):
 
                 response = 'Correct!'
                 keyboards = srs.grouped_srs[StateType.INITIAL]
-                hidden = False
+                hidden_sr = False
             else:
                 response = 'Incorrect'
                 keyboards = srs.grouped_srs[StateType.ANSWER_TIME]
-            Responder.send_text_response(to, game.id, response, keyboards, hidden)
+            Responder.send_text_response(to, game.id, response, keyboards, hidden_sr)

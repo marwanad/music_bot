@@ -1,15 +1,13 @@
 import music
-
+from app.main import main
 from setup import kik
-from flask import request, Response, render_template, Blueprint
+from flask import request, Response, render_template
 from kik.messages import messages_from_json, TextMessage, StartChattingMessage
 from app import db
 from app.handlers.handler import Handler
 from app.models import Game
 from app.xlib.sr_strings import srs
 from app.xlib.states import StateType
-
-main = Blueprint('main', __name__)
 
 
 @main.before_request
