@@ -83,7 +83,7 @@ class Handler(object):
         Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs[StateType.INITIAL])
 
     @staticmethod
-    def handle_fallback(to, game, body=None):
+    def handle_fallback(to, game, body=None, song=None):
         if body:
             body = 'I don\'t understand what you mean by "{}"'.format(body)
         else:
