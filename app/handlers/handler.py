@@ -35,7 +35,7 @@ class Handler(object):
 
     @staticmethod
     @check_state(StateType.GENRE_SELECT, StateType.ARTIST_SELECT, StateType.START_SELECT)
-    def handle_song(to, game, song=None):
+    def handle_song(to, game, song=None, body=StateString.SONG):
         if not song:
             song = music.get_song_from_playlist()
 
@@ -62,11 +62,13 @@ class Handler(object):
     @staticmethod
     @check_state(StateType.INITIAL)
     def handle_score(to, game, body=StateString.SCORE):
+        print 'game', game
+        print 'scores', game.scores
         scores = json.loads(game.scores)
         sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
         for tup in sorted_scores:
             body = body + tup[0] + ': ' + str(tup[1]) + '\n'
-        Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs['menu'])
+        Responder.send_text_response(to, game.id, body, keyboards=srs.grouped_srs[StateType.INITIAL])
 
     @staticmethod
     @check_state(StateType.INITIAL)
