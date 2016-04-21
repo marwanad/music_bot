@@ -110,6 +110,7 @@ class Handler(object):
                 game.state = StateType.INITIAL
                 game.song = None
 
+                print 'scores %r', game.scores
                 scores = json.loads(game.scores)
                 scores[to] = scores.get(to, 0) + 1
                 game.scores = json.dumps(scores)
