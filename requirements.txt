@@ -15,4 +15,6 @@ Flask-SQLAlchemy==1.0
 SQLAlchemy==0.9.9
 psycopg2==2.5.2
 fuzzywuzzy==0.10.0
+python-Levenshtein==0.12.0
+
 
