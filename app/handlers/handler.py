@@ -1,3 +1,4 @@
+import util
 from app.xlib.responder import Responder
 from app.xlib.states import StateType
 from app.xlib.sr_strings import srs
@@ -103,8 +104,7 @@ class Handler(object):
         if body == 'back':
             Handler.handle_back(to, game)
             return
-        elif game.song and body == json.loads(game.song)[title].lower():
-            # TODO ignore punctuation in both guess and answer
+        elif game.song and util.guess_matches_answer(body, json.loads(game.song)['title']):
             game.state = StateType.INITIAL
             game.song = None
 
