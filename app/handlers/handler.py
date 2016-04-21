@@ -12,18 +12,18 @@ import json
 class Handler(object):
     @staticmethod
     @check_state(StateType.INITIAL)
-    def handle_intro(to, game, response=StateString.INTRO):
+    def handle_intro(to, game, body, response=StateString.INTRO):
         Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateType.INITIAL])
 
     @staticmethod
     @check_state(StateType.INITIAL)
-    def handle_start_quiz(to, game, response=StateString.START_QUIZ):
+    def handle_start_quiz(to, game, body, response=StateString.START_QUIZ):
         game.state = StateType.START_SELECT
         Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateType.START_SELECT])
 
     @staticmethod
     @check_state(StateType.START_SELECT)
-    def handle_genre(to, game, response=StateString.GENRE):
+    def handle_genre(to, game, body, response=StateString.GENRE):
         game.state = StateType.GENRE_SELECT
         db.session.commit()
 
@@ -31,14 +31,14 @@ class Handler(object):
 
     @staticmethod
     @check_state(StateType.START_SELECT)
-    def handle_artist(to, game, response=StateString.ARTIST):
+    def handle_artist(to, game, body, response=StateString.ARTIST):
         game.state = StateType.ARTIST_SELECT
 
         Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateType.ARTIST_SELECT])
 
     @staticmethod
     @check_state(StateType.GENRE_SELECT, StateType.ARTIST_SELECT, StateType.INITIAL)
-    def handle_song(to, game, song=None):
+    def handle_song(to, game, body, song=None):
         if not song:
             song = music.get_song_from_playlist()
 
@@ -49,7 +49,7 @@ class Handler(object):
         Responder.send_wubble_response(to, game.id, song.preview_id, keyboards=srs.grouped_srs[StateType.ANSWER_TIME])
 
     @staticmethod
-    def handle_back(to, game, response=StateString.BACK):
+    def handle_back(to, game, body, response=StateString.BACK):
         game.state = StateType.INITIAL
         game.song = None
         db.session.commit()
@@ -58,7 +58,7 @@ class Handler(object):
 
     @staticmethod
     @check_state(StateType.INITIAL)
-    def handle_score(to, game, response=StateString.SCORE):
+    def handle_score(to, game, body, response=StateString.SCORE):
         print 'game', game
         print 'scores', game.scores
         scores = json.loads(game.scores)
@@ -69,23 +69,27 @@ class Handler(object):
 
     @staticmethod
     @check_state(StateType.INITIAL)
-    def handle_settings(to, game, response=StateString.SETTINGS):
+    def handle_settings(to, game, body, response=StateString.DIFFICULTY):
         game.state = StateType.SETTINGS
         Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateType.DIFFICULTY])
 
     @staticmethod
     @check_state(StateType.SETTINGS)
-    def handle_difficulty(to, game, body, response=StateString.DIFFICULTY):
+    def handle_difficulty(to, game, body):
         game.state = StateType.INITIAL
         if body == 'easy':
             game.difficulty = 80
         elif body == 'hard':
             game.difficulty = 20
+        elif body == 'medium':
+            game.difficulty = 50
+            
+        response = 'Difficulty has been set to ' + body
 
         Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateType.INITIAL])
 
     @staticmethod
-    def handle_fallback(to, game, response=None):
+    def handle_fallback(to, game, body, response=None):
         if response:
             response = 'I don\'t understand what you mean by "{}"'.format(response)
         else:
@@ -112,7 +116,7 @@ class Handler(object):
         
         if body == 'back':
             back_message = 'Giving up? The song was "' + song['title'] + '" by ' + song['artist']
-            Handler.handle_back(to, game, back_message)
+            Handler.handle_back(to, game, body, back_message)
         else:
             if song and util.guess_matches_answer(body, song['title'].lower()):
                 game.state = StateType.INITIAL
