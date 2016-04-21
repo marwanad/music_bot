@@ -28,6 +28,7 @@ def receive():
         to = message.from_user
         chat_id = message.chat_id
         body = message.body.lower()
+        mention = message.mention
 
         if not db.session.query(Game).filter(Game.id == chat_id).count():
             print("No game found in db, creating a new game instance and adding to db")
@@ -50,18 +51,18 @@ def receive():
 
             fn = srs.srs.get(body)
             if not fn:
-                if body in music.Genre.GENRES and (game.state == StateType.GENRE_SELECT or game.state == StateType.INITIAL):
-                    try:
+                try:
+                    if body in music.Genre.GENRES and (
+                            game.state == StateType.GENRE_SELECT or game.state == StateType.INITIAL):
                         Handler.handle_song(to, game, music.get_song_from_genre(body))
-                    except:
-                        Handler.handle_error(to, game)
-                elif game.state == StateType.ARTIST_SELECT or game.state == StateType.INITIAL:
-                    try:
+                    elif game.state == StateType.ARTIST_SELECT or game.state == StateType.INITIAL:
                         Handler.handle_song(to, game, music.get_song_from_artist(body))
-                    except:
-                        Handler.handle_error(to, game)
-                else:
-                    Handler.handle_fallback(to, game, body)
+                    elif mention and game.state == StateType.INITIAL:
+                        Handler.handle_song(to, game, music.get_song_from_playlist())
+                    else:
+                        Handler.handle_fallback(to, game, body)
+                except:
+                    Handler.handle_error(to, game)
                 return Response(status=200)
             getattr(Handler, fn)(to, game)
         else:
