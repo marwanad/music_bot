@@ -2,7 +2,7 @@ from . import db
 import json
 
 class Game(db.Model):
-	__tablename__ = 'states'
+	__tablename__ = 'games'
 	id = db.Column(db.String, primary_key=True)
 	state = db.Column(db.String(64))
 	song = db.Column(db.String(64))
