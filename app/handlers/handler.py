@@ -5,6 +5,7 @@ from app.xlib.states import StateString
 from ..main import music
 from .. import db
 from ..decorators import check_state
+import json
 
 class Handler(object):
     @staticmethod
@@ -96,11 +97,12 @@ class Handler(object):
     def handle_answer(to, game, body):
         pass
         hidden = True
+        body = body.lower()
         # # todo hints?
-        if body.lower() == 'back':
+        if body == 'back':
             Handler.handle_back(to, game)
             return
-        elif game.song  and body.lower() == json.loads(game.song)[0][title].lower():
+        elif game.song  and body == json.loads(game.song)[0][title].lower():
             # TODO ignore punctuation in both guess and answer
             game.state = StateType.INITIAL
             game.song = None
