@@ -20,7 +20,7 @@ class Song:
         self.album_art = album_art
         self.preview_url = preview_url
 
-    def to_json(self):
+    def to_json_string(self):
         return json.dumps(self, default=lambda x: x.__dict__)
 
 
