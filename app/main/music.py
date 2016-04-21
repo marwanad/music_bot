@@ -6,7 +6,7 @@ import setup
 class Song:
     """Creates objects from Spotify music"""
 
-    def __init__(self, album=None, artist=None, title=None, genre=None, album_art=None, preview_url=None):
+    def __init__(self, album=None, artist=None, title=None, genre=None, album_art=None, preview_id=None):
         self.album = album
         self.artist = artist
         self.title = title

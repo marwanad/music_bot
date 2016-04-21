@@ -7,12 +7,6 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 
 db = SQLAlchemy(app)
-db.drop_all()
-db.session.commit()
-
-from models import Game
-db.create_all()
-db.session.commit()
 
 def create_app(config_name):
 	app.config.from_object(config[config_name])
