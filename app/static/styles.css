@@ -68,12 +68,12 @@ div.amplitude-play-pause{
     padding: 5px;
 }
 div.amplitude-paused{
-    background-image: url('/static/black-play.png');
+    background-image: url('/static/play-blue.png');
     background-repeat: no-repeat;
     background-size: 100%;
 }
 div.amplitude-playing{
-    background-image: url('/static/black-pause.png');
+    background-image: url('/static/pause-blue.png');
     background-repeat: no-repeat;
     background-size: 100%;
 }
@@ -85,5 +85,5 @@ div#current-time{
     font-weight: 500;
     font-size: 50px;
     margin-left: 22%;
-    color: #676261;
+    color: #024F99;
 }
