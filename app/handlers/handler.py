@@ -58,13 +58,9 @@ class Handler(object):
 
     @staticmethod
     @check_state(StateType.INITIAL)
-    def handle_share(to, game, response=StateString.SHARE):
-        game.state = StateType.INITIAL
-        Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateType.INITIAL])
-
-    @staticmethod
-    @check_state(StateType.INITIAL)
-    def handle_score(to, game, response=StateString.SCORE):
+    def handle_score(to, game, body=StateString.SCORE):
+        print 'game', game
+        print 'scores', game.scores
         scores = json.loads(game.scores)
         sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
         for tup in sorted_scores:
@@ -101,16 +97,23 @@ class Handler(object):
     @staticmethod
     @check_state(StateType.ANSWER_TIME)
     def handle_answer(to, game, body):
+        if not game:
+            Handler.handle_error(to, game)
+            return
+
         hidden_sr = True
         # todo hints?
+
+        try:
+            song = json.loads(game.song)
+        except:
+            Handler.handle_error(to, game)
+            return
+        
         if body == 'back':
-            Handler.handle_back(to, game)
-        elif game:
-            try:
-                song = json.loads(game.song)
-            except:
-                Handler.handle_error(to, game)
-                return
+            back_message = 'Giving up? The song was "' + song['title'] + '" by ' + song['artist']
+            Handler.handle_back(to, game, back_message)
+        else:
             if song and util.guess_matches_answer(body, song['title'].lower()):
                 game.state = StateType.INITIAL
                 game.song = None
