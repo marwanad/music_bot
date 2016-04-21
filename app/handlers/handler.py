@@ -17,12 +17,6 @@ class Handler(object):
 
     @staticmethod
     @check_state(StateType.INITIAL)
-    def handle_start_quiz(to, game, body, response=StateString.START_QUIZ):
-        game.state = StateType.START_SELECT
-        Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateType.START_SELECT])
-
-    @staticmethod
-    @check_state(StateType.START_SELECT)
     def handle_genre(to, game, body, response=StateString.GENRE):
         game.state = StateType.GENRE_SELECT
         db.session.commit()
@@ -30,7 +24,7 @@ class Handler(object):
         Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateType.GENRE_SELECT])
 
     @staticmethod
-    @check_state(StateType.START_SELECT)
+    @check_state(StateType.INITIAL)
     def handle_artist(to, game, body, response=StateString.ARTIST):
         game.state = StateType.ARTIST_SELECT
 

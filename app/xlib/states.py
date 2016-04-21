@@ -1,6 +1,5 @@
 class StateType(object):
     INITIAL = 'initial'
-    START_SELECT = "start_select"
     GENRE_SELECT = "genre_select"
     ARTIST_SELECT = "artist_select"
     ANSWER_TIME = "answer_time"
