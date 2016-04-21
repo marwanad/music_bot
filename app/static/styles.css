@@ -62,10 +62,10 @@ div#small-player-middle{
     Play Pause
 */
 div.amplitude-play-pause{
-    margin: auto;
     height: 500px;
     width: 500px;
     cursor: pointer;
+    padding: 5px;
 }
 div.amplitude-paused{
     background-image: url('/static/black-play.png');
@@ -84,7 +84,6 @@ div#current-time{
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
     font-weight: 500;
     font-size: 50px;
-    text-align:center;
-    margin-top: 5%;
+    margin-left: 15%;
     color: #676261;
 }

@@ -28,6 +28,8 @@ class Responder(object):
             WubbleMessage(
                 to=to,
                 chat_id=chat_id,
+                width=130,
+                height=143,
                 url=url_for("main.music_player", id=song_url, _external=True)
             )
         ])
