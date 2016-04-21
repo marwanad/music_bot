@@ -6,6 +6,7 @@ class Game(db.Model):
 	state = db.Column(db.String(64))
 	song = db.Column(db.String(64))
 	scores = db.Column(db.String(64))
+	def __init__(self, chatId, state, song=None, scores='{{}}'):
 		self.id = chatId
 		self.state = state
 		self.song = song
