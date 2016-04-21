@@ -68,12 +68,12 @@ div.amplitude-play-pause{
     padding: 5px;
 }
 div.amplitude-paused{
-    background-image: url('/static/black-play.png');
+    background-image: url('/static/blue-play.png');
     background-repeat: no-repeat;
     background-size: 100%;
 }
 div.amplitude-playing{
-    background-image: url('/static/black-pause.png');
+    background-image: url('/static/blue-pause.png');
     background-repeat: no-repeat;
     background-size: 100%;
 }
