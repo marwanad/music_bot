@@ -12,8 +12,8 @@ def refresh_spotify_client():
     if(setup.is_cached_token_valid()):
         print("Called before request and found access token to be valid")
         # return same instance if not none or new instance with token
-        return sp if not None or sp = spotipy.Spotify(auth=setup.get_spotify_token())
-    sp = spotipy.Spotify(auth=setup.get_spotify_token())
+        return sp if not None or spotipy.Spotify(auth=setup.get_spotify_token())
+    return spotipy.Spotify(auth=setup.get_spotify_token())
 
 
 def get_genres():
