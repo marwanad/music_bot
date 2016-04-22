@@ -122,8 +122,13 @@ class Handler(object):
 
                 print 'scores %r', game.scores
                 scores = json.loads(game.scores)
+                high_score = scores[max(scores, key=scores.get)]
                 scores[to] = scores.get(to, 0) + 1
                 game.scores = json.dumps(scores)
+
+                response = 'Correct!'
+                if(high_score < scores[to]):
+                    response = response + " " + to + " set a new high score with " + scores[to] + " points!"
 
                 response = 'Correct!'
                 keyboards = srs.grouped_srs[StateType.INITIAL]
