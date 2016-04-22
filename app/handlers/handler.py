@@ -101,6 +101,9 @@ class Handler(object):
 
                 album_art = song['album_art'] or 'http://i.imgur.com/DUCOwkM.jpg'
                 album = song['album'] or 'Album art'
+
+                print 'album_art: %r' % album_art
+                print 'album: %r' % album
                 Responder.send_image_response(to, game.id, album_art, album,
                                               keyboards=srs.grouped_srs[StateType.ANSWER_TIME])
         except Exception as e:
