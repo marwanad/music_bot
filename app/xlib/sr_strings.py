@@ -35,4 +35,4 @@ srs.register_group_sr(StateType.INITIAL, ['Random', 'Genre', 'Artist', 'Scores',
 srs.register_group_sr(StateType.GENRE_SELECT, ['Pop', 'Hip-Hop', 'Electro', 'Jazz', 'Rock', 'Disney', 'Country', 'R-n-B', 'Back'])
 srs.register_group_sr(StateType.ARTIST_SELECT, ['Drake', 'Taylor Swift', 'Zayn', 'Kanye West', 'Beyonce', 'Adele', 'Coldplay', 'Back'])
 srs.register_group_sr(StateType.ANSWER_TIME, ['Hint', 'Back'])
-srs.register_group_sr(StateType.DIFFICULTY, ['Easy', 'Medium', 'Hard'])
+srs.register_group_sr(StateType.SETTINGS, ['Easy', 'Medium', 'Hard'])
