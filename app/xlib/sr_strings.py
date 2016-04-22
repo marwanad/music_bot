@@ -23,7 +23,6 @@ class SuggestedResponses(object):
 
 srs = SuggestedResponses()
 
-srs.register_sr(['start', 'start quiz', 'start a quiz'], 'handle_start_quiz')
 srs.register_sr('scores', 'handle_score')
 srs.register_sr('set difficulty', 'handle_settings')
 srs.register_sr('genre', 'handle_genre')
@@ -32,9 +31,8 @@ srs.register_sr('random', 'handle_song')
 srs.register_sr('back', 'handle_back')
 srs.register_sr(['easy', 'medium', 'hard'], 'handle_difficulty')
 
-srs.register_group_sr(StateType.INITIAL, ['Start a quiz', 'Scores', 'Set Difficulty'])
-srs.register_group_sr(StateType.START_SELECT, ['Genre', 'Artist', 'Random', 'Back'])
+srs.register_group_sr(StateType.INITIAL, ['Random', 'Genre', 'Artist', 'Scores', 'Set Difficulty'])
 srs.register_group_sr(StateType.GENRE_SELECT, ['Pop', 'Hip-Hop', 'Electro', 'Jazz', 'Rock', 'Disney', 'Country', 'R-n-B', 'Back'])
-srs.register_group_sr(StateType.ARTIST_SELECT, ['Drake', 'Kanye', 'Kendrick', 'Perry', 'Nas', 'Tupac', 'Back'])
+srs.register_group_sr(StateType.ARTIST_SELECT, ['Drake', 'Taylor Swift', 'Zayn', 'Kanye West', 'Beyonce', 'Adele', 'Coldplay', 'Back'])
 srs.register_group_sr(StateType.ANSWER_TIME, ['Hint', 'Back'])
 srs.register_group_sr(StateType.DIFFICULTY, ['Easy', 'Medium', 'Hard'])
