@@ -4,7 +4,6 @@ class StateType(object):
     ARTIST_SELECT = "artist_select"
     ANSWER_TIME = "answer_time"
     SETTINGS = "settings"
-    DIFFICULTY = "difficulty"
 
 
 class StateString(object):

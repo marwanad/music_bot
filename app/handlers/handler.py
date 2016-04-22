@@ -19,7 +19,6 @@ class Handler(object):
     @check_state(StateType.INITIAL)
     def handle_genre(to, game, body, response=StateString.GENRE):
         game.state = StateType.GENRE_SELECT
-        db.session.commit()
 
         Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateType.GENRE_SELECT])
 
@@ -113,7 +112,7 @@ class Handler(object):
             return
         
         if body == 'back':
-            back_message = 'Giving up? The song was "' + song['title'] + '" by ' + song['artist']
+            back_message = to + ' gave up. The song was "' + song['title'] + '" by ' + song['artist']
             Handler.handle_back(to, game, body, back_message)
         else:
             if song and util.guess_matches_answer(body, song['title'].lower()):
@@ -131,8 +130,10 @@ class Handler(object):
                     response = response + " " + to + " set a new high score with " + scores[to] + " points!"
 
                 response = 'Correct!'
+
                 keyboards = srs.grouped_srs[StateType.INITIAL]
                 hidden_sr = False
+
             else:
                 response = 'Incorrect'
                 keyboards = srs.grouped_srs[StateType.ANSWER_TIME]
