@@ -9,7 +9,7 @@ preview_base_url="https://p.scdn.co/mp3-preview/"
 sp = spotipy.Spotify(auth=setup.get_spotify_token())
 
 def refresh_spotify_client():
-    if(setup.is_cached_token_valid):
+    if(setup.is_cached_token_valid()):
         print("Called before request and found access token to be valid")
         return
     sp = spotipy.Spotify(auth=setup.get_spotify_token())
