@@ -19,7 +19,6 @@ class Handler(object):
     @check_state(StateType.INITIAL)
     def handle_genre(to, game, body, response=StateString.GENRE):
         game.state = StateType.GENRE_SELECT
-        db.session.commit()
 
         Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateType.GENRE_SELECT])
 
