@@ -15,5 +15,5 @@ class StateString(object):
     SCORE = 'Score: \n'
     ERROR = 'Uh oh something went wrong, try again?'
     FALLBACK_STRINGS = ['Not a text message', 'Wait, why would you send me this?', 'I don\'t understand what you said']
-    CORRECT = ['Correct!', 'That\'s right!', 'Yep, that\'s it!', 'You got it!']
+    CORRECT = [u'\U0001F525']
     INCORRECT = ['Incorrect', 'Wrong answer', 'Nope!', 'Umm... no', 'Try again', 'Nope']
