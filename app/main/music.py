@@ -11,6 +11,7 @@ def refresh_spotify_client():
         print("Called before request and found access token to be valid")
         # return same instance if not none or new instance with token
         return sp or spotipy.Spotify(auth=setup.get_spotify_token())
+    print("returning new client")
     return spotipy.Spotify(auth=setup.get_spotify_token())
 
 sp = refresh_spotify_client()
