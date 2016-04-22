@@ -45,6 +45,6 @@ def is_cached_token_valid():
     cached_token = os.environ.get('SPOTIPY_ACCESS_TOKEN')
     print("Cached token is: ", cached_token)
 
-    r = requests.post('https://api.spotify.com/v1/me', headers={'Authorization: Bearer ' + cached_token})
+	r = requests.post('https://api.spotify.com/v1/me', headers={'Authorization': 'Bearer ' + cached_token})
     return r.status_code == 200
 
