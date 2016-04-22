@@ -6,15 +6,14 @@ import setup
 
 preview_base_url="https://p.scdn.co/mp3-preview/"
 
-sp = refresh_spotify_client()
-
 def refresh_spotify_client():
     if(setup.is_cached_token_valid()):
         print("Called before request and found access token to be valid")
         # return same instance if not none or new instance with token
-        return sp if not None or spotipy.Spotify(auth=setup.get_spotify_token())
+        return sp or spotipy.Spotify(auth=setup.get_spotify_token())
     return spotipy.Spotify(auth=setup.get_spotify_token())
 
+sp = refresh_spotify_client()
 
 def get_genres():
     return sp.recommendation_genre_seeds()['genres']
