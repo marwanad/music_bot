@@ -92,6 +92,18 @@ class Handler(object):
                                      keyboards=srs.grouped_srs.get(game.state, srs.grouped_srs[StateType.INITIAL]))
 
     @staticmethod
+    @check_state(StateType.ANSWER_TIME)
+    def handle_hint(to, game, body):
+        try:
+            if game:
+                album_art = json.loads(game.song)['album_art']
+                Responder.send_image_response(to, game.id, album_art, keyboards=srs.grouped_srs[StateType.ANSWER_TIME])
+        except Exception as e:
+            print 'HANDLE_HINT ERROR: %r' % e
+            Handler.handle_error(to, game)
+            return
+
+    @staticmethod
     def handle_error(to, game, response=StateString.ERROR):
         game.state = StateType.INITIAL
         db.session.commit()
@@ -101,7 +113,6 @@ class Handler(object):
     @check_state(StateType.ANSWER_TIME)
     def handle_answer(to, game, body):
         hidden_sr = True
-        # todo hints?
 
         try:
             if game:
@@ -110,32 +121,6 @@ class Handler(object):
             print 'HANDLE_ANSWER ERROR: %r' % e
             Handler.handle_error(to, game)
             return
-<<<<<<< Updated upstream
-        
-        if body == 'back':
-            back_message = to + ' gave up. The song was "' + song['title'] + '" by ' + song['artist']
-            Handler.handle_back(to, game, body, back_message)
-        else:
-            if song and util.guess_matches_answer(body, song['title'].lower()):
-                game.state = StateType.INITIAL
-                game.song = None
-                keyboards = srs.grouped_srs[StateType.INITIAL]
-                hidden_sr = False
-
-                if game.state == StateType.ANSWER_TIME:
-                    print 'scores: ', game.scores
-                    scores = json.loads(game.scores)
-                    high_score = scores[max(scores.values())]
-                    scores[to] = scores.get(to, 0) + 1
-                    game.scores = json.dumps(scores)
-
-                    response = 'Correct!'
-                    if(high_score < scores[to]):
-                        response = response + " " + to + " set a new high score with " + scores[to] + " points!"
-                else:
-                    response = "Too late!"
-
-=======
 
         if song and util.guess_matches_answer(body, song['title'].lower()):
             game.state = StateType.INITIAL
@@ -154,10 +139,9 @@ class Handler(object):
                 back_message = 'Giving up? The song was "' + song['title'] + '" by ' + song['artist']
                 Handler.handle_back(to, game, body, back_message)
                 return
-            elif body =='hint':
+            elif body == 'hint':
                 Handler.handle_hint(to, game, body)
                 return
->>>>>>> Stashed changes
             else:
                 response = 'Incorrect'
                 keyboards = srs.grouped_srs[StateType.ANSWER_TIME]

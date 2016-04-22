@@ -29,6 +29,7 @@ srs.register_sr('genre', 'handle_genre')
 srs.register_sr('artist', 'handle_artist')
 srs.register_sr('random', 'handle_song')
 srs.register_sr('back', 'handle_back')
+srs.register_sr('hint', 'handle_hint')
 srs.register_sr(['easy', 'medium', 'hard'], 'handle_difficulty')
 
 srs.register_group_sr(StateType.INITIAL, ['Random', 'Genre', 'Artist', 'Scores', 'Set Difficulty'])
