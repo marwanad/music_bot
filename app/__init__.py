@@ -1,8 +1,6 @@
 from flask import Flask
 
 from config import config
-import setup
-import spotipy
 
 from flask.ext.sqlalchemy import SQLAlchemy
 import os
