@@ -92,6 +92,18 @@ class Handler(object):
                                      keyboards=srs.grouped_srs.get(game.state, srs.grouped_srs[StateType.INITIAL]))
 
     @staticmethod
+    @check_state(StateType.ANSWER_TIME)
+    def handle_hint(to, game, body):
+        try:
+            if game:
+                album_art = json.loads(game.song)['album_art']
+                Responder.send_image_response(to, game.id, album_art, keyboards=srs.grouped_srs[StateType.ANSWER_TIME])
+        except Exception as e:
+            print 'HANDLE_HINT ERROR: %r' % e
+            Handler.handle_error(to, game)
+            return
+
+    @staticmethod
     def handle_error(to, game, response=StateString.ERROR):
         game.state = StateType.INITIAL
         db.session.commit()
