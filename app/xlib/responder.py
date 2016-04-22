@@ -1,5 +1,5 @@
 from flask import url_for
-from kik.messages import TextMessage, SuggestedResponseKeyboard, PictureMessage
+from kik.messages import TextMessage, SuggestedResponseKeyboard, PictureMessage, CustomAttribution
 
 from app.main.wubble import WubbleMessage
 from setup import kik
@@ -23,7 +23,11 @@ class Responder(object):
 
     @staticmethod
     def send_image_response(to, chat_id, album_art, album, keyboards=None):
-        message = PictureMessage(to=to, chat_id=chat_id, pic_url=str(album_art), attribution=str(album))
+        message = PictureMessage(to=to, chat_id=chat_id, pic_url=album_art)
+
+        message.attribution = CustomAttribution(
+            name=album
+        )
 
         if keyboards:
             message.keyboards.append(
