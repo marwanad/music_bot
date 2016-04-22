@@ -74,6 +74,7 @@ def get_song_from_artist(artist, difficulty=50):
         artist_id = artist['id']
         song_json = sp._get('recommendations', seed_artists=artist_id, limit=1, min_popularity=difficulty)['tracks'][0]
         if song_json:
+            print 'Found song'
             song = Song(
                 song_json['album']['name'],
                 song_json['artists'][0]['name'],
