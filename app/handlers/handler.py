@@ -110,6 +110,7 @@ class Handler(object):
             print 'HANDLE_ANSWER ERROR: %r' % e
             Handler.handle_error(to, game)
             return
+<<<<<<< Updated upstream
         
         if body == 'back':
             back_message = to + ' gave up. The song was "' + song['title'] + '" by ' + song['artist']
@@ -134,7 +135,30 @@ class Handler(object):
                 else:
                     response = "Too late!"
 
+=======
+
+        if song and util.guess_matches_answer(body, song['title'].lower()):
+            game.state = StateType.INITIAL
+            game.song = None
+
+            print 'scores %r', game.scores
+            scores = json.loads(game.scores)
+            scores[to] = scores.get(to, 0) + 1
+            game.scores = json.dumps(scores)
+
+            response = 'Correct!'
+            keyboards = srs.grouped_srs[StateType.INITIAL]
+            hidden_sr = False
+        else:
+            if body == 'back':
+                back_message = 'Giving up? The song was "' + song['title'] + '" by ' + song['artist']
+                Handler.handle_back(to, game, body, back_message)
+                return
+            elif body =='hint':
+                Handler.handle_hint(to, game, body)
+                return
+>>>>>>> Stashed changes
             else:
                 response = 'Incorrect'
                 keyboards = srs.grouped_srs[StateType.ANSWER_TIME]
-            Responder.send_text_response(to, game.id, response, keyboards, hidden_sr)
+        Responder.send_text_response(to, game.id, response, keyboards, hidden_sr)
