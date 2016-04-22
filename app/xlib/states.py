@@ -4,7 +4,6 @@ class StateType(object):
     ARTIST_SELECT = "artist_select"
     ANSWER_TIME = "answer_time"
     SETTINGS = "settings"
-    DIFFICULTY = "difficulty"
 
 
 class StateString(object):
@@ -14,4 +13,7 @@ class StateString(object):
     BACK = 'Ok, heading back to main menu'
     DIFFICULTY = 'Select your difficulty'
     SCORE = 'Score: \n'
-    ERROR = 'Seems like I can\'t fetch that right now, going back to main menu'
+    ERROR = 'Uh oh something went wrong, try again?'
+    FALLBACK_STRINGS = ['Not a text message', 'Wait, why would you send me this?', 'I don\'t understand what you said']
+    CORRECT = ['Correct!', 'That\'s right!', 'Yep, that\'s it!', 'You got it!']
+    INCORRECT = ['Incorrect', 'Wrong answer', 'Nope!', 'Umm... no', 'Try again', 'Nope']

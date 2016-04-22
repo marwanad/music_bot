@@ -12,8 +12,8 @@ from app.xlib.states import StateType
 
 @main.before_request
 def before_request():
+    print("refreshing spotify client from before request")
     music.refresh_spotify_client()
-
 
 @main.route('/receive', methods=['POST'])
 def receive():
@@ -33,14 +33,11 @@ def receive():
             db.session.add(game)
             db.session.commit()
 
-        print("Restoring existing instance from db")
-
         game = db.session.query(Game).filter(Game.id == chat_id).first()
         print ("Restoring existing instance with state ", game.state)
 
         if isinstance(message, StartChattingMessage):
-            Handler.handle_intro(to, game)
-
+            Handler.handle_intro(to, game, None)
         elif isinstance(message, TextMessage):
             body = message.body.lower()
             if not body and mention and game.state == StateType.INITIAL:
@@ -58,14 +55,22 @@ def receive():
                     game.last_query = body
                     Handler.handle_song(to, game, body, song=music.get_song_from_genre(body, game.difficulty))
                 elif game.state == StateType.ARTIST_SELECT or game.state == StateType.INITIAL:
-                    game.last_query = body #TODO: don't set last query if no artist found
-                    Handler.handle_song(to, game, body, song=music.get_song_from_artist(body, game.difficulty))
+                    print 'MATCHING ARTIST: {}'.format(body)
+                    try:
+                        song = music.get_song_from_artist(body, game.difficulty)
+                        game.last_query = body  # TODO: don't set last query if no artist found
+                    except Exception as e:
+                        print 'Exception: %r' % e
+                        Handler.handle_error(to, game)
+                        return Response(status=200)
+
+                    Handler.handle_song(to, game, body, song=song)
                 else:
                     Handler.handle_fallback(to, game, body)
                 return Response(status=200)
             getattr(Handler, fn)(to, game, body)
         else:
-            Handler.handle_fallback(to, game)
+            Handler.handle_fallback(to, game, None)
         return Response(status=200)
 
 

@@ -1,6 +1,7 @@
 from flask import Flask
 
 from config import config
+
 from flask.ext.sqlalchemy import SQLAlchemy
 import os
 

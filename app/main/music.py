@@ -6,14 +6,20 @@ import setup
 
 preview_base_url="https://p.scdn.co/mp3-preview/"
 
+class SP(object):
+    sp = spotipy.Spotify(auth=setup.get_spotify_token())
+
 def refresh_spotify_client():
-    return spotipy.Spotify(auth=setup.get_spotify_token())
-
-sp = refresh_spotify_client()
-
+    
+    # return same instance if not none or new instance with token
+    if(setup.is_cached_token_valid()):
+        print("Called before request and found access token to be valid")
+        return 
+    print("returning new client with auth token: ", setup.get_spotify_token())
+    SP.sp = spotipy.Spotify(auth=setup.get_spotify_token())
 
 def get_genres():
-    return sp.recommendation_genre_seeds()['genres']
+    return SP.sp.recommendation_genre_seeds()['genres']
 
 class Genre:
     GENRES = get_genres()
@@ -37,7 +43,7 @@ class Song:
 def get_song_from_playlist(ownerid='spotify', playlistid='5FJXhjdILmRA2z5bvz4nzf'):
     print "Getting song from playlist {0} owned by {1}".format(playlistid, ownerid)
     try:
-        songs = sp.user_playlist_tracks(ownerid, playlist_id=playlistid)['items']
+        songs = SP.sp.user_playlist_tracks(ownerid, playlist_id=playlistid)['items']
         song = random.choice(songs)['track']
         final_song = Song(album=song['album']['name'],
                           artist=song['artists'][0]['name'],
@@ -52,7 +58,7 @@ def get_song_from_playlist(ownerid='spotify', playlistid='5FJXhjdILmRA2z5bvz4nzf
 
 def get_song_from_genre(genre, difficulty=50):
     print ("getting song from genre ", genre)
-    song_json = sp._get('recommendations', seed_genres=genre, limit=1, min_popularity=difficulty)['tracks'][0]
+    song_json = SP.sp._get('recommendations', seed_genres=genre, limit=1, min_popularity=difficulty)['tracks'][0]
     if song_json:
         final_song = Song(song_json['album']['name'],
                           song_json['artists'][0]['name'],
@@ -67,13 +73,14 @@ def get_song_from_genre(genre, difficulty=50):
 
 
 def get_song_from_artist(artist, difficulty=50):
-    results = sp.search(q='artist:' + artist, type='artist')
+    results = SP.sp.search(q='artist:' + artist, type='artist')
     items = results['artists']['items']
     if items:
         artist = items[0]
         artist_id = artist['id']
-        song_json = sp._get('recommendations', seed_artists=artist_id, limit=1, min_popularity=difficulty)['tracks'][0]
+        song_json = SP.sp._get('recommendations', seed_artists=artist_id, limit=1, min_popularity=difficulty)['tracks'][0]
         if song_json:
+            print 'Found song'
             song = Song(
                 song_json['album']['name'],
                 song_json['artists'][0]['name'],
