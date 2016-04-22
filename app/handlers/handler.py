@@ -124,7 +124,7 @@ class Handler(object):
                 if game.state == StateType.ANSWER_TIME:
                     print 'scores: ', game.scores
                     scores = json.loads(game.scores)
-                    high_score = scores[max(scores, key=scores.get)]
+                    high_score = scores[max(scores.values())]
                     scores[to] = scores.get(to, 0) + 1
                     game.scores = json.dumps(scores)
 
