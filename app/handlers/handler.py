@@ -129,8 +129,6 @@ class Handler(object):
                 if(high_score < scores[to]):
                     response = response + " " + to + " set a new high score with " + scores[to] + " points!"
 
-                response = 'Correct!'
-
                 keyboards = srs.grouped_srs[StateType.INITIAL]
                 hidden_sr = False
 
