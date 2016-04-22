@@ -6,6 +6,8 @@ import setup
 
 preview_base_url="https://p.scdn.co/mp3-preview/"
 
+PLAYLIST_IDS = ['5FJXhjdILmRA2z5bvz4nzf', '4hOKQuZbraPDIfaGbM3lKI', '5nPXGgfCxfRpJHGRY4sovK', '5UFRIQ89nVPcVsrWjLyjqI', '445ES7sgFV8zJHebmbUW0L']
+
 class SP(object):
     sp = spotipy.Spotify(auth=setup.get_spotify_token())
 
@@ -40,7 +42,8 @@ class Song:
         return json.dumps(self, default=lambda x: x.__dict__)
 
 
-def get_song_from_playlist(ownerid='spotify', playlistid='5FJXhjdILmRA2z5bvz4nzf'):
+def get_song_from_playlist(ownerid='spotify'):
+    playlistid = random.choice(PLAYLIST_IDS)
     print "Getting song from playlist {0} owned by {1}".format(playlistid, ownerid)
     try:
         songs = SP.sp.user_playlist_tracks(ownerid, playlist_id=playlistid)['items']
