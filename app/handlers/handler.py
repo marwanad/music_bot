@@ -1,3 +1,5 @@
+import random
+
 import util
 from app.xlib.responder import Responder
 from app.xlib.states import StateType
@@ -86,7 +88,7 @@ class Handler(object):
         if response:
             response = 'I don\'t understand what you mean by "{}"'.format(response)
         else:
-            response = 'Not a text message'
+            response = random.choice(StateString.FALLBACK_STRINGS)
 
         Responder.send_text_response(to, game.id, response,
                                      keyboards=srs.grouped_srs.get(game.state, srs.grouped_srs[StateType.INITIAL]))
@@ -139,18 +141,19 @@ class Handler(object):
             scores[to] = scores.get(to, 0) + 1
             game.scores = json.dumps(scores)
 
-            response = 'Correct!'
+            response = random.choice(StateString.CORRECT)
+            response += '\nIt\'s "{song}" by {artist}'.format(song=song['title'], artist=song['artist'])
             keyboards = srs.grouped_srs[StateType.INITIAL]
             hidden_sr = False
         else:
             if body == 'back':
-                back_message = 'Giving up? The song was "' + song['title'] + '" by ' + song['artist']
+                back_message = 'Giving up? The song was "{song}" by {artist}'.format(song=song['title'], artist=song['artist'])
                 Handler.handle_back(to, game, body, back_message)
                 return
             elif body == 'hint':
                 Handler.handle_hint(to, game, body)
                 return
             else:
-                response = 'Incorrect'
+                response = random.choice(StateString.INCORRECT)
                 keyboards = srs.grouped_srs[StateType.ANSWER_TIME]
         Responder.send_text_response(to, game.id, response, keyboards, hidden_sr)

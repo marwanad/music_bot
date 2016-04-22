@@ -14,3 +14,6 @@ class StateString(object):
     DIFFICULTY = 'Select your difficulty'
     SCORE = 'Score: \n'
     ERROR = 'Uh oh something went wrong, try again?'
+    FALLBACK_STRINGS = ['Not a text message', 'Wait, why would you send me this?', 'I don\'t understand what you said']
+    CORRECT = ['Correct!', 'Awesome!', 'Yeeeeee bro']
+    INCORRECT = ['Incorrect', 'Wrong answer', 'Nope!', 'Nah bro.']
