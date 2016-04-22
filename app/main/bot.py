@@ -55,8 +55,10 @@ def receive():
             if not fn:
                 if body in music.Genre.GENRES and (
                                 game.state == StateType.GENRE_SELECT or game.state == StateType.INITIAL):
+                    game.last_query = body
                     Handler.handle_song(to, game, body, song=music.get_song_from_genre(body, game.difficulty))
                 elif game.state == StateType.ARTIST_SELECT or game.state == StateType.INITIAL:
+                    game.last_query = body #TODO: don't set last query if no artist found
                     Handler.handle_song(to, game, body, song=music.get_song_from_artist(body, game.difficulty))
                 else:
                     Handler.handle_fallback(to, game, body)
