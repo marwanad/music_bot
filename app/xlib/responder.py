@@ -56,6 +56,5 @@ class Responder(object):
             )
 
         kik.send_messages([
-            message,
-            help_message
+            message
         ])
