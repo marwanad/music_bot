@@ -5,7 +5,7 @@ import spotipy
 import setup
 
 preview_base_url="https://p.scdn.co/mp3-preview/"
-
+sp = None
 def refresh_spotify_client():
     if(setup.is_cached_token_valid()):
         print("Called before request and found access token to be valid")
