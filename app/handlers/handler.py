@@ -98,8 +98,9 @@ class Handler(object):
             if game:
                 song = json.loads(game.song)
                 print 'song: %r' % song
-                album_art = song.get('album_art', 'http://i.imgur.com/DUCOwkM.jpg')
-                album = song.get('album', 'Album art')
+
+                album_art = song.get['album_art'] or 'http://i.imgur.com/DUCOwkM.jpg'
+                album = song.get['album'] or 'Album art'
                 Responder.send_image_response(to, game.id, album_art, album,
                                               keyboards=srs.grouped_srs[StateType.ANSWER_TIME])
         except Exception as e:
