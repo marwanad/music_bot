@@ -17,7 +17,7 @@ class Game(db.Model):
         self.song = song
         self.scores = scores
         self.difficulty = difficulty
-        self.last_query = None
+        self.last_query = last_query
 
     def __repr__(self):
         return '<Game %r>' % self.state
