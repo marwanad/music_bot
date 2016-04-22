@@ -142,6 +142,7 @@ class Handler(object):
             game.scores = json.dumps(scores)
 
             response = random.choice(StateString.CORRECT)
+            response += ' ' + random.choice(StateString.CORRECT_EMOJI)
             response += '\nIt\'s "{song}" by {artist}'.format(song=song['title'], artist=song['artist'])
             keyboards = srs.grouped_srs[StateType.INITIAL]
             hidden_sr = False
@@ -155,5 +156,6 @@ class Handler(object):
                 return
             else:
                 response = random.choice(StateString.INCORRECT)
+                response += ' ' + random.choice(StateString.INCORRECT_EMOJI)
                 keyboards = srs.grouped_srs[StateType.ANSWER_TIME]
         Responder.send_text_response(to, game.id, response, keyboards, hidden_sr)
