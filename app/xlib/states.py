@@ -14,4 +14,4 @@ class StateString(object):
     BACK = 'Ok, heading back to main menu'
     DIFFICULTY = 'Select your difficulty'
     SCORE = 'Score: \n'
-    ERROR = 'Seems like I can\'t fetch that right now, going back to main menu'
+    ERROR = 'Uh oh something went wrong, try again?'

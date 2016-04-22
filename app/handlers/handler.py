@@ -93,18 +93,22 @@ class Handler(object):
                                      keyboards=srs.grouped_srs.get(game.state, srs.grouped_srs[StateType.INITIAL]))
 
     @staticmethod
+    def handle_error(to, game, response=StateString.ERROR):
+        game.state = StateType.INITIAL
+        db.session.commit()
+        Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateType.INITIAL])
+
+    @staticmethod
     @check_state(StateType.ANSWER_TIME)
     def handle_answer(to, game, body):
-        if not game:
-            Handler.handle_error(to, game)
-            return
-
         hidden_sr = True
         # todo hints?
 
         try:
-            song = json.loads(game.song)
-        except:
+            if game:
+                song = json.loads(game.song)
+        except Exception as e:
+            print 'HANDLE_ANSWER ERROR: %r' % e
             Handler.handle_error(to, game)
             return
         

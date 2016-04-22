@@ -40,7 +40,6 @@ def receive():
 
         if isinstance(message, StartChattingMessage):
             Handler.handle_intro(to, game)
-
         elif isinstance(message, TextMessage):
             body = message.body.lower()
             if not body and mention and game.state == StateType.INITIAL:
@@ -57,13 +56,21 @@ def receive():
                                 game.state == StateType.GENRE_SELECT or game.state == StateType.INITIAL):
                     Handler.handle_song(to, game, body, song=music.get_song_from_genre(body, game.difficulty))
                 elif game.state == StateType.ARTIST_SELECT or game.state == StateType.INITIAL:
-                    Handler.handle_song(to, game, body, song=music.get_song_from_artist(body, game.difficulty))
+                    print 'MATCHING ARTIST: {}'.format(body)
+                    try:
+                        song = music.get_song_from_artist(body, game.difficulty)
+                    except Exception as e:
+                        print 'Exception: %r' % e
+                        Handler.handle_error(to, game)
+                        return Response(status=200)
+
+                    Handler.handle_song(to, game, body, song=song)
                 else:
                     Handler.handle_fallback(to, game, body)
                 return Response(status=200)
             getattr(Handler, fn)(to, game, body)
         else:
-            Handler.handle_fallback(to, game)
+            Handler.handle_fallback(to, game, None)
         return Response(status=200)
 
 
