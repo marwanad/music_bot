@@ -1,5 +1,7 @@
 import random
 
+from kik.messages import TextMessage
+
 import util
 from app.xlib.responder import Responder
 from app.xlib.states import StateType
@@ -13,9 +15,16 @@ import json
 
 class Handler(object):
     @staticmethod
+    def get_init_keyboard(game):
+        if game.last_query:
+            msg = TextMessage(chat_id=game.id, body=game.last_query)
+            return [msg].append(srs.grouped_srs[StateType.INITIAL])
+        return srs.grouped_srs[StateType.INITIAL]
+
+    @staticmethod
     @check_state(StateType.INITIAL)
     def handle_intro(to, game, body, response=StateString.INTRO):
-        Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateType.INITIAL])
+        Responder.send_text_response(to, game.id, response, keyboards=Handler.get_init_keyboard(game))
 
     @staticmethod
     @check_state(StateType.INITIAL)
@@ -49,7 +58,7 @@ class Handler(object):
         game.song = None
         db.session.commit()
 
-        Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateType.INITIAL])
+        Responder.send_text_response(to, game.id, response, keyboards=Handler.get_init_keyboard(game))
 
     @staticmethod
     @check_state(StateType.INITIAL)
@@ -60,7 +69,7 @@ class Handler(object):
         sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
         for tup in sorted_scores:
             response = response + tup[0] + ': ' + str(tup[1]) + '\n'
-        Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateType.INITIAL])
+        Responder.send_text_response(to, game.id, response, keyboards=Handler.get_init_keyboard(game))
 
     @staticmethod
     @check_state(StateType.INITIAL)
@@ -81,7 +90,7 @@ class Handler(object):
 
         response = 'Difficulty has been set to ' + body
 
-        Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateType.INITIAL])
+        Responder.send_text_response(to, game.id, response, keyboards=Handler.get_init_keyboard(game))
 
     @staticmethod
     def handle_fallback(to, game, body, response=None):
@@ -91,7 +100,7 @@ class Handler(object):
             response = random.choice(StateString.FALLBACK_STRINGS)
 
         Responder.send_text_response(to, game.id, response,
-                                     keyboards=srs.grouped_srs.get(game.state, srs.grouped_srs[StateType.INITIAL]))
+                                     keyboards=srs.grouped_srs.get(game.state, Handler.get_init_keyboard(game)))
 
     @staticmethod
     @check_state(StateType.ANSWER_TIME)
@@ -117,7 +126,7 @@ class Handler(object):
     def handle_error(to, game, response=StateString.ERROR):
         game.state = StateType.INITIAL
         db.session.commit()
-        Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateType.INITIAL])
+        Responder.send_text_response(to, game.id, response, keyboards=Handler.get_init_keyboard(game))
 
     @staticmethod
     @check_state(StateType.ANSWER_TIME)
@@ -144,7 +153,7 @@ class Handler(object):
             response = random.choice(StateString.CORRECT)
             response += ' ' + random.choice(StateString.CORRECT_EMOJI)
             response += '\nIt\'s "{song}" by {artist}'.format(song=song['title'], artist=song['artist'])
-            keyboards = srs.grouped_srs[StateType.INITIAL]
+            keyboards = Handler.get_init_keyboard(game)
             hidden_sr = False
         else:
             if body in ['back', 'skip', 'next']:
