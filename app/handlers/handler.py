@@ -147,7 +147,7 @@ class Handler(object):
             keyboards = srs.grouped_srs[StateType.INITIAL]
             hidden_sr = False
         else:
-            if body == 'back':
+            if body in ['back', 'skip', 'next']:
                 back_message = 'Giving up? The song was "{song}" by {artist}'.format(song=song['title'], artist=song['artist'])
                 Handler.handle_back(to, game, body, back_message)
                 return
