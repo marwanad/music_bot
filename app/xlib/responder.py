@@ -44,7 +44,9 @@ class Responder(object):
     def send_wubble_response(to, chat_id, url, keyboards=None):
         message = WubbleMessage(to=to, chat_id=chat_id, width=130, height=143,
             url=url_for("main.music_player", id=url, _external=True))
-        
+
+        help_body = 'Reply with @mus.iq to guess the song title'
+        help_message = TextMessage(to=to, chat_id=chat_id, body=help_body) if to != 'mus.iq' else None
         if keyboards:
             message.keyboards.append(
                 SuggestedResponseKeyboard(
@@ -54,5 +56,6 @@ class Responder(object):
             )
 
         kik.send_messages([
-            message
+            message,
+            help_message
         ])
