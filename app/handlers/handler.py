@@ -76,7 +76,7 @@ class Handler(object):
             game.difficulty = 0
         elif body == 'medium':
             game.difficulty = 30
-            
+
         response = 'Difficulty has been set to ' + body
 
         Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateType.INITIAL])
@@ -96,8 +96,11 @@ class Handler(object):
     def handle_hint(to, game, body):
         try:
             if game:
-                album_art = json.loads(game.song)['album_art']
-                Responder.send_image_response(to, game.id, album_art, keyboards=srs.grouped_srs[StateType.ANSWER_TIME])
+                song = json.loads(game.song)
+                album_art = song.get('album_art', 'http://i.imgur.com/DUCOwkM.jpg')
+                album = song.get('album', 'Album art')
+                Responder.send_image_response(to, game.id, album_art, album,
+                                              keyboards=srs.grouped_srs[StateType.ANSWER_TIME])
         except Exception as e:
             print 'HANDLE_HINT ERROR: %r' % e
             Handler.handle_error(to, game)

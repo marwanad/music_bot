@@ -22,8 +22,8 @@ class Responder(object):
         ])
 
     @staticmethod
-    def send_image_response(to, chat_id, url, keyboards=None):
-        message = PictureMessage(to=to, chat_id=chat_id, pic_url=url)
+    def send_image_response(to, chat_id, album_art, album, keyboards=None):
+        message = PictureMessage(to=to, chat_id=chat_id, pic_url=album_art, attribution=album)
 
         if keyboards:
             message.keyboards.append(
