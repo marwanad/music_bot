@@ -32,9 +32,7 @@ def receive():
             game = Game(chatId=chat_id, state=StateType.INITIAL)
             db.session.add(game)
             db.session.commit()
-
-        print("Restoring existing instance from db")
-
+            
         game = db.session.query(Game).filter(Game.id == chat_id).first()
         print ("Restoring existing instance with state ", game.state)
 
