@@ -39,7 +39,7 @@ def receive():
         print ("Restoring existing instance with state ", game.state)
 
         if isinstance(message, StartChattingMessage):
-            Handler.handle_intro(to, game)
+            Handler.handle_intro(to, game, None)
         elif isinstance(message, TextMessage):
             body = message.body.lower()
             if not body and mention and game.state == StateType.INITIAL:
