@@ -12,8 +12,8 @@ from app.xlib.states import StateType
 
 @main.before_request
 def before_request():
+    print("refreshing spotify client from before request")
     music.refresh_spotify_client()
-
 
 @main.route('/receive', methods=['POST'])
 def receive():
@@ -32,7 +32,7 @@ def receive():
             game = Game(chatId=chat_id, state=StateType.INITIAL)
             db.session.add(game)
             db.session.commit()
-            
+
         game = db.session.query(Game).filter(Game.id == chat_id).first()
         print ("Restoring existing instance with state ", game.state)
 

@@ -64,7 +64,7 @@ class Handler(object):
     @check_state(StateType.INITIAL)
     def handle_settings(to, game, body, response=StateString.DIFFICULTY):
         game.state = StateType.SETTINGS
-        Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateType.DIFFICULTY])
+        Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateString.DIFFICULTY])
 
     @staticmethod
     @check_state(StateType.SETTINGS)

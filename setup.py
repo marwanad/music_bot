@@ -38,6 +38,7 @@ def get_spotify_token():
     # get token from response and store
     access_token = token_response_json['access_token']
     os.environ["SPOTIPY_ACCESS_TOKEN"] = access_token
+    print("Got a new token with: ", access_token)
 
     return access_token
 
