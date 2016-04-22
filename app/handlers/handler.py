@@ -19,7 +19,6 @@ class Handler(object):
     @check_state(StateType.INITIAL)
     def handle_genre(to, game, body, response=StateString.GENRE):
         game.state = StateType.GENRE_SELECT
-        db.session.commit()
 
         Responder.send_text_response(to, game.id, response, keyboards=srs.grouped_srs[StateType.GENRE_SELECT])
 
@@ -113,21 +112,28 @@ class Handler(object):
             return
         
         if body == 'back':
-            back_message = 'Giving up? The song was "' + song['title'] + '" by ' + song['artist']
+            back_message = to + ' gave up. The song was "' + song['title'] + '" by ' + song['artist']
             Handler.handle_back(to, game, body, back_message)
         else:
             if song and util.guess_matches_answer(body, song['title'].lower()):
                 game.state = StateType.INITIAL
                 game.song = None
-
-                print 'scores %r', game.scores
-                scores = json.loads(game.scores)
-                scores[to] = scores.get(to, 0) + 1
-                game.scores = json.dumps(scores)
-
-                response = 'Correct!'
                 keyboards = srs.grouped_srs[StateType.INITIAL]
                 hidden_sr = False
+
+                if game.state == StateType.ANSWER_TIME:
+                    print 'scores %r', game.scores
+                    scores = json.loads(game.scores)
+                    high_score = scores[max(scores, key=scores.get)]
+                    scores[to] = scores.get(to, 0) + 1
+                    game.scores = json.dumps(scores)
+
+                    response = 'Correct!'
+                    if(high_score < scores[to]):
+                        response = response + " " + to + " set a new high score with " + scores[to] + " points!"
+                else:
+                    response = "Too late!"
+
             else:
                 response = 'Incorrect'
                 keyboards = srs.grouped_srs[StateType.ANSWER_TIME]
