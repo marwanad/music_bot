@@ -23,7 +23,6 @@ def get_spotify_token():
         return cached_token
 
     # use the refresh token to get a new access token
-    else:
     print("Requesting a new token!")
     token_data = {
         'grant_type': 'refresh_token',
