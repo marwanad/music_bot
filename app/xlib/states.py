@@ -18,6 +18,6 @@ class StateString(object):
     CORRECT = ['Correct!', 'You smart', 'You a genius!', 'Slayyy', 'Yassss', 'Feel blessed']
     CORRECT_EMOJI = [u'\U0001F525' + u'\U0001F525' + u'\U0001F525', u'\U0001F511',
                      u'\U0001F4AF', u'\U0001F44C', u'\U0001F44F', u'\U0001F606', u'\U0001F4AA', u'\U0001F44D']
-    INCORRECT = ['Incorrect', 'Aww shieeeet', 'Umm... no', 'You goofed', 'Nope',
+    INCORRECT = ['Incorrect', 'Umm... no', 'You goofed', 'Nope',
                  'Congratulations ... You played yourself']
     INCORRECT_EMOJI = [u'\U0001F4A9', u'\U0001F3FB', u'\U0001F44E', u'\U0001F649', u'\U0001F622', u'\U0001F61F']
