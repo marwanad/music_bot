@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 
 db = SQLAlchemy(app)
-sp = spotipy.Spotify(auth=setup.get_spotify_token())
+
 
 def create_app(config_name):
     app.config.from_object(config[config_name])
