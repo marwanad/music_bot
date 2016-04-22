@@ -1,6 +1,5 @@
 from flask import url_for
 from kik.messages import TextMessage, SuggestedResponseKeyboard, PictureMessage, CustomAttribution
-
 from app.main.wubble import WubbleMessage
 from setup import kik
 
